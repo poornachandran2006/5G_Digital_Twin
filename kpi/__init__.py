@@ -1,0 +1,1 @@
+"""KPI calculation and storage"""
