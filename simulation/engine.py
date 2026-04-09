@@ -169,8 +169,15 @@ class NetworkSimulation:
 
             throughput_mbps: np.ndarray = channel.compute_throughput(sinr_db)
 
+            # PRB demand uses UE traffic demand (what the UE requests),
+            # not Shannon throughput (what the channel can deliver).
+            # demand_mbps is bounded by UE_MIN/MAX_DEMAND_MBPS (1-20 Mbps),
+            # giving realistic cell loads in normal operation.
+            demand_mbps: np.ndarray = np.array(
+                [ue.demand_mbps for ue in self.ues], dtype=np.float64
+            )
             prb_demand: np.ndarray = channel.compute_prb_demand(
-                throughput_mbps=throughput_mbps,
+                throughput_mbps=demand_mbps,
                 max_prb=config.GNB_MAX_PRB,
                 total_capacity_mbps=self._total_capacity_mbps,
             )
