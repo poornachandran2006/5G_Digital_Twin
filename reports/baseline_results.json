@@ -1,0 +1,62 @@
+{
+  "n_episodes": 5,
+  "mean_reward": 72029.0,
+  "std_reward": 0.0,
+  "mean_congestion_rate": 0.0,
+  "mean_avg_cell_load": 0.37,
+  "mean_peak_load": 0.73,
+  "mean_handovers_total": 375.0,
+  "mean_handovers_per_tick": 0.03472543754051301,
+  "episodes_data": [
+    {
+      "episode": 1,
+      "ticks": 10799,
+      "total_reward": 72029.0,
+      "congestion_rate": 0.0,
+      "avg_cell_load": 0.37,
+      "peak_load": 0.73,
+      "handovers_total": 375,
+      "handovers_per_tick": 0.03472543754051301
+    },
+    {
+      "episode": 2,
+      "ticks": 10799,
+      "total_reward": 72029.0,
+      "congestion_rate": 0.0,
+      "avg_cell_load": 0.37,
+      "peak_load": 0.73,
+      "handovers_total": 375,
+      "handovers_per_tick": 0.03472543754051301
+    },
+    {
+      "episode": 3,
+      "ticks": 10799,
+      "total_reward": 72029.0,
+      "congestion_rate": 0.0,
+      "avg_cell_load": 0.37,
+      "peak_load": 0.73,
+      "handovers_total": 375,
+      "handovers_per_tick": 0.03472543754051301
+    },
+    {
+      "episode": 4,
+      "ticks": 10799,
+      "total_reward": 72029.0,
+      "congestion_rate": 0.0,
+      "avg_cell_load": 0.37,
+      "peak_load": 0.73,
+      "handovers_total": 375,
+      "handovers_per_tick": 0.03472543754051301
+    },
+    {
+      "episode": 5,
+      "ticks": 10799,
+      "total_reward": 72029.0,
+      "congestion_rate": 0.0,
+      "avg_cell_load": 0.37,
+      "peak_load": 0.73,
+      "handovers_total": 375,
+      "handovers_per_tick": 0.03472543754051301
+    }
+  ]
+}

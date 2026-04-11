@@ -1,0 +1,72 @@
+{
+  "baseline": {
+    "mean_reward": 71827.75,
+    "std_reward": 92.25,
+    "mean_congestion_rate": 0.0,
+    "mean_handovers_per_tick": 0.03616075562552088,
+    "episodes_data": [
+      {
+        "episode": 1,
+        "total_reward": 71735.5,
+        "ticks": 10799,
+        "congestion_rate": 0.0,
+        "handovers_per_tick": 0.03954069821279748
+      },
+      {
+        "episode": 2,
+        "total_reward": 71920.0,
+        "ticks": 10799,
+        "congestion_rate": 0.0,
+        "handovers_per_tick": 0.03278081303824428
+      }
+    ]
+  },
+  "ppo_agent": {
+    "mean_reward": 71132.9,
+    "std_reward": 608.4957189660416,
+    "mean_congestion_rate": 0.0,
+    "mean_handovers_per_tick": 0.037299749976849705,
+    "episodes_data": [
+      {
+        "episode": 1,
+        "total_reward": 70479.5,
+        "ticks": 10799,
+        "congestion_rate": 0.0,
+        "handovers_per_tick": 0.03750347254375405
+      },
+      {
+        "episode": 2,
+        "total_reward": 71362.5,
+        "ticks": 10799,
+        "congestion_rate": 0.0,
+        "handovers_per_tick": 0.04167052504861561
+      },
+      {
+        "episode": 3,
+        "total_reward": 70351.5,
+        "ticks": 10799,
+        "congestion_rate": 0.0,
+        "handovers_per_tick": 0.039170293545698676
+      },
+      {
+        "episode": 4,
+        "total_reward": 71603.5,
+        "ticks": 10799,
+        "congestion_rate": 0.0,
+        "handovers_per_tick": 0.030558385035651447
+      },
+      {
+        "episode": 5,
+        "total_reward": 71867.5,
+        "ticks": 10799,
+        "congestion_rate": 0.0,
+        "handovers_per_tick": 0.037596073710528755
+      }
+    ]
+  },
+  "training": {
+    "total_timesteps": 50000,
+    "save_path": "models/ppo_agent",
+    "eval_freq": 5000
+  }
+}

@@ -241,14 +241,18 @@ class DataPreprocessor:
         Returns:
             Tuple of (X_train_scaled, X_val_scaled, X_test_scaled).
         """
-        Path(scaler_path).parent.mkdir(parents=True, exist_ok=True)
+        import pickle
+        import os
 
+        os.makedirs(os.path.dirname(scaler_path), exist_ok=True)
+        
         self.scaler.fit(X_train)
         X_train_s = self.scaler.transform(X_train).astype(np.float32)
         X_val_s = self.scaler.transform(X_val).astype(np.float32)
         X_test_s = self.scaler.transform(X_test).astype(np.float32)
 
-        joblib.dump(self.scaler, scaler_path)
+        with open(scaler_path, 'wb') as f:
+            pickle.dump(self.scaler, f)
         logger.info("Scaler fitted on train (%d samples), saved to %s",
                      len(X_train), scaler_path)
         return X_train_s, X_val_s, X_test_s
