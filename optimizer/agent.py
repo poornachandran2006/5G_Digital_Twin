@@ -20,7 +20,7 @@ import torch
 from stable_baselines3 import PPO
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import DummyVecEnv
-from stable_baselines3.common.callbacks import EvalCallback
+from stable_baselines3.common.callbacks import BaseCallback, EvalCallback
 
 from optimizer.rl_env import NetworkOptimizationEnv
 
@@ -96,6 +96,7 @@ class PPOAgent:
         total_timesteps: int = 50_000,
         save_path: str = "models/ppo_agent",
         eval_freq: int = 5_000,
+        extra_callbacks: list[BaseCallback] | None = None,
     ) -> dict:
         """
         Train the PPO agent with periodic evaluation callbacks.
@@ -120,6 +121,7 @@ class PPOAgent:
             sim_engine=NetworkSimulation(),
             ensemble_model=self._raw_env._ensemble,
             device=self._raw_env._device,
+            training_mode=False,
         )
         eval_limited = TimeLimit(eval_raw, max_episode_steps=500)
         eval_vec = DummyVecEnv([lambda: Monitor(eval_limited)])
@@ -134,10 +136,14 @@ class PPOAgent:
             verbose=0,
         )
 
+        callbacks: list[BaseCallback] = [eval_callback]
+        if extra_callbacks:
+            callbacks.extend(extra_callbacks)
+
         logger.info("Training PPO for %d timesteps", total_timesteps)
         self.model.learn(
             total_timesteps=total_timesteps,
-            callback=eval_callback,
+            callback=callbacks,
             reset_num_timesteps=True,
         )
 

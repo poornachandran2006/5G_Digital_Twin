@@ -1,0 +1,17 @@
+{
+  "total_timesteps": 200000,
+  "final_mean_reward": 3.832247495651245,
+  "action_counts": {
+    "0": 34279,
+    "1": 37754,
+    "2": 73241,
+    "3": 55430
+  },
+  "action_percentages": {
+    "0": 17.0794,
+    "1": 18.8108,
+    "2": 36.492,
+    "3": 27.6178
+  },
+  "training_mode": "congestion_injection"
+}

@@ -12,6 +12,7 @@ Usage from project root:
 
 from __future__ import annotations
 
+import argparse
 import json
 import logging
 import os
@@ -40,10 +41,32 @@ Path("reports").mkdir(exist_ok=True)
 
 
 def main() -> None:
-    n_episodes = 5
+    parser = argparse.ArgumentParser(description="Baseline (no-op) evaluation for Phase 5")
+    parser.add_argument(
+        "--out",
+        default="reports/baseline_results.json",
+        help="Output JSON path",
+    )
+    parser.add_argument(
+        "--episodes",
+        type=int,
+        default=5,
+        help="Number of evaluation episodes",
+    )
+    parser.add_argument(
+        "--training-mode",
+        action="store_true",
+        help="Enable synthetic congestion injection (default: off, real-world-style loads)",
+    )
+    args = parser.parse_args()
+
+    n_episodes = args.episodes
     device = torch.device("cpu")
 
-    logger.info("Loading models for baseline evaluation")
+    logger.info(
+        "Loading models for baseline evaluation (training_mode=%s)",
+        args.training_mode,
+    )
     lstm = CongestionLSTM(input_size=18, hidden_size=64, num_layers=2, dropout=0.3)
     lstm.load_state_dict(torch.load("models/lstm_best.pt", map_location=device, weights_only=True))
     lstm.eval()
@@ -57,7 +80,9 @@ def main() -> None:
 
     for ep in range(n_episodes):
         sim = NetworkSimulation()
-        env = NetworkOptimizationEnv(sim, ensemble, device)
+        env = NetworkOptimizationEnv(
+            sim, ensemble, device, training_mode=args.training_mode
+        )
         obs, _ = env.reset()
 
         done = False
@@ -114,8 +139,9 @@ def main() -> None:
         "episodes_data": episodes_data,
     }
 
-    out_path = "reports/baseline_results.json"
-    with open(out_path, "w") as f:
+    out_path = args.out
+    Path(out_path).parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
 
     logger.info("Baseline results saved to %s", out_path)

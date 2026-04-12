@@ -129,12 +129,12 @@ def test_env_step_all_actions(ensemble: EnsemblePredictor) -> None:
 # ---------------------------------------------------------------------------
 
 def test_reward_clipping(env: NetworkOptimizationEnv) -> None:
-    """Reward must always be in [-10, 10]."""
+    """Reward must always be in [-1, 1]."""
     env.reset()
     for _ in range(20):
         action = env.action_space.sample()
         _, reward, terminated, _, _ = env.step(action)
-        assert -10.0 <= reward <= 10.0, f"Reward {reward} out of bounds"
+        assert -1.0 <= reward <= 1.0, f"Reward {reward} out of bounds"
         if terminated:
             break
 

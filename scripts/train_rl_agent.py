@@ -8,7 +8,7 @@ Steps:
   b. Load EnsemblePredictor from saved models
   c. Instantiate NetworkOptimizationEnv
   d. Validate env with SB3 check_env
-  e. Instantiate and train PPOAgent (50 000 steps)
+  e. Instantiate and train PPO (200 000 steps)
   f. Evaluate for 5 episodes
   g. Compare against baseline (no-agent)
   h. Save results to reports/phase5_results.json
@@ -22,21 +22,23 @@ from __future__ import annotations
 import json
 import logging
 import os
-import pickle
 import sys
 from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+import numpy as np
 import torch
+from stable_baselines3 import PPO
 from stable_baselines3.common.env_checker import check_env
+from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.vec_env import DummyVecEnv
 
 from simulation.engine import NetworkSimulation
 from ml.lstm_model import CongestionLSTM
 from ml.xgboost_model import XGBoostPredictor
 from ml.ensemble import EnsemblePredictor
 from optimizer.rl_env import NetworkOptimizationEnv
-from optimizer.agent import PPOAgent
 
 logging.basicConfig(
     level=logging.INFO,
@@ -77,7 +79,7 @@ def run_baseline(n_episodes: int = 5) -> dict:
 
     for ep in range(n_episodes):
         sim = NetworkSimulation()
-        env = NetworkOptimizationEnv(sim, ensemble, device)
+        env = NetworkOptimizationEnv(sim, ensemble, device, training_mode=False)
         obs, _ = env.reset()
         done = False
         ep_reward, ep_ticks, ep_congested, ep_handovers = 0.0, 0, 0, 0
@@ -102,12 +104,60 @@ def run_baseline(n_episodes: int = 5) -> dict:
             "handovers_per_tick": ep_handovers / max(ep_ticks, 1),
         })
 
-    import numpy as np
     return {
         "mean_reward": float(np.mean([e["total_reward"] for e in episodes_data])),
         "std_reward": float(np.std([e["total_reward"] for e in episodes_data])),
         "mean_congestion_rate": float(np.mean([e["congestion_rate"] for e in episodes_data])),
         "mean_handovers_per_tick": float(np.mean([e["handovers_per_tick"] for e in episodes_data])),
+        "episodes_data": episodes_data,
+    }
+
+
+def _evaluate_ppo_model(model: PPO, env: NetworkOptimizationEnv, n_episodes: int = 5) -> dict:
+    """Run full-length episodes with the trained policy on the raw Gym env."""
+    episodes_data: list[dict] = []
+    for ep in range(n_episodes):
+        obs, _ = env.reset()
+        done = False
+        ep_reward = 0.0
+        ep_ticks = 0
+        ep_congested = 0
+        ep_handovers = 0
+
+        while not done:
+            action, _ = model.predict(obs, deterministic=True)
+            obs, reward, terminated, truncated, info = env.step(int(action))
+            done = terminated or truncated
+            ep_reward += float(reward)
+            ep_ticks += 1
+            loads = info.get("cell_loads", [0.0, 0.0, 0.0])
+            if any(l > 0.9 for l in loads):
+                ep_congested += 1
+            ep_handovers += info.get("handovers", 0)
+
+        episodes_data.append({
+            "episode": ep + 1,
+            "total_reward": ep_reward,
+            "ticks": ep_ticks,
+            "congestion_rate": ep_congested / max(ep_ticks, 1),
+            "handovers_per_tick": ep_handovers / max(ep_ticks, 1),
+        })
+        logger.info(
+            "Episode %d/%d: reward=%.1f congestion=%.2f%% ho/tick=%.2f",
+            ep + 1, n_episodes,
+            ep_reward,
+            episodes_data[-1]["congestion_rate"] * 100,
+            episodes_data[-1]["handovers_per_tick"],
+        )
+
+    rewards = [e["total_reward"] for e in episodes_data]
+    cong_rates = [e["congestion_rate"] for e in episodes_data]
+    ho_rates = [e["handovers_per_tick"] for e in episodes_data]
+    return {
+        "mean_reward": float(np.mean(rewards)),
+        "std_reward": float(np.std(rewards)),
+        "mean_congestion_rate": float(np.mean(cong_rates)),
+        "mean_handovers_per_tick": float(np.mean(ho_rates)),
         "episodes_data": episodes_data,
     }
 
@@ -162,15 +212,60 @@ def main() -> None:
     # ------------------------------------------------------------------
     # e. Train PPO
     # ------------------------------------------------------------------
-    logger.info("Step 5/8: Training PPO agent (50 000 timesteps)")
-    agent = PPOAgent(env, device="cpu")
-    train_info = agent.train(total_timesteps=50_000, save_path="models/ppo_agent")
+    for stale in (
+        Path("models/ppo_agent.zip"),
+        Path("reports/ppo_training.log"),
+        Path("reports/ppo_training_summary.json"),
+    ):
+        if stale.is_file():
+            try:
+                stale.unlink()
+                logger.info("Removed stale file: %s", stale)
+            except OSError as e:
+                logger.warning("Could not remove %s (%s); continuing", stale, e)
+
+    logger.info("Step 5/8: Building VecEnv and PPO (200 000 timesteps)")
+    vec_env = DummyVecEnv([lambda: Monitor(env)])
+    model = PPO(
+        "MlpPolicy",
+        vec_env,
+        learning_rate=1e-4,
+        n_steps=2048,
+        batch_size=64,
+        gamma=0.99,
+        clip_range=0.2,
+        max_grad_norm=0.5,
+        vf_coef=0.5,
+        ent_coef=0.01,
+        verbose=1,
+        device="cpu",
+    )
+
+    obs, _ = env.reset()
+    total = 0.0
+    for _ in range(100):
+        obs, reward, terminated, truncated, _info = env.step(env.action_space.sample())
+        total += float(reward)
+        if terminated or truncated:
+            obs, _ = env.reset()
+    mean_r = total / 100.0
+    print(f"[SANITY] Mean reward over 100 steps: {mean_r:.4f}")
+    print("[SANITY] Expected range: -1.0 to +1.0")
+    assert abs(mean_r) <= 1.0, "Reward out of range — fix clip before training"
+
+    logger.info("Step 5b/8: Training PPO")
+    model.learn(total_timesteps=200_000, reset_num_timesteps=True)
+    model.save("models/ppo_agent")
+    train_info = {
+        "total_timesteps": 200_000,
+        "save_path": "models/ppo_agent",
+    }
 
     # ------------------------------------------------------------------
     # f. Evaluate PPO
     # ------------------------------------------------------------------
     logger.info("Step 6/8: Evaluating PPO for 5 episodes")
-    ppo_results = agent.evaluate(n_episodes=5)
+    ppo_results = _evaluate_ppo_model(model, env, n_episodes=5)
 
     # ------------------------------------------------------------------
     # g. Baseline comparison
@@ -186,7 +281,6 @@ def main() -> None:
     logger.info("Step 8/8: Saving results to reports/phase5_results.json")
 
     def _san(obj):
-        import numpy as np
         if isinstance(obj, (np.integer,)):
             return int(obj)
         if isinstance(obj, (np.floating,)):
