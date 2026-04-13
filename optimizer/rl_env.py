@@ -7,7 +7,7 @@ Observation: 9-dim float32 — cell loads, LSTM congestion probs, UE counts.
 Action: Discrete(4). Rewards are clipped to [-1, 1] per step for stable PPO value learning.
 
 Congestion spikes (training_mode=True): every 500 ticks, one random cell is held at
-85–95% synthetic load for 100 ticks for the observation/reward signal.
+85–95% synthetic load for 100 ticks to force the agent to learn recovery behaviour.
 """
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ _LOAD_HEALTHY_LOW = 0.5
 
 def _state_to_feature_row(state: SimulationState) -> np.ndarray:
     gs = state.gnb_states
-    row = np.array([
+    return np.array([
         gs[0]["load"], gs[1]["load"], gs[2]["load"],
         sum(u["throughput_mbps"] for u in state.ue_states if u["serving_gnb_id"] == 0),
         sum(u["throughput_mbps"] for u in state.ue_states if u["serving_gnb_id"] == 1),
@@ -52,7 +52,6 @@ def _state_to_feature_row(state: SimulationState) -> np.ndarray:
         float(sum(1 for u in state.ue_states if u["sinr_db"] < (config.SINR_MIN_DB + 3.0))
               / max(len(state.ue_states), 1)),
     ], dtype=np.float32)
-    return row
 
 
 class NetworkOptimizationEnv(gym.Env):
@@ -133,10 +132,7 @@ class NetworkOptimizationEnv(gym.Env):
         )
 
         obs = self._get_observation()
-        info = {
-            "tick": 0,
-            "cell_loads": self.cell_loads.tolist(),
-        }
+        info = {"tick": 0, "cell_loads": self.cell_loads.tolist()}
         return obs, info
 
     def step(self, action: int) -> tuple[np.ndarray, float, bool, bool, dict]:
@@ -144,16 +140,16 @@ class NetworkOptimizationEnv(gym.Env):
 
         self._apply_action(action)
 
-        if not self.training_mode:
+        # FIX: congestion injection is a training technique to force edge-case exposure.
+        # It must only run during training, not evaluation.
+        if self.training_mode:
             self._maybe_inject_congestion()
 
         try:
             self._state = next(self._sim_iter)
         except StopIteration:
-            terminated = True
-            truncated = False
             obs = self._get_observation()
-            return obs, 0.0, terminated, truncated, {"tick": self._tick}
+            return obs, 0.0, True, False, {"tick": self._tick}
 
         self._tick = self._state.tick + 1
         self._buffer.append(_state_to_feature_row(self._state))
@@ -162,6 +158,7 @@ class NetworkOptimizationEnv(gym.Env):
             [self._state.gnb_states[i]["load"] for i in range(3)], dtype=np.float64,
         )
 
+        # Periodic congestion spikes during training to stress-test the agent
         if self.training_mode:
             if self.current_tick % 500 == 0:
                 self.spike_cell = int(np.random.randint(0, 3))
@@ -174,6 +171,7 @@ class NetworkOptimizationEnv(gym.Env):
 
         obs = self._get_observation()
 
+        # Reward: +0.2 per healthy cell, penalise warning/critical loads
         reward = 0.0
         cell_loads = obs[:3]
         for load in cell_loads:
@@ -184,6 +182,7 @@ class NetworkOptimizationEnv(gym.Env):
             else:
                 reward -= 1.0
 
+        # Bonus for balanced load across cells
         balance_bonus = max(0.0, 0.1 - float(np.std(cell_loads)))
         reward += balance_bonus
 
@@ -239,12 +238,13 @@ class NetworkOptimizationEnv(gym.Env):
         if len(self._buffer) < self._seq_len:
             return np.zeros(3, dtype=np.float32)
 
+        # Cache for 5 ticks to avoid redundant inference
         if hasattr(self, '_cong_cache_tick') and self._tick - self._cong_cache_tick < 5:
             return self._cong_cache
 
-        seq = np.stack(list(self._buffer), axis=0)
-        seq_tensor = torch.from_numpy(seq).unsqueeze(0)
-        flat = seq[-1:, :]
+        seq = np.stack(list(self._buffer), axis=0)         # (seq_len, 18)
+        seq_tensor = torch.from_numpy(seq).unsqueeze(0)    # (1, seq_len, 18)
+        flat = seq[-1:, :]                                  # (1, 18)
         proba = self._ensemble.predict_proba(seq_tensor, flat)
         system_prob = float(proba[0])
 
@@ -260,7 +260,10 @@ class NetworkOptimizationEnv(gym.Env):
         else:
             cell_probs = np.zeros(3, dtype=np.float32)
 
-        return np.clip(cell_probs, 0.0, 1.0).astype(np.float32)
+        result = np.clip(cell_probs, 0.0, 1.0).astype(np.float32)
+        self._cong_cache_tick = self._tick
+        self._cong_cache = result
+        return result
 
     def _apply_action(self, action: int) -> None:
         if action == 0:
@@ -269,6 +272,7 @@ class NetworkOptimizationEnv(gym.Env):
         loads = [g["load"] for g in self._state.gnb_states]
 
         if action == 1:
+            # Load balance: move one UE from most loaded to least loaded cell
             src = int(np.argmax(loads))
             dst = int(np.argmin(loads))
             if src == dst:
@@ -278,6 +282,7 @@ class NetworkOptimizationEnv(gym.Env):
                 self._sim.set_ue_override(candidates[0].ue_id, dst)
 
         elif action == 2:
+            # Mass balance: move up to 3 UEs from overloaded cells to underloaded cells
             overloaded = [i for i, l in enumerate(loads) if l > _LOAD_WARNING]
             underloaded = [i for i, l in enumerate(loads) if l < _LOAD_HEALTHY_LOW]
             if not overloaded or not underloaded:
@@ -287,14 +292,15 @@ class NetworkOptimizationEnv(gym.Env):
             for src in overloaded:
                 if moved >= 3:
                     break
-                candidates = [u for u in self._sim.ues if u.serving_gnb_id == src]
-                for ue in candidates:
+                for ue in self._sim.ues:
                     if moved >= 3:
                         break
-                    self._sim.set_ue_override(ue.ue_id, dst)
-                    moved += 1
+                    if ue.serving_gnb_id == src:
+                        self._sim.set_ue_override(ue.ue_id, dst)
+                        moved += 1
 
         elif action == 3:
+            # Emergency handover: move all UEs off critically loaded cells
             dst = int(np.argmin(loads))
             critical = [i for i, l in enumerate(loads)
                         if l > _LOAD_CRITICAL and i != dst]
@@ -304,6 +310,7 @@ class NetworkOptimizationEnv(gym.Env):
                         self._sim.set_ue_override(ue.ue_id, dst)
 
     def _maybe_inject_congestion(self) -> None:
+        """Randomly steer a UE to the most loaded cell to create congestion pressure."""
         if self._state is None:
             return
         if self.np_random.random() >= self._congestion_injection_prob:
