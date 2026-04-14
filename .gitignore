@@ -5,6 +5,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
+.ipynb_checkpoints/
 
 # ========================
 # Virtual Environments
@@ -18,26 +19,31 @@ ENV/
 # Environment Variables
 # ========================
 .env
-.env.local
+.env.*
 
 # ========================
 # Data Files
-# Keep essential datasets (e.g., CSV)
-# Ignore databases and heavy local storage
+# Keep essential datasets if small
+# Ignore heavy/local DB files
 # ========================
 data/*.db
 data/*.sqlite
 data/*.sqlite3
+*.parquet
+*.feather
 
 # ========================
 # Model Files
-# Keep lightweight inference artifacts (e.g., scaler.pkl, json models)
 # Ignore heavy training artifacts
+# Keep lightweight inference files if needed
 # ========================
 models/*.pt
 models/*.pth
 models/*.h5
 models/*.zip
+checkpoints/
+*.ckpt
+*.bin
 
 # ========================
 # Logs & Experiment Outputs
@@ -46,6 +52,11 @@ logs/
 *.log
 runs/
 ppo_tensorboard/
+
+# ========================
+# Reports / Generated Outputs
+# ========================
+reports/*.png
 
 # ========================
 # Testing & Coverage
@@ -97,7 +108,7 @@ verify_*.py
 scripts/verify_*.py
 
 # ========================
-# Optional (uncomment if needed)
+# Optional (Uncomment if needed)
 # ========================
-# models/*.pkl     # ONLY if you decide to exclude scaler.pkl later
-# data/*.csv       # ONLY if dataset becomes too large
+# models/*.pkl     # If scaler.pkl becomes large
+# data/*.csv       # If dataset grows large
