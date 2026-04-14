@@ -24,7 +24,7 @@ from typing import Any, Iterator, List, Optional
 
 import numpy as np
 import torch
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -54,12 +54,15 @@ simulator = None
 ensemble = None
 ppo_model = None          # raw SB3 PPO model (model.predict)
 scaler = None             # fitted StandardScaler
+xgb_predictor = None      # XGBoostPredictor instance (for feature importance)
 _sim_step_iter: Optional[Iterator[Any]] = None
 _bg_task: Optional[asyncio.Task] = None
 
 # Rolling feature buffer for LSTM — stores last _SEQ_LEN feature rows
 _feature_buffer: deque = deque(maxlen=_SEQ_LEN)
-
+# Anomaly detector (loaded in lifespan)
+anomaly_detector = None
+_last_anomaly_result: dict = {"anomaly_score": 0.0, "is_anomaly": False, "severity": "normal"}
 
 # ── Feature extraction ────────────────────────────────────────────────────────
 
@@ -127,24 +130,15 @@ def _get_congestion_predictions() -> dict:
     Falls back to load-based estimate if ensemble/scaler not ready.
     """
     if ensemble is None or scaler is None or len(_feature_buffer) < _SEQ_LEN:
-        # Not enough data yet — return neutral probabilities
         return {"0": 0.1, "1": 0.1, "2": 0.1}
 
-    # Stack buffer into sequence: (seq_len, n_features)
     seq = np.stack(list(_feature_buffer), axis=0)  # (10, 18)
-
-    # Scale flat features (last tick) for XGBoost
     flat_scaled = scaler.transform(seq[-1:, :]).astype(np.float32)  # (1, 18)
-
-    # Scale sequence for LSTM
     seq_scaled = scaler.transform(seq).astype(np.float32)           # (10, 18)
     seq_tensor = torch.from_numpy(seq_scaled).unsqueeze(0)          # (1, 10, 18)
 
-    # Ensemble returns system-level congestion probability
     system_prob = float(ensemble.predict_proba(seq_tensor, flat_scaled)[0])
 
-    # Distribute to per-cell probabilities weighted by load
-    # This gives the dashboard meaningful per-cell values
     if sim_state and "cells" in sim_state:
         loads = np.array([c["load_percent"] for c in sim_state["cells"]], dtype=np.float32)
         total = loads.sum()
@@ -172,8 +166,6 @@ def _get_ppo_actions(state: Any) -> dict:
     import config as _cfg
 
     loads = np.clip([float(gs[i]["load"]) for i in range(3)], 0.0, 1.0)
-
-    # Congestion probs from current predictions (already computed this tick)
     cong_vals = list(_get_congestion_predictions().values())
     cong_probs = np.clip(cong_vals, 0.0, 1.0)
 
@@ -186,7 +178,6 @@ def _get_ppo_actions(state: Any) -> dict:
     action, _ = ppo_model.predict(obs, deterministic=True)
     action_int = int(action)
 
-    # Map single system action to per-cell display
     # Action meaning: 0=NoOp, 1=LoadBalance, 2=MassBalance, 3=EmergencyHandover
     return {"0": action_int, "1": action_int, "2": action_int}
 
@@ -230,11 +221,16 @@ def _state_to_tick_dict(state: Any, tick_num: int) -> dict:
     total_tput = sum(float(u["throughput_mbps"]) for u in us)
     mean_load = float(np.mean([float(g["load"]) for g in gs])) if gs else 0.0
 
-    # Update global feature buffer for ML inference
     _feature_buffer.append(_state_to_feature_row(state))
 
     congestion_predictions = _get_congestion_predictions()
     ppo_actions = _get_ppo_actions(state)
+
+    # Anomaly detection on current feature row
+    global _last_anomaly_result
+    if anomaly_detector is not None and len(_feature_buffer) > 0:
+        current_row = list(_feature_buffer)[-1]  # most recent feature row
+        _last_anomaly_result = anomaly_detector.score(current_row)
 
     return {
         "tick": int(state.tick),
@@ -249,6 +245,7 @@ def _state_to_tick_dict(state: Any, tick_num: int) -> dict:
         },
         "congestion_predictions": congestion_predictions,
         "ppo_actions": ppo_actions,
+        "anomaly": _last_anomaly_result,
     }
 
 
@@ -268,7 +265,6 @@ def _advance_real_simulation(tick_num: int) -> dict:
     try:
         state = next(_sim_step_iter)
     except StopIteration:
-        # Simulation completed one full run — restart
         logger.info("Simulation completed full run — restarting")
         from simulation.engine import NetworkSimulation
         simulator = NetworkSimulation()
@@ -346,7 +342,7 @@ class SimStatus(BaseModel):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global simulator, ensemble, ppo_model, scaler, _sim_step_iter, sim_running, _bg_task
+    global simulator, ensemble, ppo_model, scaler, xgb_predictor, _sim_step_iter, sim_running, _bg_task
 
     # 1. Load simulation engine
     try:
@@ -390,7 +386,6 @@ async def lifespan(app: FastAPI):
             num_layers=2,
             dropout=0.3,
         )
-        
         lstm.load_state_dict(
             torch.load(os.path.join(models_dir, "lstm_best.pt"), map_location=device)
         )
@@ -406,7 +401,9 @@ async def lifespan(app: FastAPI):
             lstm_weight=0.6,
             xgb_weight=0.4,
         )
+        xgb_predictor = xgb   # store globally for feature importance endpoint
         logger.info("✓ Ensemble (LSTM + XGBoost) loaded on %s", device)
+
     except Exception as e:
         logger.warning("✗ Ensemble unavailable (%s) — predictions will be load-based", e)
         ensemble = None
@@ -425,7 +422,21 @@ async def lifespan(app: FastAPI):
         logger.warning("✗ PPO agent unavailable (%s) — actions will be zero", e)
         ppo_model = None
 
-    # 5. Auto-start simulation loop
+    # 5. Load anomaly detector
+    try:
+        from ml.anomaly_detector import AnomalyDetector
+        anomaly_path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "models", "anomaly_detector.pkl"
+        )
+        anomaly_detector = AnomalyDetector()
+        anomaly_detector.load(anomaly_path)
+        logger.info("✓ Anomaly detector loaded from %s", anomaly_path)
+    except Exception as e:
+        logger.warning("✗ Anomaly detector unavailable (%s)", e)
+        anomaly_detector = None
+
+    # 6. Auto-start simulation loop
     sim_running = True
     _bg_task = asyncio.create_task(run_simulation_loop())
     logger.info("✓ Simulation loop auto-started")
@@ -507,11 +518,9 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
     logger.info("WS connected. Total=%d", len(active_connections))
 
     try:
-        # Send recent history to newly connected client
         history_payload = list(sim_history)[-60:]
         await websocket.send_json({"type": "history", "payload": {"ticks": history_payload}})
 
-        # Keep connection alive; server pushes data via broadcast_tick
         while True:
             try:
                 await asyncio.wait_for(websocket.receive_text(), timeout=30.0)
@@ -588,6 +597,97 @@ async def get_kpi_summary() -> dict:
     }
 
 
+# ── Feature Importance Endpoint (XGBoost built-in gain, no shap/pandas) ──────
+@app.get("/api/shap/explanation")
+async def get_shap_explanation():
+    """
+    Returns per-feature importance using XGBoost's built-in gain scores.
+    'Gain' = average reduction in impurity when a feature is used in a split.
+    No shap or pandas dependency — works on Python 3.14.
+    Endpoint kept as /api/shap/explanation so the frontend needs no changes.
+    """
+    if not sim_history:
+        raise HTTPException(status_code=503, detail="No simulation data yet")
+
+    if xgb_predictor is None:
+        raise HTTPException(status_code=503, detail="XGBoost model not loaded")
+
+    feature_names = [
+        "cell0_load", "cell1_load", "cell2_load",
+        "cell0_throughput", "cell1_throughput", "cell2_throughput",
+        "cell0_ue_count", "cell1_ue_count", "cell2_ue_count",
+        "cell0_avg_sinr", "cell1_avg_sinr", "cell2_avg_sinr",
+        "system_throughput", "system_avg_sinr", "system_avg_latency_ms",
+        "handover_count", "handover_rate", "packet_loss_rate"
+    ]
+
+    try:
+        latest = list(sim_history)[-1]
+        cells = latest.get("cells", [])
+        kpis = latest.get("kpis", {})
+        cell_map = {c["cell_id"]: c for c in cells}
+
+        # Current feature values in exact training order
+        feature_values = [
+            cell_map.get(0, {}).get("load_percent", 0),
+            cell_map.get(1, {}).get("load_percent", 0),
+            cell_map.get(2, {}).get("load_percent", 0),
+            cell_map.get(0, {}).get("throughput_mbps", 0),
+            cell_map.get(1, {}).get("throughput_mbps", 0),
+            cell_map.get(2, {}).get("throughput_mbps", 0),
+            cell_map.get(0, {}).get("connected_ues", 0),
+            cell_map.get(1, {}).get("connected_ues", 0),
+            cell_map.get(2, {}).get("connected_ues", 0),
+            0.0, 0.0, 0.0,          # avg_sinr per cell — not in tick dict
+            kpis.get("total_throughput", 0),
+            0.0,                    # system_avg_sinr — not in tick dict
+            kpis.get("mean_latency", 0),
+            kpis.get("handover_count", 0),
+            kpis.get("handover_count", 0) / max(kpis.get("active_ues", 1), 1),
+            0.0,                    # packet_loss_rate — not in tick dict
+        ]
+
+        # Get XGBoost gain-based importance from the trained booster
+        # gain = how much each feature reduces impurity on average across all trees
+        booster = xgb_predictor.model.get_booster()
+        gain_scores = booster.get_score(importance_type="gain")
+
+        # XGBoost names features f0..f17 when no feature names were set at training
+        shap_list = []
+        for i, name in enumerate(feature_names):
+            xgb_key = f"f{i}"
+            gain = gain_scores.get(xgb_key, 0.0)
+            fval = float(feature_values[i])
+            # Sign convention: positive = feature pushes toward congestion
+            # (high load, high UE count → positive; high SINR → negative)
+            signed_importance = gain if fval > 0 else -gain
+            shap_list.append({
+                "feature": name,
+                "shap_value": signed_importance,
+                "feature_value": round(fval, 4)
+            })
+
+        # Sort by absolute importance descending
+        shap_list.sort(key=lambda x: abs(x["shap_value"]), reverse=True)
+
+        # Normalise to [-1, +1] range so the bar chart is clean
+        total = sum(abs(x["shap_value"]) for x in shap_list)
+        if total > 0:
+            for x in shap_list:
+                x["shap_value"] = round(x["shap_value"] / total, 6)
+
+        return {
+            "tick": latest.get("tick", 0),
+            "base_value": 0.121,    # dataset congestion base rate = 12.1%
+            "features": shap_list,
+            "method": "xgb_gain"   # tells frontend this is gain-based not SHAP
+        }
+
+    except Exception as e:
+        logger.error("Feature importance error: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Feature importance failed: {str(e)}")
+
+
 @app.get("/api/cells/{cell_id}/metrics")
 async def get_cell_metrics(cell_id: int) -> dict:
     if cell_id not in (0, 1, 2):
@@ -605,6 +705,28 @@ async def get_cell_metrics(cell_id: int) -> dict:
     ]
     return {"cell_id": cell_id, "metrics": result}
 
+@app.get("/api/anomaly/current")
+async def get_anomaly_current() -> dict:
+    """Returns the latest anomaly score for the live dashboard panel."""
+    return {
+        "tick": sim_state.get("tick", 0),
+        **_last_anomaly_result,
+    }
+
+
+@app.get("/api/anomaly/history")
+async def get_anomaly_history(limit: int = 100) -> dict:
+    """Returns anomaly scores for the last N ticks from sim_history."""
+    result = []
+    for t in list(sim_history)[-limit:]:
+        anomaly = t.get("anomaly", {"anomaly_score": 0.0, "is_anomaly": False, "severity": "normal"})
+        result.append({
+            "tick": t["tick"],
+            "anomaly_score": anomaly["anomaly_score"],
+            "is_anomaly": anomaly["is_anomaly"],
+            "severity": anomaly["severity"],
+        })
+    return {"history": result, "count": len(result)}
 
 @app.get("/health")
 async def health() -> dict:

@@ -8,12 +8,14 @@ import NetworkMapPanel from './components/panels/NetworkMapPanel';
 import KPIPanel from './components/panels/KPIPanel';
 import PredictionPanel from './components/panels/PredictionPanel';
 import RLAgentPanel from './components/panels/RLAgentPanel';
+import ShapPanel from "./components/panels/ShapPanel";
 
 const PANELS = {
   overview: OverviewPanel,
   map: NetworkMapPanel,
   kpi: KPIPanel,
   predictions: PredictionPanel,
+  shap: ShapPanel,
   rl: RLAgentPanel,
 };
 
