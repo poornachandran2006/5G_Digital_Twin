@@ -14,6 +14,21 @@ const GNB = [
 // Coverage radius visual guide (not physics — purely decorative)
 const COVERAGE_RADIUS = 280;
 
+// Traffic profile colors — 3GPP 5QI aligned
+const PROFILE_COLORS = {
+  Video:  '#3b82f6',  // blue   — 5QI-2
+  Gaming: '#22c55e',  // green  — 5QI-3
+  IoT:    '#eab308',  // yellow — 5QI-5
+  VoIP:   '#a855f7',  // purple — 5QI-1
+};
+
+const PROFILE_LEGEND = [
+  { label: 'Video',  color: '#3b82f6' },
+  { label: 'Gaming', color: '#22c55e' },
+  { label: 'IoT',    color: '#eab308' },
+  { label: 'VoIP',   color: '#a855f7' },
+];
+
 export default function NetworkMapPanel() {
   const { state } = useSim();
   const svgRef = useRef(null);
@@ -103,10 +118,12 @@ export default function NetworkMapPanel() {
       .attr('class', 'ue-circle')
       .attr('r', 6)
       .on('mouseenter', (event, d) => {
+        const profileColor = PROFILE_COLORS[d.traffic_profile] ?? '#94a3b8';
         tooltip
           .style('display', 'block')
           .html(
             `<strong>UE ${d.ue_id}</strong><br/>` +
+            `<span style="color:${profileColor}">● ${d.traffic_profile ?? 'Unknown'} (5QI-${d.qos_class ?? '?'})</span><br/>` +
             `Cell: gNB-${d.connected_cell}<br/>` +
             `SINR: ${d.sinr_db} dB<br/>` +
             `Throughput: ${d.throughput_mbps} Mbps` +
@@ -122,7 +139,7 @@ export default function NetworkMapPanel() {
       .merge(circles)
       .attr('cx', (d) => d.x)
       .attr('cy', (d) => d.y)
-      .attr('fill', (d) => CELL_COLORS[d.connected_cell])
+      .attr('fill', (d) => PROFILE_COLORS[d.traffic_profile] ?? '#94a3b8')
       .attr('fill-opacity', 0.88)
       .attr('stroke', (d) => (d.is_handover ? '#ef4444' : '#1f2937'))
       .attr('stroke-width', (d) => (d.is_handover ? 2.5 : 1));
@@ -154,6 +171,22 @@ export default function NetworkMapPanel() {
             <span className="inline-block w-2 h-2 rounded-full border border-red-400" />
             Handover
           </span>
+        </div>
+        {/* Traffic profile legend */}
+        <div className="flex gap-3 mt-1">
+          {PROFILE_LEGEND.map((p) => (
+            <span
+              key={p.label}
+              className="text-xs font-mono flex items-center gap-1"
+              style={{ color: p.color }}
+            >
+              <span
+                className="inline-block w-2 h-2 rounded-full"
+                style={{ background: p.color }}
+              />
+              {p.label}
+            </span>
+          ))}
         </div>
       </div>
 
