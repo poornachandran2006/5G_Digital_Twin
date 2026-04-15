@@ -63,6 +63,9 @@ _feature_buffer: deque = deque(maxlen=_SEQ_LEN)
 # Anomaly detector (loaded in lifespan)
 anomaly_detector = None
 _last_anomaly_result: dict = {"anomaly_score": 0.0, "is_anomaly": False, "severity": "normal"}
+# A/B testing — rule-based agent running in parallel with PPO
+rule_based_agent = None
+_ab_history: deque = deque(maxlen=300)   # stores per-tick comparison data
 
 # ── Feature extraction ────────────────────────────────────────────────────────
 
@@ -214,6 +217,8 @@ def _state_to_tick_dict(state: Any, tick_num: int) -> dict:
             "sinr_db": round(float(u["sinr_db"]), 2),
             "throughput_mbps": round(float(u["throughput_mbps"]), 2),
             "is_handover": bool(u.get("is_handover", False)),
+            "traffic_profile": u.get("traffic_profile", "Video"),
+            "qos_class": int(u.get("qos_class", 2)),
         }
         for u in us
     ]
@@ -227,10 +232,53 @@ def _state_to_tick_dict(state: Any, tick_num: int) -> dict:
     ppo_actions = _get_ppo_actions(state)
 
     # Anomaly detection on current feature row
-    global _last_anomaly_result
+    global _last_anomaly_result, rule_based_agent, _ab_history
     if anomaly_detector is not None and len(_feature_buffer) > 0:
-        current_row = list(_feature_buffer)[-1]  # most recent feature row
+        current_row = list(_feature_buffer)[-1]
         _last_anomaly_result = anomaly_detector.score(current_row)
+
+    # A/B testing — rule-based agent scores the same observation
+    ab_entry = {"tick": state.tick, "ppo_action": 0, "ppo_reward": 0.0,
+                "rb_action": 0, "rb_reward": 0.0}
+    if rule_based_agent is not None:
+        # Build 9-dim obs from current state (same as rl_env._get_observation)
+        loads = np.array([state.gnb_states[i]["load"] for i in range(3)], dtype=np.float32)
+        ue_counts = np.array([
+            sum(1 for u in state.ue_states if u["serving_gnb_id"] == i) / max(len(state.ue_states), 1)
+            for i in range(3)
+        ], dtype=np.float32)
+        cong = np.array([
+            state.gnb_states[i]["load"] * 0.5 for i in range(3)
+        ], dtype=np.float32)
+        obs_9 = np.concatenate([loads, cong, ue_counts]).astype(np.float32)
+
+        # Rule-based action + reward
+        rb_action = rule_based_agent.predict(obs_9)
+        rb_reward = rule_based_agent.record_reward(obs_9)
+
+        # PPO action from ppo_actions already computed
+        ppo_act = ppo_actions.get("action", 0) if isinstance(ppo_actions, dict) else 0
+
+        # PPO reward — compute with same formula
+        ppo_reward = 0.0
+        for load in loads:
+            if load < 0.70:
+                ppo_reward += 0.2
+            elif load < 0.90:
+                ppo_reward -= 0.5
+            else:
+                ppo_reward -= 1.0
+        ppo_reward += max(0.0, 0.1 - float(np.std(loads)))
+        ppo_reward = float(np.clip(ppo_reward, -1.0, 1.0))
+
+        ab_entry = {
+            "tick": state.tick,
+            "ppo_action": ppo_act,
+            "ppo_reward": round(ppo_reward, 4),
+            "rb_action": rb_action,
+            "rb_reward": round(rb_reward, 4),
+        }
+        _ab_history.append(ab_entry)
 
     return {
         "tick": int(state.tick),
@@ -246,6 +294,7 @@ def _state_to_tick_dict(state: Any, tick_num: int) -> dict:
         "congestion_predictions": congestion_predictions,
         "ppo_actions": ppo_actions,
         "anomaly": _last_anomaly_result,
+        "ab_comparison": ab_entry,
     }
 
 
@@ -342,8 +391,7 @@ class SimStatus(BaseModel):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global simulator, ensemble, ppo_model, scaler, xgb_predictor, _sim_step_iter, sim_running, _bg_task
-
+    global simulator, ensemble, ppo_model, scaler, xgb_predictor, _sim_step_iter, sim_running, _bg_task, anomaly_detector, rule_based_agent
     # 1. Load simulation engine
     try:
         from simulation.engine import NetworkSimulation
@@ -435,8 +483,17 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.warning("✗ Anomaly detector unavailable (%s)", e)
         anomaly_detector = None
+    
+    # 6. Initialize rule-based agent (no model file needed — pure logic)
+    try:
+        from optimizer.rule_based_agent import RuleBasedAgent
+        rule_based_agent = RuleBasedAgent()
+        logger.info("✓ Rule-based agent initialized")
+    except Exception as e:
+        logger.warning("✗ Rule-based agent unavailable (%s)", e)
+        rule_based_agent = None
 
-    # 6. Auto-start simulation loop
+    # 7. Auto-start simulation loop
     sim_running = True
     _bg_task = asyncio.create_task(run_simulation_loop())
     logger.info("✓ Simulation loop auto-started")
@@ -727,6 +784,41 @@ async def get_anomaly_history(limit: int = 100) -> dict:
             "severity": anomaly["severity"],
         })
     return {"history": result, "count": len(result)}
+
+@app.get("/api/ab/history")
+async def get_ab_history(limit: int = 100) -> dict:
+    """A/B comparison history: PPO vs rule-based rewards per tick."""
+    data = list(_ab_history)[-limit:]
+    if not data:
+        return {"history": [], "summary": {}}
+
+    ppo_rewards = [d["ppo_reward"] for d in data]
+    rb_rewards  = [d["rb_reward"]  for d in data]
+
+    summary = {
+        "ppo_avg_reward":  round(float(np.mean(ppo_rewards)), 4),
+        "rb_avg_reward":   round(float(np.mean(rb_rewards)),  4),
+        "ppo_win_rate":    round(sum(p > r for p, r in zip(ppo_rewards, rb_rewards)) / len(data), 3),
+        "ticks_compared":  len(data),
+    }
+    return {"history": data, "summary": summary}
+
+
+@app.get("/api/ab/summary")
+async def get_ab_summary() -> dict:
+    """Live summary of PPO vs rule-based performance."""
+    if not _ab_history:
+        return {"ppo_avg_reward": 0, "rb_avg_reward": 0, "ppo_win_rate": 0, "ticks_compared": 0}
+    data = list(_ab_history)
+    ppo_rewards = [d["ppo_reward"] for d in data]
+    rb_rewards  = [d["rb_reward"]  for d in data]
+    return {
+        "ppo_avg_reward":  round(float(np.mean(ppo_rewards)), 4),
+        "rb_avg_reward":   round(float(np.mean(rb_rewards)),  4),
+        "ppo_win_rate":    round(sum(p > r for p, r in zip(ppo_rewards, rb_rewards)) / len(data), 3),
+        "rb_stats":        rule_based_agent.get_stats() if rule_based_agent else {},
+        "ticks_compared":  len(data),
+    }
 
 @app.get("/health")
 async def health() -> dict:

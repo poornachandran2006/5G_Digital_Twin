@@ -9,6 +9,8 @@ import KPIPanel from './components/panels/KPIPanel';
 import PredictionPanel from './components/panels/PredictionPanel';
 import RLAgentPanel from './components/panels/RLAgentPanel';
 import ShapPanel from "./components/panels/ShapPanel";
+import AnomalyPanel from "./components/panels/AnomalyPanel";
+import ABTestPanel from "./components/panels/ABTestPanel";
 
 const PANELS = {
   overview: OverviewPanel,
@@ -16,6 +18,8 @@ const PANELS = {
   kpi: KPIPanel,
   predictions: PredictionPanel,
   shap: ShapPanel,
+  anomaly: AnomalyPanel,
+  abtest: ABTestPanel,
   rl: RLAgentPanel,
 };
 

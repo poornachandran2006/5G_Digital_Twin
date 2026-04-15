@@ -3,7 +3,9 @@ const NAV = [
   { id: 'map', label: 'Network Map', icon: '⬡' },
   { id: 'kpi', label: 'KPIs', icon: '△' },
   { id: 'predictions', label: 'Predictions', icon: '◈' },
-  { id: 'shap', label: 'SHAP', icon: '⬢' }, // ✅ ADD THIS
+  { id: 'shap', label: 'SHAP', icon: '⬢' },
+  { id: 'anomaly', label: 'Anomaly', icon: '⚠' },
+  { id: 'abtest', label: 'A/B Test', icon: '⚖' },
   { id: 'rl', label: 'RL Agent', icon: '⬟' },
 ];
 

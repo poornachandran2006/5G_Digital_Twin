@@ -33,6 +33,8 @@ class UE:
         "sinr_db",
         "throughput_mbps",
         "is_handover",
+        "traffic_profile",
+        "qos_class",
         "_rng",
     )
 
@@ -59,10 +61,32 @@ class UE:
         self.position: np.ndarray = np.array(position, dtype=np.float64)
         self.velocity: np.ndarray = np.array(velocity, dtype=np.float64)
 
-        # Random initial data demand drawn from config bounds
+        # 5QI Traffic profile assignment
+        # Maps to 3GPP TS 23.501 Table 5.7.4-1
+        _PROFILES = [
+            {"name": "Video",  "qos_class": 2, "min_mbps": 10.0, "max_mbps": 20.0, "max_speed_factor": 1.0},
+            {"name": "Gaming", "qos_class": 3, "min_mbps": 4.0,  "max_mbps": 10.0, "max_speed_factor": 0.3},
+            {"name": "IoT",    "qos_class": 5, "min_mbps": 0.1,  "max_mbps": 1.0,  "max_speed_factor": 0.5},
+            {"name": "VoIP",   "qos_class": 1, "min_mbps": 0.5,  "max_mbps": 2.0,  "max_speed_factor": 0.8},
+        ]
+        # Weighted distribution: more Video/Gaming UEs than IoT/VoIP
+        _WEIGHTS = [0.35, 0.30, 0.20, 0.15]
+        profile_idx = int(self._rng.choice(len(_PROFILES), p=_WEIGHTS))
+        profile = _PROFILES[profile_idx]
+
+        self.traffic_profile: str = profile["name"]
+        self.qos_class: int = profile["qos_class"]
+
+        # Demand based on profile range
         self.demand_mbps: float = float(
-            self._rng.uniform(config.UE_MIN_DEMAND_MBPS, config.UE_MAX_DEMAND_MBPS)
+            self._rng.uniform(profile["min_mbps"], profile["max_mbps"])
         )
+
+        # Adjust speed based on profile (Gaming UEs move less)
+        speed_scale = profile["max_speed_factor"]
+        speed = float(np.linalg.norm(self.velocity))
+        if speed > 0:
+            self.velocity = self.velocity * speed_scale
 
         self.serving_gnb_id: int | None = None
         self.sinr_db: float = 0.0
@@ -143,4 +167,6 @@ class UE:
             "sinr_db": self.sinr_db,
             "throughput_mbps": self.throughput_mbps,
             "is_handover": self.is_handover,
+            "traffic_profile": self.traffic_profile,
+            "qos_class": self.qos_class,
         }
