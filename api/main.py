@@ -422,6 +422,39 @@ class SimStatus(BaseModel):
     uptime_seconds: float
     mode: str  # "real" or "mock"
 
+class PredictRequest(BaseModel):
+    """KPI snapshot for one tick — sent to /api/predict."""
+    cell0_load: float
+    cell1_load: float
+    cell2_load: float
+    cell0_throughput: float
+    cell1_throughput: float
+    cell2_throughput: float
+    cell0_ue_count: int
+    cell1_ue_count: int
+    cell2_ue_count: int
+    cell0_avg_sinr: float = 0.0
+    cell1_avg_sinr: float = 0.0
+    cell2_avg_sinr: float = 0.0
+    system_throughput: float = 0.0
+    system_avg_sinr: float = 0.0
+    system_avg_latency_ms: float = 20.0
+    handover_count: float = 0.0
+    handover_rate: float = 0.0
+    packet_loss_rate: float = 0.0
+
+
+class AgentRequest(BaseModel):
+    """9-dim observation for /api/agent/action."""
+    cell0_load: float
+    cell1_load: float
+    cell2_load: float
+    cong0: float = 0.1
+    cong1: float = 0.1
+    cong2: float = 0.1
+    ue_ratio0: float = 0.33
+    ue_ratio1: float = 0.33
+    ue_ratio2: float = 0.33
 
 # ── Lifespan ──────────────────────────────────────────────────────────────────
 
@@ -854,6 +887,121 @@ async def get_ab_summary() -> dict:
         "ppo_win_rate":    round(sum(p > r for p, r in zip(ppo_rewards, rb_rewards)) / len(data), 3),
         "rb_stats":        rule_based_agent.get_stats() if rule_based_agent else {},
         "ticks_compared":  len(data),
+    }
+
+@app.post("/api/predict")
+async def predict_congestion(req: PredictRequest) -> dict:
+    """
+    Run the trained LSTM+XGBoost ensemble on a single KPI snapshot.
+    Returns per-cell congestion probability for the next 30 ticks.
+
+    Example curl:
+      curl -X POST http://localhost:8000/api/predict
+           -H "Content-Type: application/json"
+           -d '{"cell0_load":0.85,"cell1_load":0.4,"cell2_load":0.3,
+                "cell0_throughput":200,"cell1_throughput":400,"cell2_throughput":300,
+                "cell0_ue_count":9,"cell1_ue_count":6,"cell2_ue_count":5}'
+    """
+    if ensemble is None or scaler is None:
+        raise HTTPException(status_code=503, detail="Ensemble model not loaded")
+
+    # Build feature row in exact training column order
+    feature_row = np.array([
+        req.cell0_load, req.cell1_load, req.cell2_load,
+        req.cell0_throughput, req.cell1_throughput, req.cell2_throughput,
+        float(req.cell0_ue_count), float(req.cell1_ue_count), float(req.cell2_ue_count),
+        req.cell0_avg_sinr, req.cell1_avg_sinr, req.cell2_avg_sinr,
+        req.system_throughput, req.system_avg_sinr, req.system_avg_latency_ms,
+        req.handover_count, req.handover_rate, req.packet_loss_rate,
+    ], dtype=np.float32).reshape(1, -1)
+
+    # If we have a live feature buffer, append the request row and use full sequence
+    # Otherwise tile the single row to fill the sequence
+    if len(_feature_buffer) >= _SEQ_LEN:
+        seq = np.stack(list(_feature_buffer), axis=0)  # (10, 18) from live sim
+    else:
+        seq = np.tile(feature_row, (_SEQ_LEN, 1))      # (10, 18) tiled
+
+    # Override the last row with the request's features for fresh prediction
+    seq[-1] = feature_row[0]
+
+    flat_scaled = scaler.transform(feature_row).astype(np.float32)
+    seq_scaled  = scaler.transform(seq).astype(np.float32)
+    seq_tensor  = torch.from_numpy(seq_scaled).unsqueeze(0)  # (1, 10, 18)
+
+    system_prob = float(ensemble.predict_proba(seq_tensor, flat_scaled)[0])
+
+    # Distribute system probability across cells weighted by load
+    loads = np.array([req.cell0_load, req.cell1_load, req.cell2_load], dtype=np.float32)
+    total = loads.sum()
+    if total > 0:
+        cell_probs = np.clip((loads / total) * system_prob * 3.0, 0.01, 0.99)
+    else:
+        cell_probs = np.full(3, system_prob, dtype=np.float32)
+
+    return {
+        "system_congestion_probability": round(system_prob, 4),
+        "cell_congestion_probabilities": {
+            "0": round(float(cell_probs[0]), 4),
+            "1": round(float(cell_probs[1]), 4),
+            "2": round(float(cell_probs[2]), 4),
+        },
+        "prediction_horizon_ticks": 30,
+        "model": "lstm_xgboost_ensemble_0.6_0.4",
+    }
+
+
+@app.post("/api/agent/action")
+async def get_agent_action(req: AgentRequest) -> dict:
+    """
+    Query the trained PPO agent for a load-balancing action.
+    Returns action int + human-readable label.
+
+    Actions:
+      0 = NoOp          — network healthy, do nothing
+      1 = LoadBalance   — soft handover to balance load
+      2 = MassBalance   — aggressive rebalancing
+      3 = Emergency     — emergency handover (critical overload)
+
+    Example curl:
+      curl -X POST http://localhost:8000/api/agent/action
+           -H "Content-Type: application/json"
+           -d '{"cell0_load":0.91,"cell1_load":0.3,"cell2_load":0.25}'
+    """
+    if ppo_model is None:
+        raise HTTPException(status_code=503, detail="PPO agent not loaded")
+
+    obs = np.array([
+        req.cell0_load, req.cell1_load, req.cell2_load,
+        req.cong0, req.cong1, req.cong2,
+        req.ue_ratio0, req.ue_ratio1, req.ue_ratio2,
+    ], dtype=np.float32)
+
+    action, _ = ppo_model.predict(obs, deterministic=True)
+    action_int = int(action)
+
+    action_labels = {
+        0: "NoOp",
+        1: "LoadBalance",
+        2: "MassBalance",
+        3: "EmergencyHandover",
+    }
+
+    # Also get rule-based decision for comparison
+    rb_action = None
+    if rule_based_agent is not None:
+        rb_action = int(rule_based_agent.predict(obs))
+
+    return {
+        "action": action_int,
+        "action_label": action_labels.get(action_int, "Unknown"),
+        "rule_based_action": rb_action,
+        "rule_based_label": action_labels.get(rb_action, "Unknown") if rb_action is not None else None,
+        "observation": {
+            "cell_loads": [req.cell0_load, req.cell1_load, req.cell2_load],
+            "congestion_probs": [req.cong0, req.cong1, req.cong2],
+            "ue_ratios": [req.ue_ratio0, req.ue_ratio1, req.ue_ratio2],
+        },
     }
 
 @app.get("/metrics")
