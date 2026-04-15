@@ -23,6 +23,7 @@ from contextlib import asynccontextmanager
 from typing import Any, Iterator, List, Optional
 
 import numpy as np
+from prometheus_client import Gauge, Counter, generate_latest, CONTENT_TYPE_LATEST
 import torch
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
@@ -43,6 +44,20 @@ _N_FEATURES = 18        # must match FEATURE_COLUMNS in data_preprocessor.py
 _TICK_INTERVAL_S = 1.0  # wall-clock seconds between broadcast ticks
 
 # ── Global state ──────────────────────────────────────────────────────────────
+
+# ── Prometheus metrics ────────────────────────────────────────────────────
+_prom_cell_load        = Gauge('cell_load_percent',       'PRB load per cell',         ['cell_id'])
+_prom_cell_throughput  = Gauge('cell_throughput_mbps',    'Throughput per cell (Mbps)', ['cell_id'])
+_prom_cell_latency     = Gauge('cell_latency_ms',         'Latency per cell (ms)',      ['cell_id'])
+_prom_cell_ues         = Gauge('cell_connected_ues',      'Connected UEs per cell',     ['cell_id'])
+_prom_congestion_prob  = Gauge('congestion_probability',  'LSTM congestion prediction', ['cell_id'])
+_prom_anomaly_score    = Gauge('anomaly_score',           'IsolationForest anomaly score')
+_prom_ppo_reward       = Gauge('ppo_reward',              'PPO agent reward this tick')
+_prom_rb_reward        = Gauge('rule_based_reward',       'Rule-based agent reward this tick')
+_prom_system_tput      = Gauge('system_throughput_mbps',  'Total system throughput (Mbps)')
+_prom_handover_count   = Counter('handover_total',        'Cumulative handover events')
+_prom_tick             = Gauge('simulation_tick',         'Current simulation tick')
+
 sim_state: dict = {}
 sim_history: deque = deque(maxlen=300)
 sim_running: bool = False
@@ -279,6 +294,27 @@ def _state_to_tick_dict(state: Any, tick_num: int) -> dict:
             "rb_reward": round(rb_reward, 4),
         }
         _ab_history.append(ab_entry)
+
+    # ── Push to Prometheus gauges ─────────────────────────────────────────
+    try:
+        _prom_tick.set(tick_num)
+        _prom_system_tput.set(sum(c["throughput_mbps"] for c in cells))
+        _prom_anomaly_score.set(_last_anomaly_result.get("anomaly_score", 0.0))
+        _prom_ppo_reward.set(ab_entry.get("ppo_reward", 0.0))
+        _prom_rb_reward.set(ab_entry.get("rb_reward", 0.0))
+        for c in cells:
+            cid = str(c["cell_id"])
+            _prom_cell_load.labels(cell_id=cid).set(c["load_percent"])
+            _prom_cell_throughput.labels(cell_id=cid).set(c["throughput_mbps"])
+            _prom_cell_latency.labels(cell_id=cid).set(c["latency_ms"])
+            _prom_cell_ues.labels(cell_id=cid).set(c["connected_ues"])
+        for cid, prob in congestion_predictions.items():
+            _prom_congestion_prob.labels(cell_id=str(cid)).set(float(prob))
+        ho_count = sum(1 for u in ues if u.get("is_handover", False))
+        if ho_count > 0:
+            _prom_handover_count.inc(ho_count)
+    except Exception:
+        pass  # never let metrics crash the simulation
 
     return {
         "tick": int(state.tick),
@@ -819,6 +855,15 @@ async def get_ab_summary() -> dict:
         "rb_stats":        rule_based_agent.get_stats() if rule_based_agent else {},
         "ticks_compared":  len(data),
     }
+
+@app.get("/metrics")
+async def prometheus_metrics():
+    """Prometheus scrape endpoint — standard text exposition format."""
+    from fastapi.responses import Response
+    return Response(
+        content=generate_latest(),
+        media_type=CONTENT_TYPE_LATEST,
+    )
 
 @app.get("/health")
 async def health() -> dict:
