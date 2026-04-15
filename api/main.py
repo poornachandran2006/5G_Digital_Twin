@@ -82,6 +82,10 @@ _last_anomaly_result: dict = {"anomaly_score": 0.0, "is_anomaly": False, "severi
 rule_based_agent = None
 _ab_history: deque = deque(maxlen=300)   # stores per-tick comparison data
 
+# ── Replay state ──────────────────────────────────────────────────────────────
+_replay_buffer: list = []          # saved ticks for replay
+_replay_recording: bool = False    # True while recording
+_replay_task: Optional[asyncio.Task] = None  # running replay coroutine
 # ── Feature extraction ────────────────────────────────────────────────────────
 
 def _state_to_feature_row(state: Any) -> np.ndarray:
@@ -616,6 +620,8 @@ async def run_simulation_loop() -> None:
 
             sim_state = tick_data
             sim_history.append(tick_data)
+            if _replay_recording:
+                _replay_buffer.append(tick_data)
             await broadcast_tick({"type": "tick_update", "payload": tick_data})
 
             if tick % 10 == 0:
@@ -1002,6 +1008,68 @@ async def get_agent_action(req: AgentRequest) -> dict:
             "congestion_probs": [req.cong0, req.cong1, req.cong2],
             "ue_ratios": [req.ue_ratio0, req.ue_ratio1, req.ue_ratio2],
         },
+    }
+
+@app.post("/api/replay/record/start")
+async def replay_record_start() -> dict:
+    """Begin saving live ticks into the replay buffer."""
+    global _replay_recording, _replay_buffer
+    _replay_buffer = []
+    _replay_recording = True
+    logger.info("Replay recording started")
+    return {"message": "recording", "buffer_size": 0}
+
+
+@app.post("/api/replay/record/stop")
+async def replay_record_stop() -> dict:
+    """Stop recording and freeze the buffer."""
+    global _replay_recording
+    _replay_recording = False
+    logger.info("Replay recording stopped — %d ticks saved", len(_replay_buffer))
+    return {"message": "stopped", "buffer_size": len(_replay_buffer)}
+
+
+@app.post("/api/replay/play")
+async def replay_play(speed: float = 1.0) -> dict:
+    """
+    Replay saved buffer over WebSocket at adjustable speed.
+    speed=1.0 → real time (1 tick/s), speed=4.0 → 4 ticks/s
+    """
+    global _replay_task
+    if not _replay_buffer:
+        raise HTTPException(status_code=400, detail="No replay buffer — record first")
+    if _replay_task and not _replay_task.done():
+        raise HTTPException(status_code=400, detail="Replay already running")
+
+    async def _run_replay():
+        interval = max(0.05, 1.0 / speed)
+        for tick_data in _replay_buffer:
+            replay_payload = {**tick_data, "replay": True}
+            await broadcast_tick({"type": "tick_update", "payload": replay_payload})
+            await asyncio.sleep(interval)
+        await broadcast_tick({"type": "replay_end", "payload": {}})
+        logger.info("Replay finished — %d ticks", len(_replay_buffer))
+
+    _replay_task = asyncio.create_task(_run_replay())
+    return {"message": "replaying", "ticks": len(_replay_buffer), "speed": speed}
+
+
+@app.post("/api/replay/stop")
+async def replay_stop() -> dict:
+    """Abort a running replay."""
+    global _replay_task
+    if _replay_task and not _replay_task.done():
+        _replay_task.cancel()
+        return {"message": "replay stopped"}
+    return {"message": "no replay running"}
+
+
+@app.get("/api/replay/status")
+async def replay_status() -> dict:
+    return {
+        "recording": _replay_recording,
+        "buffer_size": len(_replay_buffer),
+        "replaying": bool(_replay_task and not _replay_task.done()),
     }
 
 @app.get("/metrics")

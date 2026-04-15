@@ -17,6 +17,7 @@ export function useSimSocket() {
       const msg = JSON.parse(e.data);
       if (msg.type === 'history') dispatch({ type: 'LOAD_HISTORY', payload: msg.payload.ticks });
       else if (msg.type === 'tick_update') dispatch({ type: 'NEW_TICK', payload: msg.payload });
+      else if (msg.type === 'replay_end') dispatch({ type: 'REPLAY_END' });
     };
     ws.onclose = () => {
       dispatch({ type: 'SET_RECONNECTING' });
