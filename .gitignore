@@ -37,10 +37,10 @@ data/*.sqlite3
 # Ignore heavy training artifacts
 # Keep lightweight inference files if needed
 # ========================
-models/*.pt
+# models/*.pt      # KEEP — lstm_best.pt is a tracked artifact
 models/*.pth
 models/*.h5
-models/*.zip
+# models/*.zip     # KEEP — ppo_agent.zip is a tracked artifact
 checkpoints/
 *.ckpt
 *.bin
@@ -56,7 +56,7 @@ ppo_tensorboard/
 # ========================
 # Reports / Generated Outputs
 # ========================
-reports/*.png
+# reports/*.png    # KEEP — shap_summary.png is a tracked artifact
 
 # ========================
 # Testing & Coverage

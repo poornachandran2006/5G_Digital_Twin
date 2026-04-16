@@ -1,0 +1,411 @@
+12:22:49 | INFO  | Loading ensemble and building training env (training_mode=True)
+12:22:49 | INFO  | check_env …
+12:23:05 | INFO  | Loading ensemble and building training env (training_mode=True)
+12:23:05 | INFO  | check_env …
+12:23:07 | INFO  | Training 200000 timesteps (log every 2048 env steps)
+12:23:19 | INFO  | steps=2048 rollout_mean_reward=3.625150 entropy_loss=-1.382776 pg_loss=-0.003419 value_loss=8063.084398 action_counts_0123=[513, 506, 524, 505]
+12:23:33 | INFO  | steps=4096 rollout_mean_reward=3.723588 entropy_loss=-1.379064 pg_loss=-0.002616 value_loss=8532.521884 action_counts_0123=[478, 545, 578, 447]
+12:23:46 | INFO  | steps=6144 rollout_mean_reward=3.904782 entropy_loss=-1.375101 pg_loss=-0.001149 value_loss=8653.840436 action_counts_0123=[420, 606, 532, 490]
+12:24:08 | INFO  | steps=8192 rollout_mean_reward=3.990484 entropy_loss=-1.380236 pg_loss=-0.004153 value_loss=8338.208455 action_counts_0123=[382, 589, 557, 520]
+12:24:21 | INFO  | steps=10240 rollout_mean_reward=3.823555 entropy_loss=-1.384903 pg_loss=-0.000436 value_loss=7742.912633 action_counts_0123=[480, 522, 518, 528]
+12:24:35 | INFO  | steps=12288 rollout_mean_reward=3.909498 entropy_loss=-1.379517 pg_loss=-0.002216 value_loss=7787.765359 action_counts_0123=[461, 518, 538, 531]
+12:24:49 | INFO  | steps=14336 rollout_mean_reward=3.553035 entropy_loss=-1.366331 pg_loss=-0.005208 value_loss=7069.222729 action_counts_0123=[389, 586, 594, 479]
+12:25:13 | INFO  | steps=16384 rollout_mean_reward=3.575915 entropy_loss=-1.364156 pg_loss=-0.002410 value_loss=7404.579639 action_counts_0123=[436, 473, 708, 431]
+12:25:27 | INFO  | steps=18432 rollout_mean_reward=3.736772 entropy_loss=-1.360798 pg_loss=-0.000704 value_loss=7380.945341 action_counts_0123=[416, 423, 715, 494]
+12:25:41 | INFO  | steps=20480 rollout_mean_reward=3.905330 entropy_loss=-1.368263 pg_loss=-0.000677 value_loss=7580.924611 action_counts_0123=[470, 373, 703, 502]
+12:25:55 | INFO  | steps=22528 rollout_mean_reward=3.932666 entropy_loss=-1.379130 pg_loss=-0.002079 value_loss=7833.084167 action_counts_0123=[502, 440, 658, 448]
+12:26:20 | INFO  | steps=24576 rollout_mean_reward=3.880290 entropy_loss=-1.384290 pg_loss=-0.003852 value_loss=7723.860246 action_counts_0123=[558, 477, 582, 431]
+12:26:37 | INFO  | steps=26624 rollout_mean_reward=3.880821 entropy_loss=-1.379215 pg_loss=-0.004642 value_loss=7218.980031 action_counts_0123=[446, 569, 495, 538]
+12:26:50 | INFO  | steps=28672 rollout_mean_reward=3.724493 entropy_loss=-1.377564 pg_loss=-0.001760 value_loss=7376.457629 action_counts_0123=[468, 453, 439, 688]
+12:27:07 | INFO  | steps=30720 rollout_mean_reward=3.497562 entropy_loss=-1.384060 pg_loss=-0.004371 value_loss=6699.216617 action_counts_0123=[429, 549, 458, 612]
+12:27:33 | INFO  | steps=32768 rollout_mean_reward=3.694911 entropy_loss=-1.383904 pg_loss=-0.001003 value_loss=6652.736421 action_counts_0123=[588, 481, 522, 457]
+12:27:49 | INFO  | steps=34816 rollout_mean_reward=3.649275 entropy_loss=-1.380599 pg_loss=-0.001303 value_loss=6030.824788 action_counts_0123=[571, 503, 472, 502]
+12:28:05 | INFO  | steps=36864 rollout_mean_reward=4.038110 entropy_loss=-1.379142 pg_loss=-0.001079 value_loss=7108.008130 action_counts_0123=[569, 581, 505, 393]
+12:28:22 | INFO  | steps=38912 rollout_mean_reward=3.848178 entropy_loss=-1.378336 pg_loss=-0.002001 value_loss=6554.482251 action_counts_0123=[534, 581, 559, 374]
+12:28:49 | INFO  | steps=40960 rollout_mean_reward=3.750193 entropy_loss=-1.380077 pg_loss=-0.001990 value_loss=6534.783649 action_counts_0123=[421, 580, 588, 459]
+12:29:05 | INFO  | steps=43008 rollout_mean_reward=3.677854 entropy_loss=-1.372806 pg_loss=-0.003874 value_loss=6538.728073 action_counts_0123=[422, 642, 443, 541]
+12:29:22 | INFO  | steps=45056 rollout_mean_reward=3.849537 entropy_loss=-1.351739 pg_loss=-0.006385 value_loss=6357.308743 action_counts_0123=[394, 522, 439, 693]
+12:29:45 | INFO  | steps=47104 rollout_mean_reward=3.957237 entropy_loss=-1.347494 pg_loss=-0.004057 value_loss=6182.454626 action_counts_0123=[370, 426, 478, 774]
+12:30:15 | INFO  | steps=49152 rollout_mean_reward=4.017592 entropy_loss=-1.363090 pg_loss=-0.001568 value_loss=6188.507111 action_counts_0123=[378, 578, 385, 707]
+12:30:29 | INFO  | steps=51200 rollout_mean_reward=4.107665 entropy_loss=-1.370028 pg_loss=-0.005058 value_loss=6450.864644 action_counts_0123=[408, 534, 448, 658]
+12:30:44 | INFO  | steps=53248 rollout_mean_reward=3.448811 entropy_loss=-1.379771 pg_loss=-0.006705 value_loss=5606.094537 action_counts_0123=[470, 650, 390, 538]
+12:30:58 | INFO  | steps=55296 rollout_mean_reward=3.567326 entropy_loss=-1.380087 pg_loss=-0.001051 value_loss=6180.160150 action_counts_0123=[504, 552, 470, 522]
+12:31:22 | INFO  | steps=57344 rollout_mean_reward=3.938711 entropy_loss=-1.370365 pg_loss=-0.001616 value_loss=6021.949481 action_counts_0123=[416, 626, 579, 427]
+12:31:36 | INFO  | steps=59392 rollout_mean_reward=3.693749 entropy_loss=-1.369314 pg_loss=-0.002154 value_loss=6171.158040 action_counts_0123=[350, 617, 606, 475]
+12:31:51 | INFO  | steps=61440 rollout_mean_reward=3.804417 entropy_loss=-1.363424 pg_loss=-0.002462 value_loss=6009.282207 action_counts_0123=[442, 667, 482, 457]
+12:32:05 | INFO  | steps=63488 rollout_mean_reward=3.921230 entropy_loss=-1.377823 pg_loss=-0.001628 value_loss=5672.080121 action_counts_0123=[416, 640, 480, 512]
+12:32:29 | INFO  | steps=65536 rollout_mean_reward=3.176330 entropy_loss=-1.371038 pg_loss=-0.002189 value_loss=6197.452208 action_counts_0123=[422, 512, 625, 489]
+12:32:43 | INFO  | steps=67584 rollout_mean_reward=2.923955 entropy_loss=-1.350413 pg_loss=-0.007366 value_loss=5032.389207 action_counts_0123=[385, 641, 503, 519]
+12:32:58 | INFO  | steps=69632 rollout_mean_reward=3.876718 entropy_loss=-1.349464 pg_loss=-0.001044 value_loss=5594.198920 action_counts_0123=[339, 718, 542, 449]
+12:33:12 | INFO  | steps=71680 rollout_mean_reward=3.966246 entropy_loss=-1.345159 pg_loss=-0.001917 value_loss=5657.057381 action_counts_0123=[321, 637, 637, 453]
+12:33:37 | INFO  | steps=73728 rollout_mean_reward=3.750877 entropy_loss=-1.364440 pg_loss=-0.002565 value_loss=5427.928360 action_counts_0123=[319, 490, 812, 427]
+12:33:53 | INFO  | steps=75776 rollout_mean_reward=3.260323 entropy_loss=-1.370687 pg_loss=-0.000674 value_loss=5780.501056 action_counts_0123=[372, 565, 611, 500]
+12:34:08 | INFO  | steps=77824 rollout_mean_reward=3.862247 entropy_loss=-1.378224 pg_loss=-0.000423 value_loss=5307.542310 action_counts_0123=[419, 507, 610, 512]
+12:34:23 | INFO  | steps=79872 rollout_mean_reward=4.027868 entropy_loss=-1.382709 pg_loss=-0.000444 value_loss=5387.121486 action_counts_0123=[441, 530, 569, 508]
+12:34:47 | INFO  | steps=81920 rollout_mean_reward=4.022473 entropy_loss=-1.381449 pg_loss=-0.001261 value_loss=5396.305788 action_counts_0123=[475, 453, 563, 557]
+12:35:02 | INFO  | steps=83968 rollout_mean_reward=4.079263 entropy_loss=-1.381932 pg_loss=-0.001625 value_loss=5708.967392 action_counts_0123=[492, 453, 620, 483]
+12:35:17 | INFO  | steps=86016 rollout_mean_reward=3.766901 entropy_loss=-1.383096 pg_loss=-0.003201 value_loss=5254.457566 action_counts_0123=[463, 577, 501, 507]
+12:35:32 | INFO  | steps=88064 rollout_mean_reward=3.269762 entropy_loss=-1.371166 pg_loss=-0.005214 value_loss=5882.934238 action_counts_0123=[584, 424, 556, 484]
+12:35:55 | INFO  | steps=90112 rollout_mean_reward=2.962991 entropy_loss=-1.375442 pg_loss=-0.000750 value_loss=5112.364143 action_counts_0123=[689, 406, 472, 481]
+12:36:12 | INFO  | steps=92160 rollout_mean_reward=3.834969 entropy_loss=-1.379875 pg_loss=0.000095 value_loss=5043.443604 action_counts_0123=[555, 444, 512, 537]
+12:36:26 | INFO  | steps=94208 rollout_mean_reward=3.912008 entropy_loss=-1.381949 pg_loss=-0.000495 value_loss=5232.836848 action_counts_0123=[615, 473, 459, 501]
+12:36:41 | INFO  | steps=96256 rollout_mean_reward=3.838668 entropy_loss=-1.382131 pg_loss=-0.000868 value_loss=5389.431004 action_counts_0123=[517, 499, 483, 549]
+12:37:05 | INFO  | steps=98304 rollout_mean_reward=1.825817 entropy_loss=-1.378447 pg_loss=-0.000703 value_loss=6166.436996 action_counts_0123=[534, 434, 479, 601]
+12:37:19 | INFO  | steps=100352 rollout_mean_reward=3.135635 entropy_loss=-1.370497 pg_loss=-0.002375 value_loss=5287.567563 action_counts_0123=[577, 449, 456, 566]
+12:37:34 | INFO  | steps=102400 rollout_mean_reward=3.872305 entropy_loss=-1.368872 pg_loss=-0.001138 value_loss=5148.432060 action_counts_0123=[486, 467, 466, 629]
+12:37:49 | INFO  | steps=104448 rollout_mean_reward=3.979135 entropy_loss=-1.356115 pg_loss=-0.003617 value_loss=5375.672200 action_counts_0123=[485, 393, 398, 772]
+12:38:12 | INFO  | steps=106496 rollout_mean_reward=3.927975 entropy_loss=-1.372885 pg_loss=0.000297 value_loss=4886.193557 action_counts_0123=[525, 480, 388, 655]
+12:38:27 | INFO  | steps=108544 rollout_mean_reward=3.679756 entropy_loss=-1.375720 pg_loss=-0.001610 value_loss=5442.735487 action_counts_0123=[432, 550, 441, 625]
+12:38:42 | INFO  | steps=110592 rollout_mean_reward=2.649097 entropy_loss=-1.375944 pg_loss=-0.004557 value_loss=5176.929066 action_counts_0123=[484, 508, 515, 541]
+12:38:56 | INFO  | steps=112640 rollout_mean_reward=3.099488 entropy_loss=-1.376984 pg_loss=-0.001210 value_loss=5001.563556 action_counts_0123=[445, 540, 449, 614]
+12:39:20 | INFO  | steps=114688 rollout_mean_reward=3.798402 entropy_loss=-1.381399 pg_loss=-0.001072 value_loss=4887.676507 action_counts_0123=[423, 519, 511, 595]
+12:39:36 | INFO  | steps=116736 rollout_mean_reward=3.951121 entropy_loss=-1.381565 pg_loss=-0.000230 value_loss=5078.907634 action_counts_0123=[475, 506, 515, 552]
+12:39:51 | INFO  | steps=118784 rollout_mean_reward=3.840929 entropy_loss=-1.377085 pg_loss=-0.002488 value_loss=4829.363711 action_counts_0123=[446, 507, 543, 552]
+12:40:05 | INFO  | steps=120832 rollout_mean_reward=3.538635 entropy_loss=-1.375193 pg_loss=-0.002130 value_loss=5231.277889 action_counts_0123=[445, 459, 582, 562]
+12:40:31 | INFO  | steps=122880 rollout_mean_reward=3.827193 entropy_loss=-1.360866 pg_loss=-0.000040 value_loss=4881.227765 action_counts_0123=[364, 501, 561, 622]
+12:40:46 | INFO  | steps=124928 rollout_mean_reward=3.813935 entropy_loss=-1.366720 pg_loss=-0.001331 value_loss=4684.744603 action_counts_0123=[349, 474, 621, 604]
+12:41:01 | INFO  | steps=126976 rollout_mean_reward=4.051397 entropy_loss=-1.364531 pg_loss=-0.001153 value_loss=5069.254418 action_counts_0123=[406, 428, 684, 530]
+12:41:17 | INFO  | steps=129024 rollout_mean_reward=3.909960 entropy_loss=-1.342055 pg_loss=0.000079 value_loss=4824.686766 action_counts_0123=[396, 392, 719, 541]
+12:41:40 | INFO  | steps=131072 rollout_mean_reward=3.892050 entropy_loss=-1.370273 pg_loss=-0.002689 value_loss=4921.870268 action_counts_0123=[358, 472, 572, 646]
+12:41:55 | INFO  | steps=133120 rollout_mean_reward=3.539062 entropy_loss=-1.376813 pg_loss=-0.000920 value_loss=4977.673236 action_counts_0123=[374, 591, 527, 556]
+12:42:09 | INFO  | steps=135168 rollout_mean_reward=3.664146 entropy_loss=-1.367108 pg_loss=-0.001637 value_loss=5679.304285 action_counts_0123=[343, 577, 587, 541]
+12:42:24 | INFO  | steps=137216 rollout_mean_reward=4.064537 entropy_loss=-1.357332 pg_loss=-0.000040 value_loss=5129.257852 action_counts_0123=[344, 526, 706, 472]
+12:42:48 | INFO  | steps=139264 rollout_mean_reward=3.882921 entropy_loss=-1.372883 pg_loss=-0.002099 value_loss=4874.306073 action_counts_0123=[362, 516, 626, 544]
+12:43:03 | INFO  | steps=141312 rollout_mean_reward=4.114628 entropy_loss=-1.373677 pg_loss=-0.004569 value_loss=5123.507294 action_counts_0123=[376, 515, 647, 510]
+12:43:18 | INFO  | steps=143360 rollout_mean_reward=3.993926 entropy_loss=-1.372420 pg_loss=-0.004330 value_loss=5056.527796 action_counts_0123=[397, 605, 516, 530]
+12:43:33 | INFO  | steps=145408 rollout_mean_reward=3.788898 entropy_loss=-1.366446 pg_loss=-0.000809 value_loss=5092.419055 action_counts_0123=[382, 532, 677, 457]
+12:43:57 | INFO  | steps=147456 rollout_mean_reward=3.668133 entropy_loss=-1.382653 pg_loss=-0.000173 value_loss=5446.011095 action_counts_0123=[470, 575, 537, 466]
+12:44:12 | INFO  | steps=149504 rollout_mean_reward=3.702834 entropy_loss=-1.384349 pg_loss=-0.000374 value_loss=5081.559705 action_counts_0123=[508, 535, 508, 497]
+12:44:26 | INFO  | steps=151552 rollout_mean_reward=3.975338 entropy_loss=-1.385617 pg_loss=-0.001080 value_loss=5143.636824 action_counts_0123=[507, 524, 490, 527]
+12:44:39 | INFO  | steps=153600 rollout_mean_reward=3.766644 entropy_loss=-1.384596 pg_loss=-0.000240 value_loss=4766.749473 action_counts_0123=[561, 508, 495, 484]
+12:45:01 | INFO  | steps=155648 rollout_mean_reward=3.610473 entropy_loss=-1.385229 pg_loss=-0.001458 value_loss=4632.368214 action_counts_0123=[509, 584, 481, 474]
+12:45:14 | INFO  | steps=157696 rollout_mean_reward=3.914590 entropy_loss=-1.382542 pg_loss=-0.001005 value_loss=4718.094345 action_counts_0123=[512, 486, 534, 516]
+12:45:27 | INFO  | steps=159744 rollout_mean_reward=3.721147 entropy_loss=-1.383863 pg_loss=-0.001070 value_loss=5537.918922 action_counts_0123=[515, 449, 567, 517]
+12:45:40 | INFO  | steps=161792 rollout_mean_reward=3.567925 entropy_loss=-1.382043 pg_loss=-0.002498 value_loss=5386.487248 action_counts_0123=[520, 482, 537, 509]
+12:46:03 | INFO  | steps=163840 rollout_mean_reward=3.832720 entropy_loss=-1.370371 pg_loss=-0.002988 value_loss=5190.599581 action_counts_0123=[599, 418, 518, 513]
+12:46:16 | INFO  | steps=165888 rollout_mean_reward=3.617089 entropy_loss=-1.371281 pg_loss=-0.001361 value_loss=4530.980347 action_counts_0123=[613, 359, 427, 649]
+12:46:29 | INFO  | steps=167936 rollout_mean_reward=3.982111 entropy_loss=-1.364974 pg_loss=-0.003274 value_loss=4683.201702 action_counts_0123=[511, 420, 538, 579]
+12:46:42 | INFO  | steps=169984 rollout_mean_reward=4.119275 entropy_loss=-1.358652 pg_loss=-0.003368 value_loss=4995.347475 action_counts_0123=[514, 340, 534, 660]
+12:47:03 | INFO  | steps=172032 rollout_mean_reward=3.546434 entropy_loss=-1.355977 pg_loss=-0.003355 value_loss=5061.289869 action_counts_0123=[444, 322, 690, 592]
+12:47:16 | INFO  | steps=174080 rollout_mean_reward=3.539205 entropy_loss=-1.379007 pg_loss=-0.003752 value_loss=5361.476764 action_counts_0123=[521, 442, 533, 552]
+12:47:29 | INFO  | steps=176128 rollout_mean_reward=3.755497 entropy_loss=-1.377472 pg_loss=-0.001190 value_loss=4940.896504 action_counts_0123=[436, 466, 596, 550]
+12:47:43 | INFO  | steps=178176 rollout_mean_reward=4.067703 entropy_loss=-1.366685 pg_loss=-0.002336 value_loss=5032.032749 action_counts_0123=[415, 466, 566, 601]
+12:48:11 | INFO  | steps=180224 rollout_mean_reward=4.056758 entropy_loss=-1.359207 pg_loss=-0.000250 value_loss=5118.387280 action_counts_0123=[347, 401, 547, 753]
+12:48:23 | INFO  | Loading ensemble and building training env (training_mode=True)
+12:48:23 | INFO  | check_env …
+12:48:26 | INFO  | Training 200000 timesteps (log every 2048 env steps)
+12:48:30 | INFO  | steps=182272 rollout_mean_reward=3.989705 entropy_loss=-1.367146 pg_loss=-0.000305 value_loss=4668.488948 action_counts_0123=[390, 419, 489, 750]
+12:48:46 | INFO  | steps=2048 rollout_mean_reward=3.520004 entropy_loss=-1.381229 pg_loss=-0.007538 value_loss=8222.029182 action_counts_0123=[491, 529, 521, 507]
+12:48:51 | INFO  | steps=184320 rollout_mean_reward=3.435563 entropy_loss=-1.362529 pg_loss=-0.001140 value_loss=6378.075503 action_counts_0123=[401, 442, 546, 659]
+12:49:06 | INFO  | steps=4096 rollout_mean_reward=3.548300 entropy_loss=-1.373450 pg_loss=-0.001799 value_loss=8538.609703 action_counts_0123=[452, 478, 503, 615]
+12:49:10 | INFO  | steps=186368 rollout_mean_reward=4.049456 entropy_loss=-1.362754 pg_loss=-0.000626 value_loss=4769.089777 action_counts_0123=[340, 455, 557, 696]
+12:49:25 | INFO  | steps=6144 rollout_mean_reward=4.106690 entropy_loss=-1.366806 pg_loss=-0.002322 value_loss=9015.972813 action_counts_0123=[412, 430, 525, 681]
+12:49:42 | INFO  | steps=188416 rollout_mean_reward=3.826880 entropy_loss=-1.359134 pg_loss=-0.001373 value_loss=4856.558089 action_counts_0123=[375, 439, 449, 785]
+12:49:57 | INFO  | steps=8192 rollout_mean_reward=4.189096 entropy_loss=-1.368372 pg_loss=-0.000186 value_loss=8848.698666 action_counts_0123=[406, 500, 456, 686]
+12:50:02 | INFO  | steps=190464 rollout_mean_reward=2.928266 entropy_loss=-1.368454 pg_loss=-0.002538 value_loss=5043.572932 action_counts_0123=[381, 597, 447, 623]
+12:50:16 | INFO  | steps=10240 rollout_mean_reward=3.942087 entropy_loss=-1.376086 pg_loss=-0.000277 value_loss=7707.887889 action_counts_0123=[425, 538, 442, 643]
+12:50:21 | INFO  | steps=192512 rollout_mean_reward=3.799629 entropy_loss=-1.370807 pg_loss=-0.001872 value_loss=4961.555152 action_counts_0123=[424, 567, 486, 571]
+12:50:35 | INFO  | steps=12288 rollout_mean_reward=3.909499 entropy_loss=-1.376586 pg_loss=-0.002282 value_loss=8124.891055 action_counts_0123=[400, 498, 532, 618]
+12:50:40 | INFO  | steps=194560 rollout_mean_reward=3.436436 entropy_loss=-1.335257 pg_loss=-0.002084 value_loss=5673.373051 action_counts_0123=[368, 545, 448, 687]
+12:50:55 | INFO  | steps=14336 rollout_mean_reward=3.663362 entropy_loss=-1.376090 pg_loss=-0.000399 value_loss=7756.453746 action_counts_0123=[383, 568, 471, 626]
+12:51:11 | INFO  | Loading ensemble and building training env (training_mode=True)
+12:51:11 | INFO  | check_env …
+12:51:14 | INFO  | Training 200000 timesteps (log every 2048 env steps)
+12:51:15 | INFO  | steps=196608 rollout_mean_reward=3.612487 entropy_loss=-1.321113 pg_loss=-0.001262 value_loss=5099.382326 action_counts_0123=[318, 580, 420, 730]
+12:51:34 | INFO  | steps=16384 rollout_mean_reward=3.522021 entropy_loss=-1.374462 pg_loss=-0.001705 value_loss=7916.875288 action_counts_0123=[435, 609, 424, 580]
+12:51:37 | INFO  | steps=2048 rollout_mean_reward=3.711363 entropy_loss=-1.382617 pg_loss=-0.003636 value_loss=8730.861493 action_counts_0123=[515, 488, 521, 524]
+12:51:39 | INFO  | steps=198656 rollout_mean_reward=3.823933 entropy_loss=-1.333249 pg_loss=-0.003726 value_loss=5097.347839 action_counts_0123=[304, 628, 368, 748]
+12:52:01 | INFO  | steps=18432 rollout_mean_reward=3.874368 entropy_loss=-1.368388 pg_loss=-0.000783 value_loss=7778.650589 action_counts_0123=[475, 675, 388, 510]
+12:52:05 | INFO  | steps=4096 rollout_mean_reward=3.567262 entropy_loss=-1.377843 pg_loss=-0.002241 value_loss=8340.724019 action_counts_0123=[494, 424, 514, 616]
+12:52:06 | INFO  | [final] steps=200704 rollout_mean_reward=3.888195 entropy_loss=-1.314311 pg_loss=-0.000141 value_loss=5360.354583 action_counts_0123=[365, 557, 310, 816]
+12:52:06 | INFO  | Wrote reports\ppo_training_summary.json
+12:52:26 | INFO  | steps=20480 rollout_mean_reward=3.819889 entropy_loss=-1.366005 pg_loss=-0.004463 value_loss=7439.877081 action_counts_0123=[509, 679, 413, 447]
+12:52:30 | INFO  | steps=6144 rollout_mean_reward=3.845009 entropy_loss=-1.380344 pg_loss=-0.001211 value_loss=8196.115799 action_counts_0123=[505, 467, 479, 597]
+12:52:48 | INFO  | steps=22528 rollout_mean_reward=3.821295 entropy_loss=-1.372087 pg_loss=-0.000477 value_loss=7400.329495 action_counts_0123=[512, 671, 470, 395]
+12:53:04 | INFO  | steps=8192 rollout_mean_reward=4.011513 entropy_loss=-1.380137 pg_loss=-0.003015 value_loss=8355.468813 action_counts_0123=[597, 447, 441, 563]
+12:53:22 | INFO  | steps=24576 rollout_mean_reward=2.392355 entropy_loss=-1.379201 pg_loss=-0.001240 value_loss=6183.120595 action_counts_0123=[541, 592, 487, 428]
+12:53:26 | INFO  | steps=10240 rollout_mean_reward=3.806217 entropy_loss=-1.366346 pg_loss=-0.003196 value_loss=7826.065344 action_counts_0123=[477, 442, 513, 616]
+12:53:40 | INFO  | steps=26624 rollout_mean_reward=2.862057 entropy_loss=-1.385116 pg_loss=-0.001024 value_loss=6957.496785 action_counts_0123=[480, 535, 524, 509]
+12:53:43 | INFO  | steps=12288 rollout_mean_reward=4.004314 entropy_loss=-1.340243 pg_loss=-0.004219 value_loss=7861.738971 action_counts_0123=[437, 365, 510, 736]
+12:54:00 | INFO  | steps=28672 rollout_mean_reward=3.219689 entropy_loss=-1.385059 pg_loss=-0.001128 value_loss=6727.180965 action_counts_0123=[496, 474, 533, 545]
+12:54:04 | INFO  | steps=14336 rollout_mean_reward=3.706785 entropy_loss=-1.348428 pg_loss=-0.002128 value_loss=7518.064761 action_counts_0123=[528, 284, 421, 815]
+12:54:28 | INFO  | steps=30720 rollout_mean_reward=3.678451 entropy_loss=-1.385833 pg_loss=-0.000213 value_loss=6904.105110 action_counts_0123=[545, 497, 495, 511]
+12:54:53 | INFO  | steps=16384 rollout_mean_reward=3.983312 entropy_loss=-1.361377 pg_loss=-0.006135 value_loss=8173.581509 action_counts_0123=[568, 332, 514, 634]
+12:55:16 | INFO  | steps=32768 rollout_mean_reward=3.862489 entropy_loss=-1.384081 pg_loss=-0.001137 value_loss=6767.872047 action_counts_0123=[484, 560, 493, 511]
+12:55:20 | INFO  | steps=18432 rollout_mean_reward=3.938038 entropy_loss=-1.358501 pg_loss=-0.005329 value_loss=7966.539635 action_counts_0123=[734, 379, 439, 496]
+12:55:50 | INFO  | steps=34816 rollout_mean_reward=1.929864 entropy_loss=-1.374572 pg_loss=-0.003552 value_loss=5943.904768 action_counts_0123=[521, 570, 444, 513]
+12:55:54 | INFO  | steps=20480 rollout_mean_reward=3.854145 entropy_loss=-1.372942 pg_loss=-0.006384 value_loss=7210.820363 action_counts_0123=[660, 427, 339, 622]
+12:56:15 | INFO  | steps=36864 rollout_mean_reward=1.474845 entropy_loss=-1.368932 pg_loss=-0.003238 value_loss=7350.460721 action_counts_0123=[564, 514, 431, 539]
+12:56:17 | INFO  | steps=22528 rollout_mean_reward=3.876071 entropy_loss=-1.372387 pg_loss=-0.002735 value_loss=7319.241147 action_counts_0123=[521, 480, 448, 599]
+12:56:40 | INFO  | steps=38912 rollout_mean_reward=3.928897 entropy_loss=-1.339771 pg_loss=-0.000459 value_loss=7191.815881 action_counts_0123=[693, 445, 329, 581]
+12:56:55 | INFO  | steps=24576 rollout_mean_reward=3.956348 entropy_loss=-1.359653 pg_loss=-0.003126 value_loss=7548.142519 action_counts_0123=[443, 451, 458, 696]
+12:57:14 | INFO  | steps=40960 rollout_mean_reward=3.738569 entropy_loss=-1.340422 pg_loss=-0.000189 value_loss=6965.963249 action_counts_0123=[683, 416, 328, 621]
+12:57:16 | INFO  | steps=26624 rollout_mean_reward=3.827704 entropy_loss=-1.369812 pg_loss=-0.004156 value_loss=7236.733258 action_counts_0123=[427, 395, 480, 746]
+12:57:33 | INFO  | steps=43008 rollout_mean_reward=3.608003 entropy_loss=-1.329859 pg_loss=-0.000685 value_loss=6087.160666 action_counts_0123=[673, 454, 291, 630]
+12:57:35 | INFO  | steps=28672 rollout_mean_reward=3.758532 entropy_loss=-1.372922 pg_loss=-0.000942 value_loss=7271.385170 action_counts_0123=[523, 456, 456, 613]
+12:57:52 | INFO  | steps=45056 rollout_mean_reward=2.884933 entropy_loss=-1.360991 pg_loss=-0.000432 value_loss=5357.730340 action_counts_0123=[650, 424, 340, 634]
+12:57:54 | INFO  | steps=30720 rollout_mean_reward=3.873315 entropy_loss=-1.372507 pg_loss=-0.000956 value_loss=6743.327298 action_counts_0123=[558, 409, 460, 621]
+12:58:12 | INFO  | steps=47104 rollout_mean_reward=3.770870 entropy_loss=-1.363316 pg_loss=-0.000280 value_loss=5998.810217 action_counts_0123=[629, 406, 398, 615]
+12:58:28 | INFO  | steps=32768 rollout_mean_reward=3.810808 entropy_loss=-1.380185 pg_loss=-0.002058 value_loss=6732.510443 action_counts_0123=[448, 447, 487, 666]
+12:58:45 | INFO  | steps=49152 rollout_mean_reward=3.843394 entropy_loss=-1.362278 pg_loss=-0.000389 value_loss=6358.047726 action_counts_0123=[662, 410, 382, 594]
+12:58:47 | INFO  | steps=34816 rollout_mean_reward=3.893895 entropy_loss=-1.382040 pg_loss=-0.004313 value_loss=6387.589085 action_counts_0123=[419, 597, 512, 520]
+12:59:05 | INFO  | steps=51200 rollout_mean_reward=4.005146 entropy_loss=-1.367558 pg_loss=-0.000127 value_loss=6347.965836 action_counts_0123=[611, 419, 398, 620]
+12:59:07 | INFO  | steps=36864 rollout_mean_reward=3.855860 entropy_loss=-1.381730 pg_loss=-0.004062 value_loss=6517.453510 action_counts_0123=[426, 461, 618, 543]
+12:59:23 | INFO  | steps=53248 rollout_mean_reward=3.502447 entropy_loss=-1.357014 pg_loss=-0.000764 value_loss=6370.877591 action_counts_0123=[665, 407, 361, 615]
+12:59:25 | INFO  | steps=38912 rollout_mean_reward=3.882954 entropy_loss=-1.379428 pg_loss=-0.002511 value_loss=6517.852205 action_counts_0123=[577, 476, 542, 453]
+12:59:43 | INFO  | steps=55296 rollout_mean_reward=3.485694 entropy_loss=-1.369627 pg_loss=-0.000862 value_loss=6152.339943 action_counts_0123=[616, 446, 415, 571]
+12:59:57 | INFO  | steps=40960 rollout_mean_reward=3.684810 entropy_loss=-1.380340 pg_loss=-0.002079 value_loss=6766.453275 action_counts_0123=[478, 512, 661, 397]
+13:00:15 | INFO  | steps=57344 rollout_mean_reward=3.838223 entropy_loss=-1.374832 pg_loss=-0.000471 value_loss=6030.662724 action_counts_0123=[616, 386, 468, 578]
+13:00:18 | INFO  | steps=43008 rollout_mean_reward=3.589862 entropy_loss=-1.381053 pg_loss=-0.000902 value_loss=5976.867155 action_counts_0123=[406, 499, 606, 537]
+13:00:34 | train_ppo | INFO | PPO training starting: 200000 timesteps, training_mode=congestion_injection
+13:00:34 | train_ppo | INFO | Running SB3 env check
+13:00:36 | INFO  | steps=59392 rollout_mean_reward=3.704437 entropy_loss=-1.368035 pg_loss=-0.001815 value_loss=5872.486630 action_counts_0123=[655, 417, 419, 557]
+13:00:39 | INFO  | steps=45056 rollout_mean_reward=4.124788 entropy_loss=-1.375119 pg_loss=-0.003042 value_loss=6561.291475 action_counts_0123=[452, 597, 530, 469]
+13:00:49 | train_ppo | INFO | PPO training starting: 200000 timesteps, training_mode=congestion_injection
+13:00:49 | train_ppo | INFO | Running SB3 env check
+13:00:59 | INFO  | steps=61440 rollout_mean_reward=3.979023 entropy_loss=-1.371164 pg_loss=-0.000344 value_loss=6243.473364 action_counts_0123=[597, 398, 436, 617]
+13:01:02 | INFO  | steps=47104 rollout_mean_reward=3.936925 entropy_loss=-1.362042 pg_loss=-0.003552 value_loss=6231.827106 action_counts_0123=[391, 684, 532, 441]
+13:01:11 | train_ppo | INFO | Rollout @ 2048 timesteps | mean_reward=3.7133 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'1': 511, '0': 499, '2': 496, '3': 542} | cum_actions={'0': 499, '1': 511, '2': 496, '3': 542}
+13:01:21 | INFO  | steps=63488 rollout_mean_reward=3.884879 entropy_loss=-1.368389 pg_loss=-0.000431 value_loss=5641.778735 action_counts_0123=[622, 425, 397, 604]
+13:01:32 | train_ppo | INFO | Rollout @ 4096 timesteps | mean_reward=3.7803 | entropy_loss=-1.3824791364371776 | policy_loss(pg)=-0.004573725673253648 | value_loss=8270.901750183106 | rollout_actions={'3': 543, '1': 392, '0': 507, '2': 606} | cum_actions={'0': 1006, '1': 903, '2': 1102, '3': 1085}
+13:01:37 | INFO  | steps=49152 rollout_mean_reward=3.980389 entropy_loss=-1.370125 pg_loss=-0.002014 value_loss=6481.358981 action_counts_0123=[450, 665, 475, 458]
+13:01:56 | INFO  | steps=65536 rollout_mean_reward=3.214727 entropy_loss=-1.375684 pg_loss=-0.004047 value_loss=6310.927090 action_counts_0123=[609, 403, 449, 587]
+13:02:00 | INFO  | steps=51200 rollout_mean_reward=4.056770 entropy_loss=-1.373827 pg_loss=-0.001682 value_loss=6540.484286 action_counts_0123=[501, 653, 454, 440]
+13:02:08 | train_ppo | INFO | Rollout @ 6144 timesteps | mean_reward=3.8686 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'0': 455, '2': 552, '1': 400, '3': 641} | cum_actions={'0': 1461, '1': 1303, '2': 1654, '3': 1726}
+13:02:18 | INFO  | steps=67584 rollout_mean_reward=3.788730 entropy_loss=-1.379051 pg_loss=-0.000321 value_loss=5453.736752 action_counts_0123=[593, 487, 414, 554]
+13:02:21 | INFO  | steps=53248 rollout_mean_reward=3.401120 entropy_loss=-1.382200 pg_loss=-0.001513 value_loss=5783.155168 action_counts_0123=[584, 510, 529, 425]
+13:02:30 | train_ppo | INFO | Rollout @ 8192 timesteps | mean_reward=4.0438 | entropy_loss=-1.3643722876906395 | policy_loss(pg)=-0.002477900980738923 | value_loss=8103.211660766601 | rollout_actions={'3': 655, '1': 382, '0': 362, '2': 649} | cum_actions={'0': 1823, '1': 1685, '2': 2303, '3': 2381}
+13:02:39 | INFO  | steps=69632 rollout_mean_reward=3.902153 entropy_loss=-1.377959 pg_loss=-0.000745 value_loss=5790.270888 action_counts_0123=[556, 502, 467, 523]
+13:02:43 | INFO  | steps=55296 rollout_mean_reward=3.583923 entropy_loss=-1.377546 pg_loss=-0.002964 value_loss=5848.360075 action_counts_0123=[530, 565, 461, 492]
+13:03:03 | INFO  | steps=71680 rollout_mean_reward=3.921150 entropy_loss=-1.377135 pg_loss=-0.001972 value_loss=5665.732137 action_counts_0123=[600, 512, 430, 506]
+13:03:07 | train_ppo | INFO | Rollout @ 10240 timesteps | mean_reward=3.6039 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'1': 328, '3': 731, '2': 610, '0': 379} | cum_actions={'0': 2202, '1': 2013, '2': 2913, '3': 3112}
+13:03:20 | INFO  | steps=57344 rollout_mean_reward=2.570975 entropy_loss=-1.378708 pg_loss=-0.000739 value_loss=5832.436079 action_counts_0123=[468, 568, 491, 521]
+13:03:29 | train_ppo | INFO | Rollout @ 12288 timesteps | mean_reward=4.0233 | entropy_loss=-1.314926928654313 | policy_loss(pg)=-0.004335393237124663 | value_loss=7371.755569458008 | rollout_actions={'0': 352, '2': 738, '3': 676, '1': 282} | cum_actions={'0': 2554, '1': 2295, '2': 3651, '3': 3788}
+13:03:38 | INFO  | steps=73728 rollout_mean_reward=3.976243 entropy_loss=-1.379675 pg_loss=-0.000725 value_loss=5613.230286 action_counts_0123=[615, 534, 430, 469]
+13:03:41 | INFO  | steps=59392 rollout_mean_reward=4.175199 entropy_loss=-1.381991 pg_loss=-0.000294 value_loss=6181.656506 action_counts_0123=[462, 605, 491, 490]
+13:03:50 | train_ppo | INFO | Rollout @ 14336 timesteps | mean_reward=3.6349 | entropy_loss=-1.2924488201737403 | policy_loss(pg)=-0.004364107140281704 | value_loss=8176.709994506836 | rollout_actions={'2': 839, '3': 606, '0': 334, '1': 269} | cum_actions={'0': 2888, '1': 2564, '2': 4490, '3': 4394}
+13:04:00 | INFO  | steps=75776 rollout_mean_reward=3.287669 entropy_loss=-1.373416 pg_loss=-0.001417 value_loss=6125.611157 action_counts_0123=[613, 446, 447, 542]
+13:04:03 | INFO  | steps=61440 rollout_mean_reward=4.013464 entropy_loss=-1.383199 pg_loss=-0.000543 value_loss=6051.210382 action_counts_0123=[483, 565, 469, 531]
+13:04:22 | INFO  | steps=77824 rollout_mean_reward=3.757789 entropy_loss=-1.378469 pg_loss=-0.001421 value_loss=5170.167977 action_counts_0123=[576, 491, 409, 572]
+13:04:25 | INFO  | steps=63488 rollout_mean_reward=3.896735 entropy_loss=-1.384422 pg_loss=-0.000254 value_loss=5646.539973 action_counts_0123=[490, 573, 447, 538]
+13:04:26 | train_ppo | INFO | Rollout @ 16384 timesteps | mean_reward=3.5444 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'3': 642, '0': 359, '2': 740, '1': 307} | cum_actions={'0': 3247, '1': 2871, '2': 5230, '3': 5036}
+13:04:43 | INFO  | steps=79872 rollout_mean_reward=3.734409 entropy_loss=-1.381730 pg_loss=-0.000663 value_loss=5540.713597 action_counts_0123=[588, 544, 396, 520]
+13:04:47 | train_ppo | INFO | Rollout @ 18432 timesteps | mean_reward=4.0984 | entropy_loss=-1.32994570620358 | policy_loss(pg)=-0.0060604919999605045 | value_loss=7543.900631713867 | rollout_actions={'1': 355, '2': 808, '0': 347, '3': 538} | cum_actions={'0': 3594, '1': 3226, '2': 6038, '3': 5574}
+13:05:00 | INFO  | steps=65536 rollout_mean_reward=3.429157 entropy_loss=-1.378507 pg_loss=-0.002550 value_loss=6387.569096 action_counts_0123=[516, 533, 498, 501]
+13:05:17 | INFO  | steps=81920 rollout_mean_reward=3.916621 entropy_loss=-1.382681 pg_loss=-0.001607 value_loss=5983.028484 action_counts_0123=[563, 495, 456, 534]
+13:05:21 | INFO  | steps=67584 rollout_mean_reward=3.951524 entropy_loss=-1.382028 pg_loss=-0.000402 value_loss=5717.431874 action_counts_0123=[510, 535, 551, 452]
+13:05:21 | train_ppo | INFO | Rollout @ 20480 timesteps | mean_reward=3.8546 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 810, '1': 290, '3': 625, '0': 323} | cum_actions={'0': 3917, '1': 3516, '2': 6848, '3': 6199}
+13:05:38 | INFO  | steps=83968 rollout_mean_reward=4.021240 entropy_loss=-1.377995 pg_loss=-0.000435 value_loss=5505.848630 action_counts_0123=[576, 441, 438, 593]
+13:05:42 | INFO  | steps=69632 rollout_mean_reward=3.684430 entropy_loss=-1.378995 pg_loss=0.000088 value_loss=5503.990180 action_counts_0123=[594, 545, 505, 404]
+13:05:43 | train_ppo | INFO | Rollout @ 22528 timesteps | mean_reward=3.8872 | entropy_loss=-1.318209470435977 | policy_loss(pg)=-0.001348502968903631 | value_loss=7415.181228637695 | rollout_actions={'1': 320, '2': 782, '0': 374, '3': 572} | cum_actions={'0': 4291, '1': 3836, '2': 7630, '3': 6771}
+13:06:00 | INFO  | steps=86016 rollout_mean_reward=3.408436 entropy_loss=-1.370764 pg_loss=-0.000479 value_loss=4845.691791 action_counts_0123=[495, 408, 455, 690]
+13:06:04 | INFO  | steps=71680 rollout_mean_reward=4.093223 entropy_loss=-1.382736 pg_loss=-0.000542 value_loss=5729.446692 action_counts_0123=[546, 468, 559, 475]
+13:06:05 | train_ppo | INFO | Rollout @ 24576 timesteps | mean_reward=4.0517 | entropy_loss=-1.344805796444416 | policy_loss(pg)=-0.007876718867919408 | value_loss=7628.324922180176 | rollout_actions={'2': 645, '1': 358, '3': 662, '0': 383} | cum_actions={'0': 4674, '1': 4194, '2': 8275, '3': 7433}
+13:06:22 | INFO  | steps=88064 rollout_mean_reward=3.250408 entropy_loss=-1.361200 pg_loss=-0.003792 value_loss=5785.724405 action_counts_0123=[465, 417, 563, 603]
+13:06:39 | INFO  | steps=73728 rollout_mean_reward=4.060564 entropy_loss=-1.383024 pg_loss=-0.000599 value_loss=5477.205510 action_counts_0123=[526, 545, 532, 445]
+13:06:40 | train_ppo | INFO | Rollout @ 26624 timesteps | mean_reward=3.8623 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 655, '3': 668, '1': 405, '0': 320} | cum_actions={'0': 4994, '1': 4599, '2': 8930, '3': 8101}
+13:06:56 | INFO  | steps=90112 rollout_mean_reward=3.840612 entropy_loss=-1.377871 pg_loss=0.001391 value_loss=5201.939317 action_counts_0123=[467, 413, 572, 596]
+13:07:01 | INFO  | steps=75776 rollout_mean_reward=3.279858 entropy_loss=-1.378598 pg_loss=-0.000872 value_loss=5846.393890 action_counts_0123=[578, 483, 521, 466]
+13:07:02 | train_ppo | INFO | Rollout @ 28672 timesteps | mean_reward=3.6645 | entropy_loss=-1.331937298551202 | policy_loss(pg)=-0.002223275015421677 | value_loss=7433.835475158691 | rollout_actions={'2': 764, '0': 295, '1': 392, '3': 597} | cum_actions={'0': 5289, '1': 4991, '2': 9694, '3': 8698}
+13:07:19 | INFO  | steps=92160 rollout_mean_reward=4.006840 entropy_loss=-1.374802 pg_loss=-0.000378 value_loss=4929.425139 action_counts_0123=[440, 441, 561, 606]
+13:07:22 | INFO  | steps=77824 rollout_mean_reward=2.250986 entropy_loss=-1.365152 pg_loss=-0.001322 value_loss=5581.851954 action_counts_0123=[650, 574, 383, 441]
+13:07:37 | train_ppo | INFO | Rollout @ 30720 timesteps | mean_reward=3.8351 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 772, '3': 629, '0': 285, '1': 362} | cum_actions={'0': 5574, '1': 5353, '2': 10466, '3': 9327}
+13:07:40 | INFO  | steps=94208 rollout_mean_reward=4.015896 entropy_loss=-1.377155 pg_loss=-0.000878 value_loss=5517.242715 action_counts_0123=[481, 454, 541, 572]
+13:07:43 | INFO  | steps=79872 rollout_mean_reward=3.211836 entropy_loss=-1.367256 pg_loss=-0.000648 value_loss=4735.318252 action_counts_0123=[514, 645, 427, 462]
+13:07:59 | train_ppo | INFO | Rollout @ 32768 timesteps | mean_reward=3.8902 | entropy_loss=-1.2791381526738406 | policy_loss(pg)=-0.004360871818789747 | value_loss=6994.162979125977 | rollout_actions={'2': 855, '0': 222, '1': 375, '3': 596} | cum_actions={'0': 5796, '1': 5728, '2': 11321, '3': 9923}
+13:08:01 | INFO  | steps=96256 rollout_mean_reward=3.785947 entropy_loss=-1.370220 pg_loss=-0.003551 value_loss=4859.041959 action_counts_0123=[421, 436, 551, 640]
+13:08:19 | INFO  | steps=81920 rollout_mean_reward=3.933519 entropy_loss=-1.374243 pg_loss=-0.000208 value_loss=5352.207490 action_counts_0123=[482, 638, 453, 475]
+13:08:20 | train_ppo | INFO | Rollout @ 34816 timesteps | mean_reward=3.5772 | entropy_loss=-1.2775362011045217 | policy_loss(pg)=-0.0004323683911934495 | value_loss=6756.534909057617 | rollout_actions={'1': 358, '3': 612, '2': 853, '0': 225} | cum_actions={'0': 6021, '1': 6086, '2': 12174, '3': 10535}
+13:08:36 | INFO  | steps=98304 rollout_mean_reward=3.257637 entropy_loss=-1.374938 pg_loss=-0.000353 value_loss=6048.181795 action_counts_0123=[424, 482, 629, 513]
+13:08:40 | INFO  | steps=83968 rollout_mean_reward=3.952624 entropy_loss=-1.377924 pg_loss=-0.000163 value_loss=5280.345254 action_counts_0123=[468, 621, 504, 455]
+13:08:55 | train_ppo | INFO | Rollout @ 36864 timesteps | mean_reward=1.2637 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'3': 550, '1': 304, '2': 1010, '0': 184} | cum_actions={'0': 6205, '1': 6390, '2': 13184, '3': 11085}
+13:08:58 | INFO  | steps=100352 rollout_mean_reward=3.777409 entropy_loss=-1.373694 pg_loss=-0.002645 value_loss=4859.761377 action_counts_0123=[442, 466, 592, 548]
+13:09:02 | INFO  | steps=86016 rollout_mean_reward=3.843956 entropy_loss=-1.378959 pg_loss=-0.000852 value_loss=5209.718069 action_counts_0123=[498, 554, 535, 461]
+13:09:16 | train_ppo | INFO | Rollout @ 38912 timesteps | mean_reward=3.8613 | entropy_loss=-1.2137648351490498 | policy_loss(pg)=-0.00025482977798674256 | value_loss=5847.497804260254 | rollout_actions={'3': 624, '2': 994, '0': 169, '1': 261} | cum_actions={'0': 6374, '1': 6651, '2': 14178, '3': 11709}
+13:09:19 | INFO  | steps=102400 rollout_mean_reward=3.888766 entropy_loss=-1.358394 pg_loss=-0.000590 value_loss=4751.144133 action_counts_0123=[398, 439, 580, 631]
+13:09:23 | INFO  | steps=88064 rollout_mean_reward=3.267727 entropy_loss=-1.360452 pg_loss=-0.002257 value_loss=6151.678325 action_counts_0123=[471, 605, 547, 425]
+13:09:40 | INFO  | steps=104448 rollout_mean_reward=3.976586 entropy_loss=-1.375685 pg_loss=0.001030 value_loss=5155.927696 action_counts_0123=[438, 446, 530, 634]
+13:09:51 | train_ppo | INFO | Rollout @ 40960 timesteps | mean_reward=3.6951 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 982, '1': 252, '3': 648, '0': 166} | cum_actions={'0': 6540, '1': 6903, '2': 15160, '3': 12357}
+13:09:57 | INFO  | steps=90112 rollout_mean_reward=3.541646 entropy_loss=-1.350201 pg_loss=-0.000829 value_loss=4959.247244 action_counts_0123=[423, 727, 509, 389]
+13:10:13 | train_ppo | INFO | Rollout @ 43008 timesteps | mean_reward=3.1750 | entropy_loss=-1.1815457195043564 | policy_loss(pg)=-0.00011743079739972018 | value_loss=7044.6809951782225 | rollout_actions={'1': 236, '2': 934, '3': 669, '0': 209} | cum_actions={'0': 6749, '1': 7139, '2': 16094, '3': 13026}
+13:10:15 | INFO  | steps=106496 rollout_mean_reward=4.000953 entropy_loss=-1.363945 pg_loss=-0.001154 value_loss=4855.703490 action_counts_0123=[455, 413, 578, 602]
+13:10:19 | INFO  | steps=92160 rollout_mean_reward=3.766402 entropy_loss=-1.362483 pg_loss=-0.002184 value_loss=5215.778932 action_counts_0123=[382, 661, 538, 467]
+13:10:37 | INFO  | steps=108544 rollout_mean_reward=3.551674 entropy_loss=-1.364620 pg_loss=-0.002520 value_loss=5707.862345 action_counts_0123=[448, 429, 599, 572]
+13:10:41 | INFO  | steps=94208 rollout_mean_reward=3.966580 entropy_loss=-1.318393 pg_loss=-0.002670 value_loss=5599.022814 action_counts_0123=[334, 568, 709, 437]
+13:10:54 | train_ppo | INFO | Rollout @ 45056 timesteps | mean_reward=3.8022 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 1118, '3': 521, '1': 253, '0': 156} | cum_actions={'0': 6905, '1': 7392, '2': 17212, '3': 13547}
+13:11:11 | INFO  | steps=110592 rollout_mean_reward=3.764920 entropy_loss=-1.347575 pg_loss=0.000961 value_loss=5353.200603 action_counts_0123=[399, 338, 571, 740]
+13:11:16 | INFO  | steps=96256 rollout_mean_reward=3.808167 entropy_loss=-1.337668 pg_loss=-0.002474 value_loss=4942.234019 action_counts_0123=[293, 470, 887, 398]
+13:11:26 | train_ppo | INFO | Rollout @ 47104 timesteps | mean_reward=2.7478 | entropy_loss=-1.1516404911875724 | policy_loss(pg)=-0.00021540453308261932 | value_loss=6137.726481628418 | rollout_actions={'2': 1084, '3': 536, '1': 269, '0': 159} | cum_actions={'0': 7064, '1': 7661, '2': 18296, '3': 14083}
+13:11:40 | INFO  | steps=112640 rollout_mean_reward=3.983876 entropy_loss=-1.348932 pg_loss=-0.004020 value_loss=5146.109909 action_counts_0123=[425, 353, 517, 753]
+13:11:55 | train_ppo | INFO | Rollout @ 49152 timesteps | mean_reward=4.0445 | entropy_loss=-1.0992670632898807 | policy_loss(pg)=-0.0067076940060360355 | value_loss=4895.5590148925785 | rollout_actions={'2': 1214, '0': 157, '3': 490, '1': 187} | cum_actions={'0': 7221, '1': 7848, '2': 19510, '3': 14573}
+13:12:02 | INFO  | steps=98304 rollout_mean_reward=2.675154 entropy_loss=-1.316809 pg_loss=-0.003078 value_loss=5864.513371 action_counts_0123=[315, 610, 707, 416]
+13:12:23 | INFO  | steps=114688 rollout_mean_reward=3.985604 entropy_loss=-1.360444 pg_loss=-0.003751 value_loss=5120.100645 action_counts_0123=[404, 333, 631, 680]
+13:12:28 | INFO  | steps=100352 rollout_mean_reward=3.737314 entropy_loss=-1.329244 pg_loss=0.000431 value_loss=4919.979658 action_counts_0123=[332, 575, 777, 364]
+13:12:37 | train_ppo | INFO | Rollout @ 51200 timesteps | mean_reward=3.9986 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 1220, '1': 189, '3': 493, '0': 146} | cum_actions={'0': 7367, '1': 8037, '2': 20730, '3': 15066}
+13:12:49 | INFO  | steps=116736 rollout_mean_reward=4.026271 entropy_loss=-1.380333 pg_loss=-0.003070 value_loss=4750.122372 action_counts_0123=[510, 386, 553, 599]
+13:12:56 | INFO  | steps=102400 rollout_mean_reward=3.971256 entropy_loss=-1.342877 pg_loss=-0.005251 value_loss=4928.476525 action_counts_0123=[356, 614, 730, 348]
+13:13:07 | train_ppo | INFO | Rollout @ 53248 timesteps | mean_reward=3.5580 | entropy_loss=-1.0893285602331162 | policy_loss(pg)=-0.002953113258990925 | value_loss=6026.873452758789 | rollout_actions={'3': 562, '2': 1062, '1': 195, '0': 229} | cum_actions={'0': 7596, '1': 8232, '2': 21792, '3': 15628}
+13:13:25 | INFO  | steps=118784 rollout_mean_reward=3.876595 entropy_loss=-1.381828 pg_loss=-0.003119 value_loss=4790.344393 action_counts_0123=[532, 489, 471, 556]
+13:13:33 | INFO  | steps=104448 rollout_mean_reward=4.014276 entropy_loss=-1.351297 pg_loss=-0.000852 value_loss=5258.775818 action_counts_0123=[394, 627, 708, 319]
+13:13:56 | INFO  | steps=120832 rollout_mean_reward=3.688026 entropy_loss=-1.357382 pg_loss=-0.003316 value_loss=4846.533028 action_counts_0123=[459, 498, 464, 627]
+13:14:01 | train_ppo | INFO | Rollout @ 55296 timesteps | mean_reward=3.6888 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'0': 213, '2': 975, '1': 220, '3': 640} | cum_actions={'0': 7809, '1': 8452, '2': 22767, '3': 16268}
+13:14:18 | INFO  | steps=106496 rollout_mean_reward=3.856452 entropy_loss=-1.354485 pg_loss=-0.002137 value_loss=4946.650712 action_counts_0123=[411, 632, 673, 332]
+13:14:25 | train_ppo | INFO | Rollout @ 57344 timesteps | mean_reward=3.9452 | entropy_loss=-1.1917317394167184 | policy_loss(pg)=-0.0012314853214775213 | value_loss=6318.863520812988 | rollout_actions={'3': 555, '0': 177, '2': 1091, '1': 225} | cum_actions={'0': 7986, '1': 8677, '2': 23858, '3': 16823}
+13:14:35 | INFO  | steps=122880 rollout_mean_reward=3.757854 entropy_loss=-1.330390 pg_loss=-0.003238 value_loss=4970.075840 action_counts_0123=[419, 393, 447, 789]
+13:14:40 | INFO  | steps=108544 rollout_mean_reward=3.501572 entropy_loss=-1.353977 pg_loss=-0.003301 value_loss=5449.477490 action_counts_0123=[423, 688, 567, 370]
+13:14:47 | train_ppo | INFO | Rollout @ 59392 timesteps | mean_reward=3.9518 | entropy_loss=-1.1976222451776266 | policy_loss(pg)=-0.0021295595695846716 | value_loss=5818.729928588868 | rollout_actions={'2': 1043, '1': 273, '3': 557, '0': 175} | cum_actions={'0': 8161, '1': 8950, '2': 24901, '3': 17380}
+13:14:56 | INFO  | steps=124928 rollout_mean_reward=3.973909 entropy_loss=-1.365412 pg_loss=-0.004617 value_loss=5281.978653 action_counts_0123=[472, 361, 441, 774]
+13:15:01 | INFO  | steps=110592 rollout_mean_reward=3.607514 entropy_loss=-1.345653 pg_loss=-0.002121 value_loss=5200.552113 action_counts_0123=[332, 643, 641, 432]
+13:15:17 | INFO  | steps=126976 rollout_mean_reward=4.055607 entropy_loss=-1.370787 pg_loss=-0.001277 value_loss=5012.141239 action_counts_0123=[506, 445, 494, 603]
+13:15:22 | train_ppo | INFO | Rollout @ 61440 timesteps | mean_reward=4.0893 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 913, '3': 667, '1': 231, '0': 237} | cum_actions={'0': 8398, '1': 9181, '2': 25814, '3': 18047}
+13:15:22 | INFO  | steps=112640 rollout_mean_reward=3.752560 entropy_loss=-1.357189 pg_loss=-0.000963 value_loss=5170.831361 action_counts_0123=[337, 519, 699, 493]
+13:15:39 | INFO  | steps=129024 rollout_mean_reward=3.769881 entropy_loss=-1.352952 pg_loss=-0.001140 value_loss=5072.042054 action_counts_0123=[528, 368, 449, 703]
+13:15:43 | train_ppo | INFO | Rollout @ 63488 timesteps | mean_reward=3.8174 | entropy_loss=-1.2510623313486575 | policy_loss(pg)=-0.002009083183656912 | value_loss=5870.041119384766 | rollout_actions={'2': 827, '1': 316, '3': 603, '0': 302} | cum_actions={'0': 8700, '1': 9497, '2': 26641, '3': 18650}
+13:15:57 | INFO  | steps=114688 rollout_mean_reward=4.044860 entropy_loss=-1.364278 pg_loss=-0.000819 value_loss=5141.069418 action_counts_0123=[415, 498, 642, 493]
+13:16:14 | INFO  | steps=131072 rollout_mean_reward=3.806904 entropy_loss=-1.360628 pg_loss=-0.001349 value_loss=5580.458832 action_counts_0123=[607, 404, 398, 639]
+13:16:19 | train_ppo | INFO | Rollout @ 65536 timesteps | mean_reward=3.3102 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 890, '3': 606, '1': 277, '0': 275} | cum_actions={'0': 8975, '1': 9774, '2': 27531, '3': 19256}
+13:16:19 | INFO  | steps=116736 rollout_mean_reward=3.929089 entropy_loss=-1.364323 pg_loss=-0.003404 value_loss=4937.777000 action_counts_0123=[441, 468, 564, 575]
+13:16:36 | INFO  | steps=133120 rollout_mean_reward=3.748806 entropy_loss=-1.368534 pg_loss=-0.000610 value_loss=5079.590222 action_counts_0123=[678, 373, 429, 568]
+13:16:41 | train_ppo | INFO | Rollout @ 67584 timesteps | mean_reward=3.8217 | entropy_loss=-1.2686107076704503 | policy_loss(pg)=-0.0012427559500792994 | value_loss=6023.552682495118 | rollout_actions={'3': 618, '0': 323, '2': 812, '1': 295} | cum_actions={'0': 9298, '1': 10069, '2': 28343, '3': 19874}
+13:16:41 | INFO  | steps=118784 rollout_mean_reward=3.787044 entropy_loss=-1.376446 pg_loss=-0.005991 value_loss=4864.547940 action_counts_0123=[426, 345, 663, 614]
+13:16:59 | INFO  | steps=135168 rollout_mean_reward=3.714484 entropy_loss=-1.368590 pg_loss=-0.001758 value_loss=5141.285881 action_counts_0123=[609, 421, 483, 535]
+13:17:04 | INFO  | steps=120832 rollout_mean_reward=3.590474 entropy_loss=-1.358264 pg_loss=-0.001061 value_loss=5132.023827 action_counts_0123=[367, 498, 612, 571]
+13:17:04 | train_ppo | INFO | Rollout @ 69632 timesteps | mean_reward=3.9788 | entropy_loss=-1.3012109898030757 | policy_loss(pg)=-5.1373122551012786e-05 | value_loss=5233.023332977295 | rollout_actions={'0': 327, '2': 792, '3': 619, '1': 310} | cum_actions={'0': 9625, '1': 10379, '2': 29135, '3': 20493}
+13:17:21 | INFO  | steps=137216 rollout_mean_reward=3.905058 entropy_loss=-1.362766 pg_loss=-0.000313 value_loss=5046.930647 action_counts_0123=[660, 322, 516, 550]
+13:17:40 | INFO  | steps=122880 rollout_mean_reward=3.515965 entropy_loss=-1.347552 pg_loss=-0.004244 value_loss=4980.749507 action_counts_0123=[284, 520, 592, 652]
+13:17:40 | train_ppo | INFO | Rollout @ 71680 timesteps | mean_reward=4.0511 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'1': 256, '2': 708, '3': 715, '0': 369} | cum_actions={'0': 9994, '1': 10635, '2': 29843, '3': 21208}
+13:17:57 | INFO  | steps=139264 rollout_mean_reward=3.897204 entropy_loss=-1.366748 pg_loss=-0.001379 value_loss=4857.860081 action_counts_0123=[602, 337, 618, 491]
+13:18:02 | INFO  | steps=124928 rollout_mean_reward=3.769724 entropy_loss=-1.359318 pg_loss=-0.001138 value_loss=4667.454951 action_counts_0123=[316, 599, 513, 620]
+13:18:03 | train_ppo | INFO | Rollout @ 73728 timesteps | mean_reward=3.9474 | entropy_loss=-1.303032521530986 | policy_loss(pg)=0.00018472755909897386 | value_loss=6245.401536560059 | rollout_actions={'0': 298, '3': 668, '2': 801, '1': 281} | cum_actions={'0': 10292, '1': 10916, '2': 30644, '3': 21876}
+13:18:40 | INFO  | steps=141312 rollout_mean_reward=3.861707 entropy_loss=-1.368715 pg_loss=-0.001470 value_loss=5124.115970 action_counts_0123=[561, 419, 590, 478]
+13:18:52 | INFO  | steps=126976 rollout_mean_reward=3.937085 entropy_loss=-1.344569 pg_loss=-0.005103 value_loss=4907.719241 action_counts_0123=[304, 592, 534, 618]
+13:19:27 | train_ppo | INFO | Rollout @ 75776 timesteps | mean_reward=3.2997 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'3': 722, '1': 297, '2': 746, '0': 283} | cum_actions={'0': 10575, '1': 11213, '2': 31390, '3': 22598}
+13:19:34 | INFO  | steps=143360 rollout_mean_reward=3.929354 entropy_loss=-1.374427 pg_loss=-0.003966 value_loss=4900.383768 action_counts_0123=[562, 387, 625, 474]
+13:19:47 | INFO  | steps=129024 rollout_mean_reward=3.884724 entropy_loss=-1.368496 pg_loss=-0.000792 value_loss=4691.523518 action_counts_0123=[351, 592, 550, 555]
+13:20:22 | train_ppo | INFO | Rollout @ 77824 timesteps | mean_reward=4.1192 | entropy_loss=-1.3173691276460886 | policy_loss(pg)=-0.001891852612607181 | value_loss=6032.0061309814455 | rollout_actions={'2': 678, '3': 753, '0': 292, '1': 325} | cum_actions={'0': 10867, '1': 11538, '2': 32068, '3': 23351}
+13:20:29 | INFO  | steps=145408 rollout_mean_reward=3.777928 entropy_loss=-1.373316 pg_loss=-0.001021 value_loss=5173.532187 action_counts_0123=[631, 378, 524, 515]
+13:21:14 | INFO  | steps=131072 rollout_mean_reward=3.810924 entropy_loss=-1.366326 pg_loss=-0.004802 value_loss=5458.028734 action_counts_0123=[411, 576, 530, 531]
+13:21:17 | train_ppo | INFO | Rollout @ 79872 timesteps | mean_reward=3.9853 | entropy_loss=-1.2986279457807541 | policy_loss(pg)=-0.00038346900109900164 | value_loss=5760.825199890137 | rollout_actions={'0': 322, '3': 803, '2': 614, '1': 309} | cum_actions={'0': 11189, '1': 11847, '2': 32682, '3': 24154}
+13:21:56 | INFO  | steps=147456 rollout_mean_reward=3.512414 entropy_loss=-1.383046 pg_loss=-0.001368 value_loss=5042.421380 action_counts_0123=[583, 414, 503, 548]
+13:22:09 | INFO  | steps=133120 rollout_mean_reward=3.575253 entropy_loss=-1.377972 pg_loss=-0.004475 value_loss=4900.925190 action_counts_0123=[497, 700, 446, 405]
+13:22:46 | train_ppo | INFO | Rollout @ 81920 timesteps | mean_reward=4.0362 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 637, '3': 790, '0': 307, '1': 314} | cum_actions={'0': 11496, '1': 12161, '2': 33319, '3': 24944}
+13:22:51 | INFO  | steps=149504 rollout_mean_reward=3.703513 entropy_loss=-1.383549 pg_loss=-0.004170 value_loss=4832.348514 action_counts_0123=[518, 490, 501, 539]
+13:23:04 | INFO  | steps=135168 rollout_mean_reward=3.498138 entropy_loss=-1.371329 pg_loss=-0.003223 value_loss=5011.482832 action_counts_0123=[460, 582, 526, 480]
+13:23:41 | train_ppo | INFO | Rollout @ 83968 timesteps | mean_reward=4.0445 | entropy_loss=-1.2774367090314627 | policy_loss(pg)=-0.001853649489930831 | value_loss=5335.266696166992 | rollout_actions={'2': 727, '3': 755, '1': 276, '0': 290} | cum_actions={'0': 11786, '1': 12437, '2': 34046, '3': 25699}
+13:23:46 | INFO  | steps=151552 rollout_mean_reward=3.893023 entropy_loss=-1.380921 pg_loss=-0.001335 value_loss=5371.975124 action_counts_0123=[476, 522, 543, 507]
+13:23:59 | INFO  | steps=137216 rollout_mean_reward=3.892397 entropy_loss=-1.374968 pg_loss=-0.001961 value_loss=4875.989202 action_counts_0123=[361, 572, 549, 566]
+13:24:41 | INFO  | steps=153600 rollout_mean_reward=3.773983 entropy_loss=-1.376691 pg_loss=-0.002980 value_loss=4764.292063 action_counts_0123=[545, 461, 618, 424]
+13:25:11 | train_ppo | INFO | Rollout @ 86016 timesteps | mean_reward=3.7304 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 705, '3': 743, '1': 290, '0': 310} | cum_actions={'0': 12096, '1': 12727, '2': 34751, '3': 26442}
+13:25:28 | INFO  | steps=139264 rollout_mean_reward=3.581050 entropy_loss=-1.373411 pg_loss=-0.001273 value_loss=4976.658755 action_counts_0123=[450, 444, 534, 620]
+13:26:06 | train_ppo | INFO | Rollout @ 88064 timesteps | mean_reward=3.2603 | entropy_loss=-1.3323152504861355 | policy_loss(pg)=-0.003980265972495544 | value_loss=5285.130051422119 | rollout_actions={'3': 498, '1': 408, '2': 743, '0': 399} | cum_actions={'0': 12495, '1': 13135, '2': 35494, '3': 26940}
+13:26:10 | INFO  | steps=155648 rollout_mean_reward=3.882708 entropy_loss=-1.379690 pg_loss=-0.000497 value_loss=5160.837606 action_counts_0123=[510, 565, 560, 413]
+13:26:22 | INFO  | steps=141312 rollout_mean_reward=3.937953 entropy_loss=-1.364848 pg_loss=-0.002485 value_loss=5475.580479 action_counts_0123=[461, 417, 544, 626]
+13:27:04 | INFO  | steps=157696 rollout_mean_reward=3.950373 entropy_loss=-1.368763 pg_loss=-0.001748 value_loss=4984.915257 action_counts_0123=[516, 590, 487, 455]
+13:27:16 | INFO  | steps=143360 rollout_mean_reward=3.805674 entropy_loss=-1.356715 pg_loss=0.000127 value_loss=4908.971349 action_counts_0123=[386, 504, 519, 639]
+13:27:34 | train_ppo | INFO | Rollout @ 90112 timesteps | mean_reward=3.8762 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 743, '0': 339, '1': 421, '3': 545} | cum_actions={'0': 12834, '1': 13556, '2': 36237, '3': 27485}
+13:28:00 | INFO  | steps=159744 rollout_mean_reward=3.641641 entropy_loss=-1.366755 pg_loss=-0.003704 value_loss=5207.770529 action_counts_0123=[552, 559, 524, 413]
+13:28:12 | INFO  | steps=145408 rollout_mean_reward=3.823944 entropy_loss=-1.367778 pg_loss=-0.001129 value_loss=4877.915112 action_counts_0123=[338, 562, 537, 611]
+13:28:31 | train_ppo | INFO | Rollout @ 92160 timesteps | mean_reward=3.9729 | entropy_loss=-1.327074334025383 | policy_loss(pg)=-0.000999245965795126 | value_loss=5380.765943908691 | rollout_actions={'1': 339, '2': 820, '0': 340, '3': 549} | cum_actions={'0': 13174, '1': 13895, '2': 37057, '3': 28034}
+13:28:55 | INFO  | steps=161792 rollout_mean_reward=3.709590 entropy_loss=-1.371635 pg_loss=-0.002811 value_loss=4903.723685 action_counts_0123=[593, 452, 617, 386]
+13:29:26 | train_ppo | INFO | Rollout @ 94208 timesteps | mean_reward=4.2572 | entropy_loss=-1.341612884402275 | policy_loss(pg)=0.0015048079483676701 | value_loss=5270.52181930542 | rollout_actions={'0': 348, '2': 765, '3': 531, '1': 404} | cum_actions={'0': 13522, '1': 14299, '2': 37822, '3': 28565}
+13:29:42 | INFO  | steps=147456 rollout_mean_reward=3.705782 entropy_loss=-1.365244 pg_loss=-0.002220 value_loss=5485.610874 action_counts_0123=[367, 559, 566, 556]
+13:30:24 | INFO  | steps=163840 rollout_mean_reward=4.026367 entropy_loss=-1.366029 pg_loss=-0.000773 value_loss=5103.999346 action_counts_0123=[489, 424, 660, 475]
+13:30:37 | INFO  | steps=149504 rollout_mean_reward=3.791183 entropy_loss=-1.364934 pg_loss=-0.002835 value_loss=5008.571479 action_counts_0123=[394, 445, 535, 674]
+13:30:56 | train_ppo | INFO | Rollout @ 96256 timesteps | mean_reward=3.8015 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'1': 402, '2': 716, '3': 568, '0': 362} | cum_actions={'0': 13884, '1': 14701, '2': 38538, '3': 29133}
+13:31:19 | INFO  | steps=165888 rollout_mean_reward=3.831534 entropy_loss=-1.364847 pg_loss=-0.000548 value_loss=4560.310149 action_counts_0123=[432, 336, 763, 517]
+13:31:32 | INFO  | steps=151552 rollout_mean_reward=3.803253 entropy_loss=-1.370767 pg_loss=-0.000084 value_loss=5132.831299 action_counts_0123=[520, 374, 539, 615]
+13:31:51 | train_ppo | INFO | Rollout @ 98304 timesteps | mean_reward=3.3733 | entropy_loss=-1.3329181000590324 | policy_loss(pg)=-0.0005487918446306139 | value_loss=4988.618363189697 | rollout_actions={'0': 397, '2': 777, '3': 590, '1': 284} | cum_actions={'0': 14281, '1': 14985, '2': 39315, '3': 29723}
+13:32:14 | INFO  | steps=167936 rollout_mean_reward=3.905955 entropy_loss=-1.368372 pg_loss=-0.001151 value_loss=5021.566425 action_counts_0123=[416, 448, 679, 505]
+13:32:27 | INFO  | steps=153600 rollout_mean_reward=3.765973 entropy_loss=-1.374995 pg_loss=-0.001678 value_loss=5093.512971 action_counts_0123=[432, 476, 533, 607]
+13:33:09 | INFO  | steps=169984 rollout_mean_reward=4.063375 entropy_loss=-1.373198 pg_loss=0.000524 value_loss=5008.435616 action_counts_0123=[430, 493, 674, 451]
+13:33:21 | train_ppo | INFO | Rollout @ 100352 timesteps | mean_reward=3.6119 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 845, '0': 271, '1': 315, '3': 617} | cum_actions={'0': 14552, '1': 15300, '2': 40160, '3': 30340}
+13:33:57 | INFO  | steps=155648 rollout_mean_reward=3.904168 entropy_loss=-1.365694 pg_loss=-0.001707 value_loss=4564.987170 action_counts_0123=[477, 412, 532, 627]
+13:34:17 | train_ppo | INFO | Rollout @ 102400 timesteps | mean_reward=3.9847 | entropy_loss=-1.2790727753192186 | policy_loss(pg)=-0.0015086356434039772 | value_loss=5255.204925537109 | rollout_actions={'2': 780, '0': 381, '1': 293, '3': 594} | cum_actions={'0': 14933, '1': 15593, '2': 40940, '3': 30934}
+13:34:39 | INFO  | steps=172032 rollout_mean_reward=3.361576 entropy_loss=-1.374047 pg_loss=-0.003864 value_loss=4796.553780 action_counts_0123=[445, 512, 620, 471]
+13:34:53 | INFO  | steps=157696 rollout_mean_reward=3.934669 entropy_loss=-1.375125 pg_loss=-0.003791 value_loss=5077.557024 action_counts_0123=[418, 412, 569, 649]
+13:35:13 | train_ppo | INFO | Rollout @ 104448 timesteps | mean_reward=3.9612 | entropy_loss=-1.3005794927477836 | policy_loss(pg)=-0.0012720682760118506 | value_loss=4801.23190536499 | rollout_actions={'0': 301, '3': 503, '2': 945, '1': 299} | cum_actions={'0': 15234, '1': 15892, '2': 41885, '3': 31437}
+13:35:34 | INFO  | steps=174080 rollout_mean_reward=2.334604 entropy_loss=-1.377236 pg_loss=-0.000650 value_loss=6255.528508 action_counts_0123=[524, 490, 547, 487]
+13:35:46 | INFO  | steps=159744 rollout_mean_reward=3.752443 entropy_loss=-1.380917 pg_loss=-0.001235 value_loss=5398.152670 action_counts_0123=[481, 459, 482, 626]
+13:36:07 | INFO  | steps=176128 rollout_mean_reward=3.905568 entropy_loss=-1.380123 pg_loss=-0.000209 value_loss=5117.927260 action_counts_0123=[533, 465, 569, 481]
+13:36:13 | train_ppo | INFO | Rollout @ 106496 timesteps | mean_reward=3.8926 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'0': 257, '2': 1062, '3': 444, '1': 285} | cum_actions={'0': 15491, '1': 16177, '2': 42947, '3': 31881}
+13:36:13 | INFO  | steps=161792 rollout_mean_reward=3.632833 entropy_loss=-1.381037 pg_loss=-0.001068 value_loss=4700.632903 action_counts_0123=[505, 455, 550, 538]
+13:36:31 | INFO  | steps=178176 rollout_mean_reward=3.976079 entropy_loss=-1.382253 pg_loss=-0.001754 value_loss=4938.940292 action_counts_0123=[475, 534, 522, 517]
+13:36:37 | train_ppo | INFO | Rollout @ 108544 timesteps | mean_reward=3.5291 | entropy_loss=-1.2637161545455455 | policy_loss(pg)=-0.0018051215025479904 | value_loss=4901.37833480835 | rollout_actions={'3': 544, '0': 333, '1': 306, '2': 865} | cum_actions={'0': 15824, '1': 16483, '2': 43812, '3': 32425}
+13:36:53 | INFO  | steps=163840 rollout_mean_reward=3.883490 entropy_loss=-1.379379 pg_loss=-0.000179 value_loss=5477.122018 action_counts_0123=[573, 424, 472, 579]
+13:37:11 | INFO  | steps=180224 rollout_mean_reward=4.109559 entropy_loss=-1.382325 pg_loss=-0.000877 value_loss=5433.675526 action_counts_0123=[564, 485, 466, 533]
+13:37:17 | train_ppo | INFO | Rollout @ 110592 timesteps | mean_reward=3.3690 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 808, '3': 638, '1': 284, '0': 318} | cum_actions={'0': 16142, '1': 16767, '2': 44620, '3': 33063}
+13:37:18 | INFO  | steps=165888 rollout_mean_reward=3.140665 entropy_loss=-1.372747 pg_loss=-0.000430 value_loss=5420.068150 action_counts_0123=[576, 446, 453, 573]
+13:37:36 | INFO  | steps=182272 rollout_mean_reward=3.872266 entropy_loss=-1.372581 pg_loss=-0.006085 value_loss=4597.395746 action_counts_0123=[512, 497, 511, 528]
+13:37:42 | train_ppo | INFO | Rollout @ 112640 timesteps | mean_reward=3.8278 | entropy_loss=-1.286471788212657 | policy_loss(pg)=-0.004732046712888405 | value_loss=5050.136422729493 | rollout_actions={'3': 679, '0': 353, '2': 799, '1': 217} | cum_actions={'0': 16495, '1': 16984, '2': 45419, '3': 33742}
+13:37:43 | INFO  | steps=167936 rollout_mean_reward=4.151696 entropy_loss=-1.379392 pg_loss=-0.004902 value_loss=5257.108266 action_counts_0123=[597, 457, 501, 493]
+13:38:01 | INFO  | steps=184320 rollout_mean_reward=3.420958 entropy_loss=-1.373617 pg_loss=-0.000739 value_loss=5951.918069 action_counts_0123=[462, 424, 623, 539]
+13:38:08 | train_ppo | INFO | Rollout @ 114688 timesteps | mean_reward=4.0364 | entropy_loss=-1.3101214777678252 | policy_loss(pg)=0.002332399529404938 | value_loss=4815.944985961914 | rollout_actions={'2': 862, '1': 279, '3': 624, '0': 283} | cum_actions={'0': 16778, '1': 17263, '2': 46281, '3': 34366}
+13:38:08 | INFO  | steps=169984 rollout_mean_reward=4.147979 entropy_loss=-1.378907 pg_loss=-0.001700 value_loss=4706.896206 action_counts_0123=[450, 397, 585, 616]
+13:38:27 | INFO  | steps=186368 rollout_mean_reward=3.459047 entropy_loss=-1.383004 pg_loss=-0.001413 value_loss=4629.580723 action_counts_0123=[515, 525, 488, 520]
+13:38:49 | INFO  | steps=172032 rollout_mean_reward=3.554928 entropy_loss=-1.381230 pg_loss=-0.000442 value_loss=4926.250329 action_counts_0123=[540, 480, 540, 488]
+13:38:49 | train_ppo | INFO | Rollout @ 116736 timesteps | mean_reward=3.9346 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'3': 664, '0': 337, '1': 283, '2': 764} | cum_actions={'0': 17115, '1': 17546, '2': 47045, '3': 35030}
+13:39:08 | INFO  | steps=188416 rollout_mean_reward=3.740282 entropy_loss=-1.377728 pg_loss=-0.002593 value_loss=4634.954836 action_counts_0123=[496, 482, 540, 530]
+13:39:15 | INFO  | steps=174080 rollout_mean_reward=3.711743 entropy_loss=-1.381662 pg_loss=-0.002692 value_loss=5792.148336 action_counts_0123=[539, 495, 537, 477]
+13:39:15 | train_ppo | INFO | Rollout @ 118784 timesteps | mean_reward=3.6967 | entropy_loss=-1.2694979749619961 | policy_loss(pg)=-0.003591862821485847 | value_loss=5491.142822265625 | rollout_actions={'2': 917, '1': 271, '0': 256, '3': 604} | cum_actions={'0': 17371, '1': 17817, '2': 47962, '3': 35634}
+13:39:33 | INFO  | steps=190464 rollout_mean_reward=3.947726 entropy_loss=-1.376846 pg_loss=-0.003853 value_loss=4618.022916 action_counts_0123=[494, 415, 676, 463]
+13:39:40 | INFO  | steps=176128 rollout_mean_reward=4.036257 entropy_loss=-1.375660 pg_loss=-0.001219 value_loss=4849.885280 action_counts_0123=[460, 516, 519, 553]
+13:39:56 | train_ppo | INFO | Rollout @ 120832 timesteps | mean_reward=3.4616 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'3': 551, '2': 916, '1': 305, '0': 276} | cum_actions={'0': 17647, '1': 18122, '2': 48878, '3': 36185}
+13:39:58 | INFO  | steps=192512 rollout_mean_reward=4.061687 entropy_loss=-1.351262 pg_loss=-0.001291 value_loss=4702.647989 action_counts_0123=[594, 385, 638, 431]
+13:40:05 | INFO  | steps=178176 rollout_mean_reward=4.102551 entropy_loss=-1.381001 pg_loss=-0.001206 value_loss=4796.048212 action_counts_0123=[472, 467, 513, 596]
+13:40:38 | train_ppo | INFO | Rollout @ 122880 timesteps | mean_reward=3.5027 | entropy_loss=-1.3104455463588238 | policy_loss(pg)=-0.0059815560220158655 | value_loss=5363.242749023438 | rollout_actions={'2': 770, '0': 352, '3': 519, '1': 407} | cum_actions={'0': 17999, '1': 18529, '2': 49648, '3': 36704}
+13:40:42 | INFO  | steps=194560 rollout_mean_reward=3.276973 entropy_loss=-1.335972 pg_loss=-0.002202 value_loss=5930.154290 action_counts_0123=[540, 304, 820, 384]
+13:41:32 | INFO  | steps=180224 rollout_mean_reward=4.066379 entropy_loss=-1.373724 pg_loss=-0.002084 value_loss=5266.982771 action_counts_0123=[503, 417, 572, 556]
+13:41:34 | train_ppo | INFO | Rollout @ 124928 timesteps | mean_reward=4.0799 | entropy_loss=-1.3176458101719617 | policy_loss(pg)=-0.0003429362419410609 | value_loss=5041.267195129394 | rollout_actions={'0': 397, '2': 713, '1': 414, '3': 524} | cum_actions={'0': 18396, '1': 18943, '2': 50361, '3': 37228}
+13:42:12 | INFO  | steps=196608 rollout_mean_reward=4.019593 entropy_loss=-1.375011 pg_loss=-0.005733 value_loss=5153.010018 action_counts_0123=[505, 375, 724, 444]
+13:42:28 | INFO  | steps=182272 rollout_mean_reward=3.918135 entropy_loss=-1.368227 pg_loss=-0.001262 value_loss=4825.264958 action_counts_0123=[414, 428, 538, 668]
+13:43:06 | train_ppo | INFO | Rollout @ 126976 timesteps | mean_reward=4.0807 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 661, '3': 590, '1': 361, '0': 436} | cum_actions={'0': 18832, '1': 19304, '2': 51022, '3': 37818}
+13:43:08 | INFO  | steps=198656 rollout_mean_reward=3.993941 entropy_loss=-1.381494 pg_loss=-0.003445 value_loss=4832.648288 action_counts_0123=[508, 439, 617, 484]
+13:43:24 | INFO  | steps=184320 rollout_mean_reward=3.392421 entropy_loss=-1.378640 pg_loss=-0.000532 value_loss=5894.381300 action_counts_0123=[467, 454, 552, 575]
+13:44:02 | train_ppo | INFO | Rollout @ 129024 timesteps | mean_reward=3.8402 | entropy_loss=-1.3389743510633707 | policy_loss(pg)=-0.0004589031661453191 | value_loss=4915.9311050415035 | rollout_actions={'0': 399, '1': 302, '2': 633, '3': 714} | cum_actions={'0': 19231, '1': 19606, '2': 51655, '3': 38532}
+13:44:05 | INFO  | [final] steps=200704 rollout_mean_reward=4.036264 entropy_loss=-1.371109 pg_loss=-0.000727 value_loss=5278.304152 action_counts_0123=[468, 436, 606, 538]
+13:44:05 | INFO  | Wrote reports\ppo_training_summary.json
+13:44:19 | INFO  | steps=186368 rollout_mean_reward=3.849183 entropy_loss=-1.377655 pg_loss=-0.001213 value_loss=4838.521384 action_counts_0123=[489, 467, 550, 542]
+13:45:22 | train_ppo | INFO | Rollout @ 131072 timesteps | mean_reward=3.7352 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'0': 423, '3': 795, '1': 302, '2': 528} | cum_actions={'0': 19654, '1': 19908, '2': 52183, '3': 39327}
+13:45:37 | INFO  | steps=188416 rollout_mean_reward=4.005063 entropy_loss=-1.371199 pg_loss=-0.003164 value_loss=5206.231467 action_counts_0123=[461, 469, 532, 586]
+13:46:06 | train_ppo | INFO | Rollout @ 133120 timesteps | mean_reward=3.1518 | entropy_loss=-1.3363876976072788 | policy_loss(pg)=-0.001292888485477306 | value_loss=4965.7935989379885 | rollout_actions={'0': 370, '2': 630, '1': 357, '3': 691} | cum_actions={'0': 20024, '1': 20265, '2': 52813, '3': 40018}
+13:46:20 | INFO  | steps=190464 rollout_mean_reward=4.052681 entropy_loss=-1.341624 pg_loss=-0.001106 value_loss=5250.766453 action_counts_0123=[402, 441, 515, 690]
+13:46:59 | INFO  | steps=192512 rollout_mean_reward=4.013573 entropy_loss=-1.371237 pg_loss=-0.001235 value_loss=4596.330938 action_counts_0123=[360, 472, 472, 744]
+13:47:06 | train_ppo | INFO | Rollout @ 135168 timesteps | mean_reward=3.6533 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'0': 429, '1': 364, '2': 542, '3': 713} | cum_actions={'0': 20453, '1': 20629, '2': 53355, '3': 40731}
+13:47:28 | INFO  | steps=194560 rollout_mean_reward=3.349546 entropy_loss=-1.372712 pg_loss=-0.001206 value_loss=5927.512229 action_counts_0123=[402, 542, 500, 604]
+13:47:38 | train_ppo | INFO | Rollout @ 137216 timesteps | mean_reward=4.0568 | entropy_loss=-1.3645576797425747 | policy_loss(pg)=-0.001890955024282448 | value_loss=5230.949201202393 | rollout_actions={'0': 421, '3': 734, '2': 482, '1': 411} | cum_actions={'0': 20874, '1': 21040, '2': 53837, '3': 41465}
+13:48:11 | train_ppo | INFO | Rollout @ 139264 timesteps | mean_reward=3.9327 | entropy_loss=-1.3723069064319133 | policy_loss(pg)=-0.0028067142542568036 | value_loss=5001.67979888916 | rollout_actions={'1': 470, '0': 554, '3': 640, '2': 384} | cum_actions={'0': 21428, '1': 21510, '2': 54221, '3': 42105}
+13:48:25 | INFO  | steps=196608 rollout_mean_reward=3.861952 entropy_loss=-1.349535 pg_loss=-0.003670 value_loss=5101.389367 action_counts_0123=[401, 502, 503, 642]
+13:49:12 | INFO  | steps=198656 rollout_mean_reward=3.923592 entropy_loss=-1.334878 pg_loss=-0.001041 value_loss=4705.712955 action_counts_0123=[331, 483, 519, 715]
+13:49:22 | train_ppo | INFO | Rollout @ 141312 timesteps | mean_reward=3.8731 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'1': 526, '3': 600, '2': 450, '0': 472} | cum_actions={'0': 21900, '1': 22036, '2': 54671, '3': 42705}
+13:49:38 | INFO  | [final] steps=200704 rollout_mean_reward=4.041331 entropy_loss=-1.278677 pg_loss=-0.002498 value_loss=5139.173080 action_counts_0123=[334, 432, 478, 804]
+13:49:38 | INFO  | Wrote reports\ppo_training_summary.json
+13:49:48 | train_ppo | INFO | Rollout @ 143360 timesteps | mean_reward=3.8394 | entropy_loss=-1.371674019098282 | policy_loss(pg)=-0.0037192258561844936 | value_loss=5510.791613006591 | rollout_actions={'3': 499, '0': 410, '1': 631, '2': 508} | cum_actions={'0': 22310, '1': 22667, '2': 55179, '3': 43204}
+13:50:34 | train_ppo | INFO | Rollout @ 145408 timesteps | mean_reward=3.8758 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'1': 653, '2': 598, '0': 349, '3': 448} | cum_actions={'0': 22659, '1': 23320, '2': 55777, '3': 43652}
+13:51:01 | train_ppo | INFO | Rollout @ 147456 timesteps | mean_reward=3.6281 | entropy_loss=-1.3673023007810117 | policy_loss(pg)=-0.005683688656426966 | value_loss=4994.84616317749 | rollout_actions={'0': 421, '2': 499, '3': 442, '1': 686} | cum_actions={'0': 23080, '1': 24006, '2': 56276, '3': 44094}
+13:51:41 | train_ppo | INFO | Rollout @ 149504 timesteps | mean_reward=3.6448 | entropy_loss=-1.3716054972261191 | policy_loss(pg)=-0.0017785072137485257 | value_loss=5471.218398284912 | rollout_actions={'1': 560, '0': 514, '3': 461, '2': 513} | cum_actions={'0': 23594, '1': 24566, '2': 56789, '3': 44555}
+13:52:14 | train_ppo | INFO | Rollout @ 151552 timesteps | mean_reward=3.9500 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'0': 474, '3': 431, '2': 597, '1': 546} | cum_actions={'0': 24068, '1': 25112, '2': 57386, '3': 44986}
+13:52:34 | train_ppo | INFO | Rollout @ 153600 timesteps | mean_reward=3.7525 | entropy_loss=-1.3751827251166104 | policy_loss(pg)=-3.193422016920522e-05 | value_loss=5139.412565612793 | rollout_actions={'0': 424, '2': 638, '3': 446, '1': 540} | cum_actions={'0': 24492, '1': 25652, '2': 58024, '3': 45432}
+13:53:16 | train_ppo | INFO | Rollout @ 155648 timesteps | mean_reward=3.9710 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'3': 471, '0': 455, '2': 542, '1': 580} | cum_actions={'0': 24947, '1': 26232, '2': 58566, '3': 45903}
+13:53:55 | train_ppo | INFO | Rollout @ 157696 timesteps | mean_reward=3.8789 | entropy_loss=-1.3800925638526678 | policy_loss(pg)=-0.0022126796160591767 | value_loss=4974.382681274414 | rollout_actions={'0': 464, '2': 584, '1': 467, '3': 533} | cum_actions={'0': 25411, '1': 26699, '2': 59150, '3': 46436}
+13:54:22 | train_ppo | INFO | Rollout @ 159744 timesteps | mean_reward=3.6108 | entropy_loss=-1.3751231096684933 | policy_loss(pg)=-0.002037657634355128 | value_loss=5036.005513763428 | rollout_actions={'2': 663, '0': 411, '3': 470, '1': 504} | cum_actions={'0': 25822, '1': 27203, '2': 59813, '3': 46906}
+13:55:20 | train_ppo | INFO | Rollout @ 161792 timesteps | mean_reward=3.5741 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 641, '0': 403, '1': 485, '3': 519} | cum_actions={'0': 26225, '1': 27688, '2': 60454, '3': 47425}
+13:55:52 | train_ppo | INFO | Rollout @ 163840 timesteps | mean_reward=3.8223 | entropy_loss=-1.3608454249799251 | policy_loss(pg)=-0.0028750506331562064 | value_loss=5139.335816192627 | rollout_actions={'2': 631, '0': 322, '3': 533, '1': 562} | cum_actions={'0': 26547, '1': 28250, '2': 61085, '3': 47958}
+13:56:22 | train_ppo | INFO | Rollout @ 165888 timesteps | mean_reward=3.2721 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'0': 372, '2': 699, '3': 467, '1': 510} | cum_actions={'0': 26919, '1': 28760, '2': 61784, '3': 48425}
+13:56:41 | train_ppo | INFO | Rollout @ 167936 timesteps | mean_reward=3.9395 | entropy_loss=-1.370641290396452 | policy_loss(pg)=-0.0016567651720833965 | value_loss=4696.281065368652 | rollout_actions={'2': 589, '1': 583, '0': 484, '3': 392} | cum_actions={'0': 27403, '1': 29343, '2': 62373, '3': 48817}
+13:57:00 | train_ppo | INFO | Rollout @ 169984 timesteps | mean_reward=4.2496 | entropy_loss=-1.37216657102108 | policy_loss(pg)=1.9168391008861364e-05 | value_loss=4905.588166046143 | rollout_actions={'1': 524, '2': 629, '0': 426, '3': 469} | cum_actions={'0': 27829, '1': 29867, '2': 63002, '3': 49286}
+13:57:30 | train_ppo | INFO | Rollout @ 172032 timesteps | mean_reward=3.5490 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 590, '1': 634, '3': 425, '0': 399} | cum_actions={'0': 28228, '1': 30501, '2': 63592, '3': 49711}
+13:57:48 | train_ppo | INFO | Rollout @ 174080 timesteps | mean_reward=2.9173 | entropy_loss=-1.3484386805444957 | policy_loss(pg)=-0.0053172936663031575 | value_loss=5066.851411437989 | rollout_actions={'1': 571, '3': 363, '2': 707, '0': 407} | cum_actions={'0': 28635, '1': 31072, '2': 64299, '3': 50074}
+13:58:20 | train_ppo | INFO | Rollout @ 176128 timesteps | mean_reward=2.8264 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'0': 372, '3': 360, '2': 624, '1': 692} | cum_actions={'0': 29007, '1': 31764, '2': 64923, '3': 50434}
+13:58:40 | train_ppo | INFO | Rollout @ 178176 timesteps | mean_reward=4.0638 | entropy_loss=-1.346399136260152 | policy_loss(pg)=5.378410060075112e-05 | value_loss=6512.041046142578 | rollout_actions={'2': 573, '1': 712, '0': 426, '3': 337} | cum_actions={'0': 29433, '1': 32476, '2': 65496, '3': 50771}
+13:59:19 | train_ppo | INFO | Rollout @ 180224 timesteps | mean_reward=3.8986 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 686, '1': 530, '3': 422, '0': 410} | cum_actions={'0': 29843, '1': 33006, '2': 66182, '3': 51193}
+13:59:42 | train_ppo | INFO | Rollout @ 182272 timesteps | mean_reward=3.9117 | entropy_loss=-1.3654530365020037 | policy_loss(pg)=0.0012038752814987675 | value_loss=4897.003491973877 | rollout_actions={'2': 659, '1': 542, '3': 408, '0': 439} | cum_actions={'0': 30282, '1': 33548, '2': 66841, '3': 51601}
+14:00:26 | train_ppo | INFO | Rollout @ 184320 timesteps | mean_reward=3.3222 | entropy_loss=-1.3640653222799302 | policy_loss(pg)=-0.0013636955656693317 | value_loss=4767.543618011475 | rollout_actions={'2': 690, '1': 448, '0': 445, '3': 465} | cum_actions={'0': 30727, '1': 33996, '2': 67531, '3': 52066}
+14:01:53 | train_ppo | INFO | Rollout @ 186368 timesteps | mean_reward=3.7688 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 731, '3': 462, '1': 452, '0': 403} | cum_actions={'0': 31130, '1': 34448, '2': 68262, '3': 52528}
+14:02:40 | train_ppo | INFO | Rollout @ 188416 timesteps | mean_reward=4.0548 | entropy_loss=-1.3566706411540508 | policy_loss(pg)=-0.0024549247449613177 | value_loss=4922.724612426758 | rollout_actions={'3': 503, '2': 720, '1': 393, '0': 432} | cum_actions={'0': 31562, '1': 34841, '2': 68982, '3': 53031}
+14:03:28 | train_ppo | INFO | Rollout @ 190464 timesteps | mean_reward=4.0824 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 692, '0': 455, '1': 456, '3': 445} | cum_actions={'0': 32017, '1': 35297, '2': 69674, '3': 53476}
+14:04:17 | train_ppo | INFO | Rollout @ 192512 timesteps | mean_reward=3.9685 | entropy_loss=-1.3490332797169686 | policy_loss(pg)=-0.00254980330937542 | value_loss=5121.069734954834 | rollout_actions={'0': 409, '2': 809, '1': 455, '3': 375} | cum_actions={'0': 32426, '1': 35752, '2': 70483, '3': 53851}
+14:05:02 | train_ppo | INFO | Rollout @ 194560 timesteps | mean_reward=3.1817 | entropy_loss=-1.346753080189228 | policy_loss(pg)=-0.0012450145004549995 | value_loss=4658.95912399292 | rollout_actions={'2': 656, '1': 501, '0': 461, '3': 430} | cum_actions={'0': 32887, '1': 36253, '2': 71139, '3': 54281}
+14:06:13 | train_ppo | INFO | Rollout @ 196608 timesteps | mean_reward=3.8153 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'2': 624, '1': 534, '0': 490, '3': 400} | cum_actions={'0': 33377, '1': 36787, '2': 71763, '3': 54681}
+14:06:46 | train_ppo | INFO | Rollout @ 198656 timesteps | mean_reward=3.8380 | entropy_loss=-1.3467535573989153 | policy_loss(pg)=-0.0038058769052440765 | value_loss=4744.00558013916 | rollout_actions={'0': 454, '2': 767, '1': 450, '3': 377} | cum_actions={'0': 33831, '1': 37237, '2': 72530, '3': 55058}
+14:07:49 | train_ppo | INFO | Rollout @ 200704 timesteps | mean_reward=3.8322 | entropy_loss=nan | policy_loss(pg)=nan | value_loss=nan | rollout_actions={'1': 517, '0': 448, '3': 372, '2': 711} | cum_actions={'0': 34279, '1': 37754, '2': 73241, '3': 55430}
+14:07:52 | train_ppo | INFO | Training complete. Summary written to reports\ppo_training_summary.json
