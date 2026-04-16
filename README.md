@@ -1,14 +1,5 @@
 <div align="center">
 
-```
-███████╗ ██████╗      ███╗   ██╗███████╗████████╗██╗    ██╗ ██████╗ ██████╗ ██╗  ██╗
-██╔════╝██╔════╝      ████╗  ██║██╔════╝╚══██╔══╝██║    ██║██╔═══██╗██╔══██╗██║ ██╔╝
-███████╗██║  ███╗     ██╔██╗ ██║█████╗     ██║   ██║ █╗ ██║██║   ██║██████╔╝█████╔╝ 
-╚════██║██║   ██║     ██║╚██╗██║██╔══╝     ██║   ██║███╗██║██║   ██║██╔══██╗██╔═██╗ 
-███████║╚██████╔╝     ██║ ╚████║███████╗   ██║   ╚███╔███╔╝╚██████╔╝██║  ██║██║  ██╗
-╚══════╝ ╚═════╝      ╚═╝  ╚═══╝╚══════╝   ╚═╝    ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
-                    D I G I T A L   T W I N   ·   A I - P O W E R E D
-```
 
 <h2>Industry-Grade 5G Network Simulation with ML Congestion Prediction & RL Optimization</h2>
 
@@ -1023,77 +1014,6 @@ The LSTM is a **supervised** model — it can only detect congestion patterns it
 
 ---
 
-## 💼 Interview Q&A — What Recruiters Will Ask
-
-**Q: What is a digital twin in the context of 5G?**  
-A: A software replica of a physical network that mirrors its behavior in real time, enabling experimentation, prediction, and optimization without touching live infrastructure. This project simulates 3 gNBs and 20 UEs using real 3GPP physics — path loss exponent 3.5, 3.5 GHz carrier, SINR-based handover — so conclusions drawn from it are directly applicable to deployed networks.
-
-**Q: How does your SINR calculation work?**  
-A: I compute path loss using the 3GPP urban macro model: `PL = 20log(d) + 20log(f) + 92.4 + 10·3.5·log(d/1000)`. Received power = TX power + antenna gain − path loss. SINR = serving cell received power divided by the sum of noise power and all interfering cell powers. This is vectorized with NumPy for all 20 UEs simultaneously.
-
-**Q: Why use an ensemble instead of just LSTM?**  
-A: LSTM captures temporal drift (load trends over 10 ticks) but misses sharp threshold-based patterns. XGBoost captures feature interactions and threshold rules but has no memory. The 60/40 ensemble achieves F1=0.871 and AUC=0.984 versus 0.829 for LSTM alone — a 5% F1 improvement that translates to significantly fewer missed congestion events in production.
-
-**Q: How do you know your RL agent is better than a simple rule?**  
-A: I run both agents in parallel every tick (A/B test). The PPO agent consistently chooses NoOp when loads are healthy — demonstrating it learned that unnecessary interventions have a cost. The rule-based agent over-triggers LoadBalance on normal variance. Over 300 ticks, PPO achieves a higher cumulative reward, quantifiable from the A/B Test dashboard panel.
-
-**Q: How do you explain your model's decisions?**  
-A: I use XGBoost's built-in gain-based feature importance, accessible at `/api/shap/explanation`. Cell load features dominate (as expected), followed by UE count per cell and system latency. The SHAP panel in the dashboard shows a waterfall chart updated every tick, so operators can see in real time which features are driving the current prediction.
-
-**Q: How do you detect failure modes the model wasn't trained on?**  
-A: IsolationForest anomaly detection runs on every tick alongside the LSTM. Since it's unsupervised, it flags any observation that's statistically unusual — even if the LSTM labels it as "normal." This covers hardware faults, coordinated interference, or unusual traffic patterns that never appeared in the training dataset.
-
-**Q: How do you monitor this in production?**  
-A: The `/metrics` endpoint exposes 11 live gauges in Prometheus text format — cell load, throughput, latency, UE count, congestion probability, anomaly score, PPO reward, rule-based reward, system throughput, handover counter, and simulation tick. Any Prometheus scraper (Grafana, Datadog, Victoria Metrics) can connect and create dashboards without any code changes.
-
-**Q: Is your simulation 3GPP-compliant?**  
-A: The traffic profiles are 3GPP TS 23.501-aligned — each UE is assigned a 5QI (Video=5QI-2, Gaming=5QI-3, IoT=5QI-5, VoIP=5QI-1) with corresponding demand ranges and QoS class. The radio model uses the 3GPP TR 38.901 UMa path loss formula. The handover logic uses SINR hysteresis as specified in 3GPP TS 38.331.
-
----
-
-## 🐳 Deployment
-
-### Docker Compose (Local)
-
-```bash
-docker-compose up --build
-```
-
-Exposes:
-- Frontend: `http://localhost:80`
-- Backend: `http://localhost:8000`
-
-### AWS EC2 Deployment
-
-1. Launch EC2 instance (Ubuntu 22.04, t2.medium or larger)
-2. Install Docker and Docker Compose
-3. Clone repo and run `docker-compose up -d`
-4. Open ports 80 and 8000 in EC2 security group
-5. Access dashboard at `http://<your-ec2-ip>`
-
----
-
-## 🗺 Roadmap
-
-| Phase | Status | Description |
-|---|---|---|
-| Phase 1: Scaffold | ✅ Done | Project structure, config, dependencies |
-| Phase 2: Simulation | ✅ Done | SimPy engine, gNB, UE, SINR, mobility |
-| Phase 3: KPI Engine | ✅ Done | Calculator, data generator, 10,800-row dataset |
-| Phase 4: ML Models | ✅ Done | LSTM, XGBoost, ensemble, SHAP |
-| Phase 5: RL Agent | ✅ Done | Gymnasium env, PPO, 200K training steps |
-| Phase 6: API + Dashboard | ✅ Done | FastAPI WS, 8 React panels, Prometheus |
-| Phase 7: Docker + AWS | 🔄 In Progress | Containerization, EC2 deployment |
-| Improvements: SHAP Panel | ✅ Done | Live feature importance dashboard |
-| Improvements: Anomaly Detection | ✅ Done | IsolationForest, AnomalyPanel |
-| Improvements: A/B Testing | ✅ Done | PPO vs rule-based, ABTestPanel |
-| Improvements: 5QI Profiles | ✅ Done | 3GPP-aligned traffic profiles on map |
-| Improvements: Prometheus | ✅ Done | 11 live gauges, standard scrape format |
-| Improvements: REST ML APIs | ✅ Done | /api/predict, /api/agent/action |
-| Improvements: Replay Mode | ✅ Done | Record/play buffer, adjustable speed |
-
----
-
 ## 👤 Author
 
 **Poornachandran**  
@@ -1105,10 +1025,6 @@ Building industry-grade telecom systems from first principles.
 ---
 
 <div align="center">
-
-**Target Companies:** Ericsson · Nokia · Jio · Qualcomm · Samsung Networks
-
-<br/>
 
 *If this project helped you understand 5G digital twins, give it a ⭐*
 
