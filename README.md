@@ -32,6 +32,12 @@
 
 <br/>
 
+![5G Network Digital Twin — Live Dashboard](reports/dashboard_preview.png)
+*Live Network Map: 3 gNB base stations (triangles) + 20 mobile UEs colored by 5QI traffic profile — Video (blue), Gaming (green), IoT (yellow), VoIP (purple)*
+
+![Overview Panel](reports/dashboard_overview.png)
+*Overview Panel: 1,514 Mbps total throughput, 31.2ms mean latency, all 20 UEs active across 3 cells*
+
 > **A software-only digital twin of a real urban 5G cellular network.**  
 > Physics-based simulation → real-time KPI streaming → ML congestion prediction → RL load balancing → live dashboard.  
 > Every component is grounded in actual 3GPP standards and production engineering practices.
