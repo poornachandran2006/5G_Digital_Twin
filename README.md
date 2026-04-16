@@ -1020,7 +1020,7 @@ The LSTM is a **supervised** model — it can only detect congestion patterns it
 3rd Year ECE Engineering Student  
 Building industry-grade telecom systems from first principles.
 
-> *"Every component in this project is grounded in actual 5G physics, real ML engineering practices, and production observability patterns — not toy examples."*
+> *"Every component in this project is grounded in actual 5G physics, real ML engineering practices, and production observability patterns"*
 
 ---
 
