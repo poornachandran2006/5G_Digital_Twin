@@ -1,7 +1,7 @@
 <div align="center">
 
 
-<h2>Industry-Grade 5G Network Simulation with ML Congestion Prediction & RL Optimization</h2>
+<h2>5G Network Simulation with ML Congestion Prediction & RL Optimization</h2>
 
 <p>
   <img src="https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
