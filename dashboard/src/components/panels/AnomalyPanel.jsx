@@ -1,5 +1,7 @@
 import { useSim } from '../../context/SimContext';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts';
+import { useState } from 'react';
+import InfoModal from '../InfoModal';
 
 const SEVERITY_COLOR = {
   normal: '#22c55e',    // green
@@ -14,6 +16,7 @@ const SEVERITY_BG = {
 };
 
 export default function AnomalyPanel() {
+  const [showInfo, setShowInfo] = useState(false);
   const { state } = useSim();
   const { ticks, currentTick } = state;
 
@@ -42,7 +45,36 @@ export default function AnomalyPanel() {
 
   return (
     <div className="p-4 space-y-4">
-      <h2 className="text-lg font-bold text-white">Anomaly Detection</h2>
+      <div className="flex items-center gap-2">
+        <h2 className="text-lg font-bold text-white">Anomaly Detection</h2>
+        <button
+          onClick={() => setShowInfo(true)}
+          className="text-gray-500 hover:text-green-400 transition-colors text-sm"
+          title="What is this panel?"
+        >
+          ⓘ
+        </button>
+      </div>
+
+      {showInfo && (
+        <InfoModal title="Anomaly Detection Panel" onClose={() => setShowInfo(false)}>
+          <p>
+            This panel uses <span className="text-green-400 font-semibold">Isolation Forest</span> — an unsupervised ML algorithm — to detect abnormal network behaviour without needing labelled examples of failures.
+          </p>
+          <p>
+            <span className="text-white font-semibold">How it works:</span> The model was trained on 10,800 ticks of normal network data. It learns what "normal" looks like. Anything that deviates significantly gets a high anomaly score.
+          </p>
+          <p>
+            <span className="text-white font-semibold">Score thresholds:</span> Below 0.55 = normal, 0.55–0.75 = warning (unusual pattern), above 0.75 = critical (genuine anomaly).
+          </p>
+          <p>
+            This is different from the LSTM predictor — LSTM predicts congestion from trends, Isolation Forest detects unexpected patterns that don't fit any known behaviour.
+          </p>
+          <p className="text-gray-500 text-xs pt-1">
+            "Last 60 ticks flagged" counts how many of the last 60 seconds had an anomaly score above the critical threshold.
+          </p>
+        </InfoModal>
+      )}
       <p className="text-xs text-slate-400">
         Isolation Forest (unsupervised) — trained on 10,800 KPI ticks. Detects statistically
         abnormal network behaviour without labelled data.

@@ -3,11 +3,14 @@ import {
   LineChart, Line, XAxis, YAxis, Tooltip, Legend,
   BarChart, Bar, ResponsiveContainer, ReferenceLine
 } from 'recharts';
+import { useState } from 'react';
+import InfoModal from '../InfoModal';
 
 const ACTION_LABELS = ['No-Op', 'LoadBalance', 'MassBalance', 'Emergency'];
 const ACTION_COLORS = ['#64748b', '#22c55e', '#f59e0b', '#ef4444'];
 
 export default function ABTestPanel() {
+  const [showInfo, setShowInfo] = useState(false);
   const { state } = useSim();
   const { ticks } = state;
 
@@ -53,7 +56,36 @@ export default function ABTestPanel() {
 
   return (
     <div className="p-4 space-y-4">
-      <h2 className="text-lg font-bold text-white">A/B Testing — PPO vs Rule-Based</h2>
+      <div className="flex items-center gap-2">
+        <h2 className="text-lg font-bold text-white">A/B Testing — PPO vs Rule-Based</h2>
+        <button
+          onClick={() => setShowInfo(true)}
+          className="text-gray-500 hover:text-green-400 transition-colors text-sm"
+          title="What is this panel?"
+        >
+          ⓘ
+        </button>
+      </div>
+
+      {showInfo && (
+        <InfoModal title="A/B Testing Panel" onClose={() => setShowInfo(false)}>
+          <p>
+            This panel runs a <span className="text-green-400 font-semibold">live experiment</span>: the PPO reinforcement learning agent and a hand-coded rule-based policy are both applied to the same network state every tick, and their decisions are compared.
+          </p>
+          <p>
+            <span className="text-white font-semibold">PPO Agent</span> was trained with Stable-Baselines3 for 200,000 steps. It learned load balancing purely from trial and error — it was never told any rules.
+          </p>
+          <p>
+            <span className="text-white font-semibold">Rule-Based policy</span> uses fixed thresholds: if any cell exceeds 90% load, trigger emergency rebalancing. Simple and predictable, but rigid.
+          </p>
+          <p>
+            <span className="text-white font-semibold">Reward formula:</span> throughput bonus − latency penalty − handover cost. Higher is better. PPO's win rate shows how often it outperforms the rule-based approach per tick.
+          </p>
+          <p className="text-gray-500 text-xs pt-1">
+            Both agents run in shadow mode — only the PPO agent's decisions are actually applied to the network. The rule-based agent is simulated in parallel for comparison only.
+          </p>
+        </InfoModal>
+      )}
       <p className="text-xs text-slate-400">
         PPO (Stable-Baselines3, 200k steps) vs threshold policy running in parallel.
         Same environment, same reward formula. Divergence appears during congestion events.

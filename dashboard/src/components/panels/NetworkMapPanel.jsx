@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { useSim } from '../../context/SimContext';
 import { CELL_COLORS } from '../../constants';
-
+import { useState } from 'react';
+import InfoModal from '../InfoModal';
 // gNB positions are fixed — match simulation/engine.py _GNB_POSITIONS
 // engine uses (200,500), (500,200), (800,700) on a 1000x1000 grid
 const GNB = [
@@ -31,6 +32,7 @@ const PROFILE_LEGEND = [
 
 export default function NetworkMapPanel() {
   const { state } = useSim();
+  const [showInfo, setShowInfo] = useState(false);
   const svgRef = useRef(null);
   const tooltipRef = useRef(null);
   const staticRenderedRef = useRef(false);
@@ -150,9 +152,47 @@ export default function NetworkMapPanel() {
   return (
     <div className="bg-[#111827] rounded-xl border border-gray-800 p-4 relative">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-xs font-mono text-gray-400 uppercase tracking-widest">
-          Network Map — 1 km × 1 km
-        </p>
+        <div className="flex items-center gap-2">
+          <p className="text-xs font-mono text-gray-400 uppercase tracking-widest">
+            Network Map — 1 km × 1 km
+          </p>
+          <button
+            onClick={() => setShowInfo(true)}
+            className="text-gray-500 hover:text-green-400 transition-colors text-sm"
+            title="What is this panel?"
+          >
+            ⓘ
+          </button>
+        </div>
+
+        {showInfo && (
+          <InfoModal title="Network Map Panel" onClose={() => setShowInfo(false)}>
+            <p>
+              This is a <span className="text-green-400 font-semibold">live top-down view</span> of
+              the simulated 1km × 1km city. Every dot is a mobile phone (UE), every triangle is a
+              cell tower (gNB).
+            </p>
+            <p>
+              <span className="text-white font-semibold">UE dot colors</span> show what each user
+              is doing — 🔵 Video streaming, 🟢 Gaming, 🟡 IoT sensor, 🟣 VoIP call. These are
+              3GPP 5QI traffic profiles from the real 5G standard.
+            </p>
+            <p>
+              <span className="text-white font-semibold">Lines</span> connect each phone to its
+              serving tower. A <span className="text-red-400 font-semibold">red ring</span> around
+              a dot means that phone is currently switching towers (handover event).
+            </p>
+            <p>
+              <span className="text-white font-semibold">Dashed rings</span> around towers are
+              visual coverage guides — not physics. Actual signal strength is computed per-UE using
+              the 3GPP path loss formula at 3.5 GHz.
+            </p>
+            <p className="text-gray-500 text-xs pt-1">
+              Phones move using the Random Waypoint mobility model — each picks a random destination
+              and walks toward it at up to 3 m/s, then picks a new one.
+            </p>
+          </InfoModal>
+        )}
         <div className="flex gap-3">
           {GNB.map((g) => (
             <span

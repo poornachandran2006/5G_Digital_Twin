@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import InfoModal from '../InfoModal';
 import { useSim } from '../../context/SimContext';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { CELL_COLORS } from '../../constants';
@@ -12,6 +13,7 @@ const METRICS = [
 export default function KPIPanel() {
   const { state } = useSim();
   const [metric, setMetric] = useState('throughput_mbps');
+  const [showInfo, setShowInfo] = useState(false);
   const ticks = state.ticks.slice(-60);
   const chartData = ticks.map((t) => ({
     tick: t.tick,
@@ -23,7 +25,36 @@ export default function KPIPanel() {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3">
-        <h2 className="text-xs font-mono text-gray-400 uppercase tracking-widest">KPI Time-Series</h2>
+        <div className="flex items-center gap-2">
+          <h2 className="text-xs font-mono text-gray-400 uppercase tracking-widest">KPI Time-Series</h2>
+          <button
+            onClick={() => setShowInfo(true)}
+            className="text-gray-500 hover:text-green-400 transition-colors text-sm"
+            title="What is this panel?"
+          >
+            ⓘ
+          </button>
+        </div>
+
+        {showInfo && (
+          <InfoModal title="KPI Time-Series Panel" onClose={() => setShowInfo(false)}>
+            <p>
+              This panel shows the three most important <span className="text-green-400 font-semibold">Key Performance Indicators</span> for each cell tower, plotted live over the last 60 seconds.
+            </p>
+            <p>
+              <span className="text-white font-semibold">Throughput (Mbps)</span> — total data delivered by each cell per second. Drops sharply when a cell becomes congested.
+            </p>
+            <p>
+              <span className="text-white font-semibold">Latency (ms)</span> — average delay experienced by users on that cell. Below 50ms is healthy; above 80ms means the cell is struggling.
+            </p>
+            <p>
+              <span className="text-white font-semibold">Cell Load (%)</span> — percentage of Physical Resource Blocks (PRBs) in use. Each cell has 100 PRBs max. Warning at 70%, critical at 90%.
+            </p>
+            <p className="text-gray-500 text-xs pt-1">
+              Each colored line is one cell tower. Use the buttons to switch between metrics. Data updates every tick (1 second).
+            </p>
+          </InfoModal>
+        )}
         <div className="flex gap-2 ml-4">
           {METRICS.map((m) => (
             <button

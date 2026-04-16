@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import InfoModal from "../InfoModal";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip,
   ReferenceLine, ResponsiveContainer, Cell
@@ -36,6 +37,7 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 export default function ShapPanel() {
+  const [showInfo, setShowInfo] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -80,9 +82,38 @@ export default function ShapPanel() {
       {/* Header row */}
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-white font-semibold text-base">
-            🔍 Feature Importance
-          </h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-white font-semibold text-base">
+              🔍 Feature Importance
+            </h2>
+            <button
+              onClick={() => setShowInfo(true)}
+              className="text-gray-500 hover:text-green-400 transition-colors text-sm"
+              title="What is this panel?"
+            >
+              ⓘ
+            </button>
+          </div>
+
+          {showInfo && (
+            <InfoModal title="SHAP Feature Importance" onClose={() => setShowInfo(false)}>
+              <p>
+                This panel answers: <span className="text-green-400 font-semibold">why did the AI predict congestion?</span> It uses SHAP (SHapley Additive exPlanations) to break down every prediction into contributions from individual features.
+              </p>
+              <p>
+                <span className="text-white font-semibold">Green bars</span> = that feature is pushing the prediction toward congestion. <span className="text-red-400 font-semibold">Red bars</span> = that feature is pulling it away from congestion.
+              </p>
+              <p>
+                <span className="text-white font-semibold">Base rate</span> is the model's default prediction if it knew nothing — the average congestion rate across training data.
+              </p>
+              <p>
+                The underlying model is XGBoost (gradient-boosted decision trees). SHAP values come from the exact mathematical Shapley values — not approximations.
+              </p>
+              <p className="text-gray-500 text-xs pt-1">
+                Refreshes every 3 seconds. Top 10 features shown by absolute importance.
+              </p>
+            </InfoModal>
+          )}
           <p className="text-gray-400 text-xs mt-0.5">
             Why the model flags congestion — Tick #{data?.tick ?? "—"}
           </p>
