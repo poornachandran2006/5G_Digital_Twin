@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import LandingPage from "./components/LandingPage";
 import { SimProvider } from './context/SimContext';
 import { useSimSocket } from './hooks/useSimSocket';
 import Sidebar from './components/layout/Sidebar';
@@ -40,10 +41,20 @@ function DashboardInner() {
   );
 }
 
-export default function App() {
+function Dashboard() {
   return (
     <SimProvider>
       <DashboardInner />
     </SimProvider>
   );
+}
+
+export default function App() {
+  const [entered, setEntered] = useState(false);
+
+  if (!entered) {
+    return <LandingPage onEnter={() => setEntered(true)} />;
+  }
+
+  return <Dashboard />;
 }
