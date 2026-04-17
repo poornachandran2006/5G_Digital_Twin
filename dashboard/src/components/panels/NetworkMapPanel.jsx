@@ -32,14 +32,12 @@ export default function NetworkMapPanel() {
   const tooltipRef = useRef(null);
   const staticRenderedRef = useRef(false);
 
-  // ── Static layer: gNBs + coverage rings — render ONCE ──────────────────
   useEffect(() => {
     if (!svgRef.current || staticRenderedRef.current) return;
     staticRenderedRef.current = true;
 
     const svg = d3.select(svgRef.current);
 
-    // Grid lines for professional look
     const gridGroup = svg.append('g').attr('class', 'grid-layer');
     for (let i = 0; i <= 10; i++) {
       gridGroup.append('line')
@@ -54,7 +52,6 @@ export default function NetworkMapPanel() {
         .attr('stroke-width', 1);
     }
 
-    // Coverage rings — outer glow
     svg.selectAll('.coverage-ring-outer')
       .data(GNB).enter().append('circle')
       .attr('class', 'coverage-ring-outer')
@@ -67,7 +64,6 @@ export default function NetworkMapPanel() {
       .attr('stroke-width', 1.5)
       .attr('stroke-dasharray', '8 5');
 
-    // Coverage rings — inner fill
     svg.selectAll('.coverage-ring-inner')
       .data(GNB).enter().append('circle')
       .attr('class', 'coverage-ring-inner')
@@ -77,7 +73,6 @@ export default function NetworkMapPanel() {
       .attr('fill-opacity', 0.05)
       .attr('stroke', 'none');
 
-    // gNB towers — glowing triangles
     svg.selectAll('.gnb-tower')
       .data(GNB).enter().append('polygon')
       .attr('class', 'gnb-tower')
@@ -91,7 +86,6 @@ export default function NetworkMapPanel() {
       .attr('stroke-opacity', 0.6)
       .style('filter', d => `drop-shadow(0 0 8px ${CELL_COLORS[d.id]}88)`);
 
-    // gNB base rings
     svg.selectAll('.gnb-base')
       .data(GNB).enter().append('circle')
       .attr('class', 'gnb-base')
@@ -102,7 +96,6 @@ export default function NetworkMapPanel() {
       .attr('stroke-opacity', 0.25)
       .attr('stroke-width', 1);
 
-    // gNB labels
     svg.selectAll('.gnb-label')
       .data(GNB).enter().append('text')
       .attr('class', 'gnb-label')
@@ -116,7 +109,6 @@ export default function NetworkMapPanel() {
       .attr('letter-spacing', '0.05em')
       .text(d => `gNB-${d.id}`);
 
-    // gNB sublabel — frequency
     svg.selectAll('.gnb-sublabel')
       .data(GNB).enter().append('text')
       .attr('class', 'gnb-sublabel')
@@ -130,7 +122,6 @@ export default function NetworkMapPanel() {
 
   }, []);
 
-  // ── Dynamic layer: UE positions + link lines ────────────────────────────
   useEffect(() => {
     const tick = state.currentTick;
     if (!tick || !svgRef.current) return;
@@ -139,7 +130,6 @@ export default function NetworkMapPanel() {
     const tooltip = d3.select(tooltipRef.current);
     const ues = tick.ues ?? [];
 
-    // UE → gNB link lines
     const lines = svg.selectAll('.ue-line').data(ues, d => d.ue_id);
     lines.enter().append('line').attr('class', 'ue-line')
       .merge(lines)
@@ -151,7 +141,6 @@ export default function NetworkMapPanel() {
       .attr('stroke-width', 0.8);
     lines.exit().remove();
 
-    // UE outer glow ring (handover indicator)
     const glows = svg.selectAll('.ue-glow').data(ues, d => d.ue_id);
     glows.enter().append('circle').attr('class', 'ue-glow').attr('r', 10)
       .merge(glows)
@@ -162,7 +151,6 @@ export default function NetworkMapPanel() {
       .attr('stroke-opacity', 0.8);
     glows.exit().remove();
 
-    // UE circles
     const circles = svg.selectAll('.ue-circle').data(ues, d => d.ue_id);
     circles.enter().append('circle').attr('class', 'ue-circle').attr('r', 5.5)
       .on('mouseenter', (event, d) => {
@@ -214,39 +202,47 @@ export default function NetworkMapPanel() {
         </>
       }
     >
-      {/* Legend row */}
-      <div className="flex flex-wrap items-center gap-4 mb-3">
-        <div className="flex items-center gap-3">
+      {/* Legend — wraps cleanly on mobile */}
+      <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        gap: '10px',
+        marginBottom: '12px',
+        rowGap: '8px',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
           {GNB.map(g => (
-            <span key={g.id} className="flex items-center gap-1.5 text-xs font-mono" style={{ color: CELL_COLORS[g.id] }}>
+            <span key={g.id} style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', fontFamily: 'monospace', color: CELL_COLORS[g.id] }}>
               <span style={{ width: 8, height: 8, background: CELL_COLORS[g.id], clipPath: 'polygon(50% 0%,0% 100%,100% 100%)', display: 'inline-block' }} />
               gNB-{g.id}
             </span>
           ))}
         </div>
-        <div style={{ width: 1, height: 14, background: 'var(--border)' }} />
+        <div style={{ width: 1, height: 14, background: 'var(--border)', flexShrink: 0 }} />
         {PROFILE_LEGEND.map(p => (
-          <span key={p.label} className="flex items-center gap-1.5 text-xs font-mono" style={{ color: p.color }}>
+          <span key={p.label} style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', fontFamily: 'monospace', color: p.color }}>
             <span style={{ width: 8, height: 8, background: p.color, borderRadius: '50%', display: 'inline-block' }} />
             {p.label}
           </span>
         ))}
-        <div style={{ width: 1, height: 14, background: 'var(--border)' }} />
-        <span className="flex items-center gap-1.5 text-xs font-mono" style={{ color: '#ef4444' }}>
+        <div style={{ width: 1, height: 14, background: 'var(--border)', flexShrink: 0 }} />
+        <span style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', fontFamily: 'monospace', color: '#ef4444' }}>
           <span style={{ width: 8, height: 8, borderRadius: '50%', border: '1.5px solid #ef4444', display: 'inline-block' }} />
           Handover
         </span>
       </div>
 
-      {/* Map container — theme-aware */}
+      {/* Map container */}
       <div
-        className="relative rounded-xl overflow-hidden"
         style={{
+          position: 'relative',
+          borderRadius: '12px',
+          overflow: 'hidden',
           border: '1px solid var(--border)',
           background: 'var(--map-bg, #060d1a)',
         }}
       >
-        {/* Subtle top gradient bar */}
         <div
           style={{
             position: 'absolute', top: 0, left: 0, right: 0, height: 3,
@@ -258,14 +254,14 @@ export default function NetworkMapPanel() {
         <svg
           ref={svgRef}
           viewBox="0 0 1000 1000"
-          className="w-full"
           style={{
-            maxHeight: 500,
+            width: '100%',
+            maxHeight: '55vw',
+            minHeight: '260px',
             display: 'block',
           }}
         />
 
-        {/* Tooltip */}
         <div
           ref={tooltipRef}
           style={{
@@ -286,7 +282,6 @@ export default function NetworkMapPanel() {
           }}
         />
 
-        {/* Bottom-right tick counter */}
         <div
           style={{
             position: 'absolute', bottom: 8, right: 10,

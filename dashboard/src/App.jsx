@@ -15,18 +15,19 @@ import AnomalyPanel from './components/panels/AnomalyPanel';
 import ABTestPanel from './components/panels/ABTestPanel';
 
 const PANELS = {
-  overview:    OverviewPanel,
-  map:         NetworkMapPanel,
-  kpi:         KPIPanel,
+  overview: OverviewPanel,
+  map: NetworkMapPanel,
+  kpi: KPIPanel,
   predictions: PredictionPanel,
-  shap:        ShapPanel,
-  anomaly:     AnomalyPanel,
-  abtest:      ABTestPanel,
-  rl:          RLAgentPanel,
+  shap: ShapPanel,
+  anomaly: AnomalyPanel,
+  abtest: ABTestPanel,
+  rl: RLAgentPanel,
 };
 
 function DashboardInner() {
   const [active, setActive] = useState('overview');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   useSimSocket();
   const Panel = PANELS[active];
 
@@ -35,9 +36,14 @@ function DashboardInner() {
       className="flex h-screen overflow-hidden"
       style={{ background: 'var(--bg-primary)', color: 'var(--text-primary)' }}
     >
-      <Sidebar active={active} onNavigate={setActive} />
+      <Sidebar
+        active={active}
+        onNavigate={setActive}
+        isOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
       <div className="flex flex-col flex-1 overflow-hidden">
-        <TopBar />
+        <TopBar onMenuClick={() => setSidebarOpen(prev => !prev)} />
         <main
           className="flex-1 overflow-auto p-5"
           style={{ background: 'var(--bg-primary)' }}

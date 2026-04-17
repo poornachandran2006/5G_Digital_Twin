@@ -40,42 +40,88 @@ export default function OverviewPanel() {
         </>
       }
     >
-      <div className="space-y-4">
-        {/* Stat cards */}
-        <div className="grid grid-cols-4 gap-3">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+
+        {/* Stat cards — 2×2 on mobile, 4×1 on desktop */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: '10px',
+        }}
+          className="overview-stat-grid"
+        >
           <StatCard
             label="Total Throughput"
             value={tp}
             unit="Mbps"
             trend={tp - (prev?.kpis?.total_throughput ?? tp)}
+            highlight
           />
           <StatCard
             label="Mean Latency"
             value={lat}
             unit="ms"
             trend={-(lat - (prev?.kpis?.mean_latency ?? lat))}
+            thresholdWarn={50}
+            thresholdCrit={80}
           />
-          <StatCard label="Handovers/tick" value={ho} unit="" />
-          <StatCard label="Active UEs" value={ues} unit="" />
+          <StatCard
+            label="Handovers / tick"
+            value={ho}
+            unit=""
+            thresholdWarn={3}
+            thresholdCrit={6}
+          />
+          <StatCard
+            label="Active UEs"
+            value={ues}
+            unit="/ 20"
+            highlight
+          />
         </div>
 
-        {/* Per-cell load cards */}
-        <div className="grid grid-cols-3 gap-3">
+        {/* Per-cell load cards — stack on mobile, 3-col on md+ */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(1, 1fr)',
+          gap: '10px',
+        }}
+          className="overview-cell-grid"
+        >
           {[0, 1, 2].map((i) => {
             const cell = cur?.cells?.[i];
             const load = cell?.load_percent ?? 0;
             return (
-              <div key={i} className="chart-card">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs font-mono" style={{ color: CELL_COLORS[i] }}>Cell {i}</span>
+              <div key={i} className="chart-card" style={{ padding: '12px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '12px', fontFamily: 'monospace', color: CELL_COLORS[i], fontWeight: 700 }}>
+                    gNB Cell {i}
+                  </span>
                   <span
-                    className="text-xs px-2 py-0.5 rounded-full font-mono"
-                    style={{ background: `${STATUS_COLOR(load)}22`, color: STATUS_COLOR(load) }}
+                    style={{
+                      fontSize: '11px',
+                      padding: '2px 8px',
+                      borderRadius: '999px',
+                      fontFamily: 'monospace',
+                      fontWeight: 700,
+                      background: `${STATUS_COLOR(load)}22`,
+                      color: STATUS_COLOR(load),
+                    }}
                   >
                     {(load * 100).toFixed(0)}%
                   </span>
                 </div>
-                <ResponsiveContainer width="100%" height={50}>
+                {/* Load bar */}
+                <div style={{ width: '100%', height: '4px', background: 'var(--border)', borderRadius: '2px', marginBottom: '8px' }}>
+                  <div style={{
+                    height: '4px',
+                    borderRadius: '2px',
+                    width: `${load * 100}%`,
+                    background: STATUS_COLOR(load),
+                    transition: 'width 0.4s ease',
+                  }} />
+                </div>
+                <ResponsiveContainer width="100%" height={45}>
                   <AreaChart data={ticks.map((t) => ({ v: t.cells?.[i]?.load_percent ?? 0 }))}>
                     <Area
                       type="monotone"
@@ -94,11 +140,11 @@ export default function OverviewPanel() {
         </div>
 
         {/* Total throughput chart */}
-        <div className="chart-card">
-          <p className="text-xs font-mono mb-3" style={{ color: 'var(--text-muted)' }}>
+        <div className="chart-card" style={{ padding: '14px' }}>
+          <p style={{ fontSize: '11px', fontFamily: 'monospace', marginBottom: '10px', color: 'var(--text-muted)', margin: '0 0 10px 0' }}>
             TOTAL THROUGHPUT — LAST 60 TICKS
           </p>
-          <ResponsiveContainer width="100%" height={120}>
+          <ResponsiveContainer width="100%" height={110}>
             <AreaChart data={ticks.map((t) => ({ v: t.kpis?.total_throughput ?? 0, tick: t.tick }))}>
               <Area
                 type="monotone"
@@ -114,6 +160,7 @@ export default function OverviewPanel() {
                   background: 'var(--bg-card)',
                   border: '1px solid var(--border-accent)',
                   borderRadius: '8px',
+                  fontSize: '12px',
                 }}
                 labelStyle={{ color: 'var(--text-secondary)' }}
                 itemStyle={{ color: 'var(--accent)' }}
@@ -122,6 +169,19 @@ export default function OverviewPanel() {
           </ResponsiveContainer>
         </div>
       </div>
+
+      <style>{`
+        @media (min-width: 640px) {
+          .overview-cell-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+          }
+        }
+        @media (min-width: 768px) {
+          .overview-stat-grid {
+            grid-template-columns: repeat(4, 1fr) !important;
+          }
+        }
+      `}</style>
     </PanelWrapper>
   );
 }

@@ -4,6 +4,12 @@ import { ACTION_NAMES, CELL_COLORS } from '../../constants';
 import PanelWrapper from '../PanelWrapper';
 
 const BAR_COLORS = ['var(--text-muted)', 'var(--accent)', 'var(--purple)', 'var(--green)'];
+const ACTION_DESCS = [
+  'No intervention — network is healthy',
+  'Soft handover: move UEs from busiest to least-loaded cell',
+  'Aggressive rebalancing across all 3 cells simultaneously',
+  'Hard handover for critical overload (≥90% PRB load)',
+];
 
 export default function RLAgentPanel() {
   const { state } = useSim();
@@ -16,9 +22,12 @@ export default function RLAgentPanel() {
     });
   });
 
+  const total = Object.values(counts).reduce((a, b) => a + b, 0) || 1;
+
   const chartData = Object.entries(counts).map(([k, v]) => ({
     name:  ACTION_NAMES[Number(k)],
     count: v,
+    pct:   ((v / total) * 100).toFixed(1),
     id:    Number(k),
   }));
 
@@ -37,7 +46,7 @@ export default function RLAgentPanel() {
             <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>Observation space (9-dim):</span> cell load × 3, congestion probability × 3, UE ratio × 3. All normalized to [0, 1].
           </p>
           <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.65 }}>
-            <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>4 actions:</span> NoOp · LoadBalance (soft handover) · PowerCtrl (adjust TX power) · Handover (hard UE reassignment for critical overload).
+            <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>4 actions:</span> NoOp · LoadBalance (soft handover) · MassBalance (all cells) · EmergencyHandover (critical overload).
           </p>
           <p style={{ margin: 0, fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'monospace', marginTop: '4px' }}>
             Stable-Baselines3 · MlpPolicy · 2×64 hidden · 200K steps · lr=3e-4
@@ -45,49 +54,81 @@ export default function RLAgentPanel() {
         </>
       }
     >
-      <div className="space-y-4">
-        {/* Current actions table */}
-        <div className="chart-card">
-          <p className="text-xs font-mono mb-3" style={{ color: 'var(--text-muted)' }}>CURRENT ACTIONS</p>
-          <table className="w-full text-sm">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+
+        {/* Current actions table — full-width, scrolls if needed */}
+        <div className="chart-card" style={{ padding: '14px', overflowX: 'auto' }}>
+          <p style={{ fontSize: '11px', fontFamily: 'monospace', color: 'var(--text-muted)', margin: '0 0 10px 0' }}>
+            CURRENT PPO ACTIONS
+          </p>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', minWidth: '280px' }}>
             <thead>
-              <tr
-                className="text-xs font-mono"
-                style={{ color: 'var(--text-muted)', borderBottom: '1px solid var(--border)' }}
-              >
-                <th className="text-left pb-2">Cell</th>
-                <th className="text-left pb-2">Action ID</th>
-                <th className="text-left pb-2">Action</th>
+              <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                {['Cell', 'Action ID', 'Action', 'Description'].map((h) => (
+                  <th key={h} style={{
+                    textAlign: 'left',
+                    paddingBottom: '8px',
+                    fontSize: '10px',
+                    fontFamily: 'monospace',
+                    color: 'var(--text-muted)',
+                    fontWeight: 600,
+                    whiteSpace: 'nowrap',
+                    paddingRight: '12px',
+                  }}>{h}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {[0, 1, 2].map((i) => (
-                <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
-                  <td className="py-2 font-mono" style={{ color: CELL_COLORS[i] }}>Cell {i}</td>
-                  <td className="py-2 font-mono" style={{ color: 'var(--text-secondary)' }}>{actions[i] ?? '—'}</td>
-                  <td className="py-2 font-mono" style={{ color: 'var(--text-secondary)' }}>{ACTION_NAMES[actions[i]] ?? '—'}</td>
-                </tr>
-              ))}
+              {[0, 1, 2].map((i) => {
+                const actionId = actions[i] ?? 0;
+                return (
+                  <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
+                    <td style={{ padding: '8px 12px 8px 0', fontFamily: 'monospace', color: CELL_COLORS[i], fontWeight: 700, whiteSpace: 'nowrap' }}>
+                      Cell {i}
+                    </td>
+                    <td style={{ padding: '8px 12px 8px 0', fontFamily: 'monospace', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
+                      {actionId}
+                    </td>
+                    <td style={{ padding: '8px 12px 8px 0', fontFamily: 'monospace', color: BAR_COLORS[actionId], fontWeight: 600, whiteSpace: 'nowrap' }}>
+                      {ACTION_NAMES[actionId] ?? '—'}
+                    </td>
+                    <td style={{ padding: '8px 0', fontSize: '11px', color: 'var(--text-muted)' }}>
+                      {ACTION_DESCS[actionId] ?? '—'}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
 
         {/* Action distribution chart */}
-        <div className="chart-card">
-          <p className="text-xs font-mono mb-3" style={{ color: 'var(--text-muted)' }}>
-            ACTION DISTRIBUTION — LAST {state.ticks.length} TICKS
+        <div className="chart-card" style={{ padding: '14px' }}>
+          <p style={{ fontSize: '11px', fontFamily: 'monospace', color: 'var(--text-muted)', margin: '0 0 10px 0' }}>
+            ACTION DISTRIBUTION — ALL {state.ticks.length} TICKS
           </p>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={chartData}>
-              <XAxis dataKey="name" tick={{ fill: 'var(--text-muted)', fontSize: 11 }} />
-              <YAxis tick={{ fill: 'var(--text-muted)', fontSize: 11 }} />
+          <ResponsiveContainer width="100%" height={190}>
+            <BarChart data={chartData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
+              <XAxis
+                dataKey="name"
+                tick={{ fill: 'var(--text-muted)', fontSize: 10 }}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis
+                tick={{ fill: 'var(--text-muted)', fontSize: 10 }}
+                tickLine={false}
+                axisLine={false}
+              />
               <Tooltip
                 contentStyle={{
                   background: 'var(--bg-card)',
                   border: '1px solid var(--border-accent)',
                   borderRadius: '8px',
+                  fontSize: 12,
                 }}
                 labelStyle={{ color: 'var(--text-secondary)' }}
+                formatter={(v, _, props) => [`${v} ticks (${props.payload.pct}%)`, 'Count']}
               />
               <Bar dataKey="count" isAnimationActive={false} radius={[4, 4, 0, 0]}>
                 {chartData.map((d, i) => (
@@ -96,7 +137,19 @@ export default function RLAgentPanel() {
               </Bar>
             </BarChart>
           </ResponsiveContainer>
+
+          {/* Legend row */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '10px', borderTop: '1px solid var(--border)', paddingTop: '10px' }}>
+            {chartData.map((d) => (
+              <div key={d.name} style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px' }}>
+                <span style={{ width: 10, height: 10, borderRadius: '2px', background: BAR_COLORS[d.id], display: 'inline-block', flexShrink: 0 }} />
+                <span style={{ color: 'var(--text-secondary)' }}>{d.name}</span>
+                <span style={{ color: 'var(--text-muted)', fontFamily: 'monospace' }}>({d.pct}%)</span>
+              </div>
+            ))}
+          </div>
         </div>
+
       </div>
     </PanelWrapper>
   );

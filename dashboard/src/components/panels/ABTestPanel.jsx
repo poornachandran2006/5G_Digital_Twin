@@ -68,49 +68,74 @@ export default function ABTestPanel() {
         </>
       }
     >
-      <div className="space-y-4">
-        {/* Summary cards */}
-        <div className="grid grid-cols-4 gap-3">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+
+        {/* Summary stats — 2×2 on mobile, 4×1 on md */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}
+          className="ab-stat-grid">
           {[
             { label: 'PPO Avg Reward',  value: ppoAvg.toFixed(3),  color: 'var(--purple)' },
             { label: 'Rule Avg Reward', value: rbAvg.toFixed(3),   color: 'var(--amber)'  },
             { label: 'PPO Win Rate',    value: `${winRate}%`,       color: 'var(--green)'  },
             { label: 'Ticks Compared',  value: totalTicks,          color: 'var(--text-primary)' },
           ].map(({ label, value, color }) => (
-            <div key={label} className="stat-mini">
-              <p className="text-xs mb-1" style={{ color: 'var(--text-muted)' }}>{label}</p>
-              <p className="text-xl font-bold" style={{ color }}>{value}</p>
+            <div key={label} className="stat-mini" style={{ padding: '10px', textAlign: 'center' }}>
+              <p style={{ fontSize: '10px', color: 'var(--text-muted)', margin: '0 0 4px 0' }}>{label}</p>
+              <p style={{ fontSize: '18px', fontWeight: 700, color, margin: 0, fontFamily: 'monospace' }}>{value}</p>
             </div>
           ))}
         </div>
 
         {/* Current action row */}
-        <div className="grid grid-cols-2 gap-3">
-          <div
-            className="rounded-lg p-3"
-            style={{ background: 'var(--accent-dim)', border: '1px solid var(--accent-glow)' }}
-          >
-            <p className="text-xs mb-1" style={{ color: 'var(--text-muted)' }}>PPO Action Now</p>
-            <p className="text-lg font-bold" style={{ color: 'var(--accent)' }}>{ppoActionNow}</p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+          <div style={{
+            borderRadius: '10px',
+            padding: '12px',
+            background: 'var(--accent-dim)',
+            border: '1px solid var(--accent-glow)',
+          }}>
+            <p style={{ fontSize: '10px', color: 'var(--text-muted)', margin: '0 0 4px 0', fontFamily: 'monospace' }}>
+              PPO NOW
+            </p>
+            <p style={{ fontSize: '15px', fontWeight: 700, color: 'var(--accent)', margin: 0, wordBreak: 'break-word' }}>
+              {ppoActionNow}
+            </p>
           </div>
-          <div
-            className="rounded-lg p-3"
-            style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}
-          >
-            <p className="text-xs mb-1" style={{ color: 'var(--text-muted)' }}>Rule-Based Action Now</p>
-            <p className="text-lg font-bold" style={{ color: 'var(--amber)' }}>{rbActionNow}</p>
+          <div style={{
+            borderRadius: '10px',
+            padding: '12px',
+            background: 'rgba(245,158,11,0.08)',
+            border: '1px solid rgba(245,158,11,0.2)',
+          }}>
+            <p style={{ fontSize: '10px', color: 'var(--text-muted)', margin: '0 0 4px 0', fontFamily: 'monospace' }}>
+              RULE-BASED NOW
+            </p>
+            <p style={{ fontSize: '15px', fontWeight: 700, color: 'var(--amber)', margin: 0, wordBreak: 'break-word' }}>
+              {rbActionNow}
+            </p>
           </div>
         </div>
 
         {/* Reward time-series */}
-        <div className="chart-card">
-          <p className="text-xs font-mono mb-3" style={{ color: 'var(--text-muted)' }}>
-            Reward per Tick — Last 60 Ticks
+        <div className="chart-card" style={{ padding: '14px' }}>
+          <p style={{ fontSize: '11px', fontFamily: 'monospace', color: 'var(--text-muted)', margin: '0 0 10px 0' }}>
+            REWARD PER TICK — LAST 60 TICKS
           </p>
-          <ResponsiveContainer width="100%" height={160}>
-            <LineChart data={chartData} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
-              <XAxis dataKey="tick" tick={{ fontSize: 10, fill: 'var(--text-muted)' }} interval={9} />
-              <YAxis domain={[-1, 1]} tick={{ fontSize: 10, fill: 'var(--text-muted)' }} />
+          <ResponsiveContainer width="100%" height={150}>
+            <LineChart data={chartData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
+              <XAxis
+                dataKey="tick"
+                tick={{ fontSize: 10, fill: 'var(--text-muted)' }}
+                tickLine={false}
+                axisLine={false}
+                interval={9}
+              />
+              <YAxis
+                domain={[-1, 1]}
+                tick={{ fontSize: 10, fill: 'var(--text-muted)' }}
+                tickLine={false}
+                axisLine={false}
+              />
               <Tooltip
                 contentStyle={{
                   background: 'var(--bg-card)',
@@ -118,28 +143,33 @@ export default function ABTestPanel() {
                   borderRadius: '8px',
                   fontSize: 12,
                 }}
-                formatter={(v, name) => [v.toFixed(3), name === 'ppo' ? 'PPO' : 'Rule-Based']}
+                formatter={(v, name) => [v.toFixed(3), name === 'ppo' ? 'PPO Agent' : 'Rule-Based']}
               />
               <Legend
                 formatter={(val) => val === 'ppo' ? 'PPO Agent' : 'Rule-Based'}
                 wrapperStyle={{ fontSize: 11, color: 'var(--text-secondary)' }}
               />
               <ReferenceLine y={0} stroke="var(--border-accent)" strokeDasharray="3 2" />
-              <Line type="monotone" dataKey="ppo" stroke="var(--purple)" strokeWidth={1.5} dot={false} />
-              <Line type="monotone" dataKey="rb"  stroke="var(--amber)"  strokeWidth={1.5} dot={false} />
+              <Line type="monotone" dataKey="ppo" stroke="var(--purple)" strokeWidth={1.5} dot={false} isAnimationActive={false} />
+              <Line type="monotone" dataKey="rb"  stroke="var(--amber)"  strokeWidth={1.5} dot={false} isAnimationActive={false} />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
         {/* Action distribution */}
-        <div className="chart-card">
-          <p className="text-xs font-mono mb-3" style={{ color: 'var(--text-muted)' }}>
-            Action Distribution — Last 60 Ticks
+        <div className="chart-card" style={{ padding: '14px' }}>
+          <p style={{ fontSize: '11px', fontFamily: 'monospace', color: 'var(--text-muted)', margin: '0 0 10px 0' }}>
+            ACTION DISTRIBUTION — LAST 60 TICKS
           </p>
           <ResponsiveContainer width="100%" height={130}>
-            <BarChart data={actionData} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
-              <XAxis dataKey="action" tick={{ fontSize: 10, fill: 'var(--text-muted)' }} />
-              <YAxis tick={{ fontSize: 10, fill: 'var(--text-muted)' }} />
+            <BarChart data={actionData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
+              <XAxis
+                dataKey="action"
+                tick={{ fontSize: 9, fill: 'var(--text-muted)' }}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis tick={{ fontSize: 10, fill: 'var(--text-muted)' }} tickLine={false} axisLine={false} />
               <Tooltip
                 contentStyle={{
                   background: 'var(--bg-card)',
@@ -153,11 +183,20 @@ export default function ABTestPanel() {
               <Bar dataKey="Rule" fill="var(--amber)"  radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
-          <p className="text-xs mt-2" style={{ color: 'var(--text-muted)' }}>
+          <p style={{ fontSize: '10px', marginTop: '6px', color: 'var(--text-muted)', margin: '6px 0 0 0' }}>
             Both agents choose No-Op when network is healthy. Divergence appears during congestion.
           </p>
         </div>
+
       </div>
+
+      <style>{`
+        @media (min-width: 768px) {
+          .ab-stat-grid {
+            grid-template-columns: repeat(4, 1fr) !important;
+          }
+        }
+      `}</style>
     </PanelWrapper>
   );
 }

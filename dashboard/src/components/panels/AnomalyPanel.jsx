@@ -8,12 +8,6 @@ const SEVERITY_COLOR = {
   critical: 'var(--red)',
 };
 
-const SEVERITY_BORDER = {
-  normal:   'var(--green)',
-  warning:  'var(--amber)',
-  critical: 'var(--red)',
-};
-
 export default function AnomalyPanel() {
   const { state } = useSim();
   const { ticks, currentTick } = state;
@@ -30,6 +24,13 @@ export default function AnomalyPanel() {
 
   const recentAnomalyCount = chartData.filter((d) => d.anomaly === 1).length;
   const gaugePercent = Math.round(score * 100);
+  const color = SEVERITY_COLOR[severity];
+
+  // SVG arc for gauge
+  const RADIUS = 36;
+  const STROKE = 8;
+  const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+  const arc = (gaugePercent / 100) * CIRCUMFERENCE;
 
   return (
     <PanelWrapper
@@ -54,69 +55,90 @@ export default function AnomalyPanel() {
         </>
       }
     >
-      <div className="space-y-4">
-        {/* Status card */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+
+        {/* Status card — horizontal on all sizes */}
         <div
-          className="rounded-xl p-4 flex items-center justify-between"
           style={{
+            borderRadius: '12px',
+            padding: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '12px',
             background: 'var(--bg-card)',
-            border: `1px solid ${SEVERITY_BORDER[severity]}44`,
+            border: `1px solid ${color}44`,
             transition: 'var(--transition)',
           }}
         >
-          <div>
-            <p className="text-xs mb-1" style={{ color: 'var(--text-muted)' }}>Current Status</p>
-            <p className="text-2xl font-bold uppercase tracking-wide" style={{ color: SEVERITY_COLOR[severity] }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p style={{ fontSize: '11px', color: 'var(--text-muted)', margin: '0 0 4px 0' }}>Current Status</p>
+            <p style={{ fontSize: '22px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color, margin: '0 0 4px 0' }}>
               {severity}
             </p>
-            <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
+            <p style={{ fontSize: '11px', color: 'var(--text-muted)', margin: 0 }}>
               Tick #{currentTick?.tick ?? '—'}
             </p>
           </div>
-          {/* SVG gauge */}
-          <div className="flex flex-col items-center">
-            <svg width="80" height="80" viewBox="0 0 80 80">
-              <circle cx="40" cy="40" r="30" fill="none" stroke="var(--border)" strokeWidth="10" />
+
+          {/* Circular gauge */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+            <svg width="90" height="90" viewBox="0 0 90 90">
+              <circle cx="45" cy="45" r={RADIUS} fill="none" stroke="var(--border)" strokeWidth={STROKE} />
               <circle
-                cx="40" cy="40" r="30"
+                cx="45" cy="45" r={RADIUS}
                 fill="none"
-                stroke={SEVERITY_COLOR[severity]}
-                strokeWidth="10"
-                strokeDasharray={`${gaugePercent * 1.885} 188.5`}
+                stroke={color}
+                strokeWidth={STROKE}
+                strokeDasharray={`${arc} ${CIRCUMFERENCE}`}
                 strokeLinecap="round"
-                transform="rotate(-90 40 40)"
+                transform="rotate(-90 45 45)"
+                style={{ transition: 'stroke-dasharray 0.4s ease, stroke 0.4s ease' }}
               />
-              <text x="40" y="44" textAnchor="middle" fill="var(--text-primary)" fontSize="14" fontWeight="bold">
+              <text x="45" y="49" textAnchor="middle" fill="var(--text-primary)" fontSize="15" fontWeight="bold" fontFamily="monospace">
                 {gaugePercent}%
               </text>
             </svg>
-            <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Anomaly Score</p>
+            <p style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '2px', fontFamily: 'monospace' }}>
+              Anomaly Score
+            </p>
           </div>
         </div>
 
-        {/* Stats row */}
-        <div className="grid grid-cols-3 gap-3">
+        {/* Stats row — 3 cols, compact on mobile */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
           {[
-            { label: 'Score', value: score.toFixed(3), color: 'var(--text-primary)' },
-            { label: 'Is Anomaly', value: anomaly.is_anomaly ? 'YES' : 'NO', color: anomaly.is_anomaly ? 'var(--red)' : 'var(--green)' },
-            { label: 'Last 60 Ticks', value: `${recentAnomalyCount} flagged`, color: 'var(--amber)' },
-          ].map(({ label, value, color }) => (
-            <div key={label} className="stat-mini">
-              <p className="text-xs mb-1" style={{ color: 'var(--text-muted)' }}>{label}</p>
-              <p className="text-xl font-bold" style={{ color }}>{value}</p>
+            { label: 'Raw Score',    value: score.toFixed(3),                  color: 'var(--text-primary)' },
+            { label: 'Is Anomaly',   value: anomaly.is_anomaly ? 'YES' : 'NO', color: anomaly.is_anomaly ? 'var(--red)' : 'var(--green)' },
+            { label: 'Flagged / 60', value: `${recentAnomalyCount}`,           color: 'var(--amber)' },
+          ].map(({ label, value, color: c }) => (
+            <div key={label} className="stat-mini" style={{ padding: '10px', textAlign: 'center' }}>
+              <p style={{ fontSize: '10px', color: 'var(--text-muted)', margin: '0 0 4px 0' }}>{label}</p>
+              <p style={{ fontSize: '18px', fontWeight: 700, color: c, margin: 0, fontFamily: 'monospace' }}>{value}</p>
             </div>
           ))}
         </div>
 
         {/* Chart */}
-        <div className="chart-card">
-          <p className="text-xs font-mono mb-3" style={{ color: 'var(--text-muted)' }}>
-            Anomaly Score — Last 60 Ticks
+        <div className="chart-card" style={{ padding: '14px' }}>
+          <p style={{ fontSize: '11px', fontFamily: 'monospace', color: 'var(--text-muted)', margin: '0 0 10px 0' }}>
+            ANOMALY SCORE — LAST 60 TICKS
           </p>
-          <ResponsiveContainer width="100%" height={160}>
-            <LineChart data={chartData} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
-              <XAxis dataKey="tick" tick={{ fontSize: 10, fill: 'var(--text-muted)' }} interval={9} />
-              <YAxis domain={[0, 1]} tick={{ fontSize: 10, fill: 'var(--text-muted)' }} />
+          <ResponsiveContainer width="100%" height={150}>
+            <LineChart data={chartData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
+              <XAxis
+                dataKey="tick"
+                tick={{ fontSize: 10, fill: 'var(--text-muted)' }}
+                tickLine={false}
+                axisLine={false}
+                interval={9}
+              />
+              <YAxis
+                domain={[0, 1]}
+                tick={{ fontSize: 10, fill: 'var(--text-muted)' }}
+                tickLine={false}
+                axisLine={false}
+              />
               <Tooltip
                 contentStyle={{
                   background: 'var(--bg-card)',
@@ -126,8 +148,8 @@ export default function AnomalyPanel() {
                 }}
                 formatter={(v) => [v.toFixed(3), 'Score']}
               />
-              <ReferenceLine y={0.55} stroke="var(--amber)" strokeDasharray="4 2" />
-              <ReferenceLine y={0.75} stroke="var(--red)" strokeDasharray="4 2" />
+              <ReferenceLine y={0.55} stroke="var(--amber)" strokeDasharray="4 2" strokeWidth={1} />
+              <ReferenceLine y={0.75} stroke="var(--red)" strokeDasharray="4 2" strokeWidth={1} />
               <Line
                 type="monotone"
                 dataKey="score"
@@ -135,13 +157,16 @@ export default function AnomalyPanel() {
                 strokeWidth={1.5}
                 dot={false}
                 activeDot={{ r: 3 }}
+                isAnimationActive={false}
               />
             </LineChart>
           </ResponsiveContainer>
-          <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
-            Dashed lines: amber = warning (0.55), red = critical (0.75)
-          </p>
+          <div style={{ display: 'flex', gap: '16px', marginTop: '6px', fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-muted)' }}>
+            <span style={{ color: 'var(--amber)' }}>― 0.55 warning</span>
+            <span style={{ color: 'var(--red)' }}>― 0.75 critical</span>
+          </div>
         </div>
+
       </div>
     </PanelWrapper>
   );

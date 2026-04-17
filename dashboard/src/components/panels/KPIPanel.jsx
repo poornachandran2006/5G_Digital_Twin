@@ -48,16 +48,24 @@ export default function KPIPanel() {
         </>
       }
     >
-      <div className="space-y-4">
-        {/* Metric selector buttons */}
-        <div className="flex gap-2">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+
+        {/* Metric selector — full-width row, wraps on small screens */}
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           {METRICS.map((m) => (
             <button
               key={m.key}
               type="button"
               onClick={() => setMetric(m.key)}
-              className="px-3 py-1 text-xs rounded font-mono transition-all duration-150"
               style={{
+                padding: '6px 14px',
+                fontSize: '12px',
+                borderRadius: '6px',
+                fontFamily: 'monospace',
+                cursor: 'pointer',
+                transition: 'all 0.15s',
+                flex: '1 1 auto',
+                minWidth: '90px',
                 background: metric === m.key ? 'var(--accent-dim)' : 'transparent',
                 border: `1px solid ${metric === m.key ? 'var(--accent)' : 'var(--border-accent)'}`,
                 color: metric === m.key ? 'var(--accent)' : 'var(--text-muted)',
@@ -68,24 +76,38 @@ export default function KPIPanel() {
           ))}
         </div>
 
-        {/* Chart */}
-        <div className="chart-card">
-          <p className="text-xs font-mono mb-3" style={{ color: 'var(--text-muted)' }}>
+        {/* Chart card */}
+        <div className="chart-card" style={{ padding: '14px' }}>
+          <p style={{ fontSize: '11px', fontFamily: 'monospace', marginBottom: '10px', color: 'var(--text-muted)', margin: '0 0 10px 0' }}>
             {cur?.label} ({cur?.unit}) — Last 60 ticks
           </p>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={chartData}>
-              <XAxis dataKey="tick" tick={{ fill: 'var(--text-muted)', fontSize: 10 }} />
-              <YAxis tick={{ fill: 'var(--text-muted)', fontSize: 10 }} />
+          <ResponsiveContainer width="100%" height={260}>
+            <LineChart data={chartData} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
+              <XAxis
+                dataKey="tick"
+                tick={{ fill: 'var(--text-muted)', fontSize: 10 }}
+                tickLine={false}
+                axisLine={{ stroke: 'var(--border)' }}
+                interval="preserveStartEnd"
+              />
+              <YAxis
+                tick={{ fill: 'var(--text-muted)', fontSize: 10 }}
+                tickLine={false}
+                axisLine={false}
+                width={36}
+              />
               <Tooltip
                 contentStyle={{
                   background: 'var(--bg-card)',
                   border: '1px solid var(--border-accent)',
                   borderRadius: '8px',
+                  fontSize: '12px',
                 }}
                 labelStyle={{ color: 'var(--text-secondary)' }}
               />
-              <Legend wrapperStyle={{ fontSize: '12px', color: 'var(--text-secondary)' }} />
+              <Legend
+                wrapperStyle={{ fontSize: '11px', color: 'var(--text-secondary)', paddingTop: '8px' }}
+              />
               {[0, 1, 2].map((i) => (
                 <Line
                   key={i}

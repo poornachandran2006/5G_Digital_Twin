@@ -32,31 +32,55 @@ export default function PredictionPanel() {
         </>
       }
     >
-      <div className="space-y-4">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {[0, 1, 2].map((i) => {
           const prob = state.currentTick?.congestion_predictions?.[i] ?? 0;
           const history = ticks.map((t) => ({ v: t.congestion_predictions?.[i] ?? 0 }));
           const color = probColor(prob);
+          const label = prob > 0.7 ? 'CRITICAL' : prob > 0.4 ? 'WARNING' : 'HEALTHY';
+
           return (
-            <div key={i} className="chart-card">
-              <div className="flex justify-between items-center mb-3">
-                <span className="text-sm font-mono" style={{ color: CELL_COLORS[i] }}>Cell {i}</span>
-                <span className="text-lg font-mono font-bold" style={{ color }}>
+            <div key={i} className="chart-card" style={{ padding: '14px' }}>
+              {/* Header row */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '13px', fontFamily: 'monospace', fontWeight: 700, color: CELL_COLORS[i] }}>
+                    Cell {i}
+                  </span>
+                  <span style={{
+                    fontSize: '10px',
+                    fontFamily: 'monospace',
+                    padding: '2px 7px',
+                    borderRadius: '999px',
+                    background: `${color}22`,
+                    color,
+                    letterSpacing: '0.05em',
+                  }}>
+                    {label}
+                  </span>
+                </div>
+                <span style={{ fontSize: '20px', fontFamily: 'monospace', fontWeight: 700, color }}>
                   {(prob * 100).toFixed(1)}%
                 </span>
               </div>
+
               {/* Progress bar */}
-              <div
-                className="w-full h-2 rounded-full mb-3"
-                style={{ background: 'var(--border)' }}
-              >
-                <div
-                  className="h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${prob * 100}%`, background: color }}
-                />
+              <div style={{ width: '100%', height: '5px', background: 'var(--border)', borderRadius: '3px', marginBottom: '10px', position: 'relative' }}>
+                {/* Threshold markers */}
+                <div style={{ position: 'absolute', left: '40%', top: 0, bottom: 0, width: '1px', background: 'var(--amber)', opacity: 0.5 }} />
+                <div style={{ position: 'absolute', left: '70%', top: 0, bottom: 0, width: '1px', background: 'var(--red)', opacity: 0.5 }} />
+                <div style={{
+                  height: '5px',
+                  borderRadius: '3px',
+                  width: `${prob * 100}%`,
+                  background: color,
+                  transition: 'width 0.4s ease',
+                }} />
               </div>
-              <ResponsiveContainer width="100%" height={60}>
-                <LineChart data={history}>
+
+              {/* Sparkline */}
+              <ResponsiveContainer width="100%" height={55}>
+                <LineChart data={history} margin={{ top: 2, right: 2, left: 2, bottom: 2 }}>
                   <Line
                     type="monotone"
                     dataKey="v"
@@ -72,10 +96,15 @@ export default function PredictionPanel() {
                       borderRadius: '6px',
                       fontSize: '11px',
                     }}
-                    formatter={(v) => [`${(v * 100).toFixed(1)}%`]}
+                    formatter={(v) => [`${(v * 100).toFixed(1)}%`, 'Congestion prob']}
                   />
                 </LineChart>
               </ResponsiveContainer>
+
+              {/* Footer meta */}
+              <p style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-muted)', marginTop: '6px', margin: '6px 0 0 0' }}>
+                Horizon: +30 ticks · 0.6×LSTM + 0.4×XGBoost
+              </p>
             </div>
           );
         })}
