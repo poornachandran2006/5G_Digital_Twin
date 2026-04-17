@@ -73,7 +73,7 @@ export default function TopBar() {
             border: '1px solid var(--border)',
           }}
         >
-          3.5 GHz · α=3.5 · −104 dBm
+          <span style={{ marginRight: '4px' }}>Status</span>
         </div>
 
         {/* Dark / light toggle */}

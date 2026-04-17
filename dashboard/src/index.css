@@ -4,49 +4,57 @@
 
 /* ─── DARK THEME (default) ─── */
 :root {
-  --bg-primary:    #0a0f1e;
-  --bg-secondary:  #0d1424;
-  --bg-card:       #111827;
+  --bg-primary: #0a0f1e;
+  --bg-secondary: #0d1424;
+  --bg-card: #111827;
   --bg-card-hover: #1a2235;
-  --border:        #1f2937;
+  --border: #1f2937;
   --border-accent: #374151;
-  --text-primary:  #f9fafb;
-  --text-secondary:#9ca3af;
-  --text-muted:    #4b5563;
-  --accent:        #00d4ff;
-  --accent-dim:    rgba(0, 212, 255, 0.1);
-  --accent-glow:   rgba(0, 212, 255, 0.15);
-  --purple:        #8b5cf6;
-  --green:         #10b981;
-  --red:           #ef4444;
-  --amber:         #f59e0b;
-  --transition:    background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --text-muted: #4b5563;
+  --accent: #00d4ff;
+  --accent-dim: rgba(0, 212, 255, 0.1);
+  --accent-glow: rgba(0, 212, 255, 0.15);
+  --purple: #8b5cf6;
+  --green: #10b981;
+  --red: #ef4444;
+  --amber: #f59e0b;
+  --transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  --map-bg: #060d1a;
 }
 
 /* ─── LIGHT THEME ─── */
 :root.light {
-  --bg-primary:    #f0f4f8;
-  --bg-secondary:  #e8edf5;
-  --bg-card:       #ffffff;
+  --bg-primary: #f0f4f8;
+  --bg-secondary: #e8edf5;
+  --bg-card: #ffffff;
   --bg-card-hover: #f8fafc;
-  --border:        #d1d9e0;
+  --border: #d1d9e0;
   --border-accent: #b0bec5;
-  --text-primary:  #0f172a;
-  --text-secondary:#475569;
-  --text-muted:    #94a3b8;
-  --accent:        #0284c7;
-  --accent-dim:    rgba(2, 132, 199, 0.08);
-  --accent-glow:   rgba(2, 132, 199, 0.12);
-  --purple:        #7c3aed;
-  --green:         #059669;
-  --red:           #dc2626;
-  --amber:         #d97706;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --accent: #0284c7;
+  --accent-dim: rgba(2, 132, 199, 0.08);
+  --accent-glow: rgba(2, 132, 199, 0.12);
+  --purple: #7c3aed;
+  --green: #059669;
+  --red: #dc2626;
+  --amber: #d97706;
+  --map-bg: #f8fafc;
 }
 
 /* ─── GLOBAL RESETS ─── */
-*, *::before, *::after { box-sizing: border-box; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-html { font-size: 15px; }
+html {
+  font-size: 15px;
+}
 
 body {
   margin: 0;
@@ -58,10 +66,23 @@ body {
 }
 
 /* ─── SCROLLBAR ─── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-secondary); }
-::-webkit-scrollbar-thumb { background: var(--border-accent); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-accent);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
 
 /* ─── UTILITY CLASSES ─── */
 .card {
@@ -85,34 +106,73 @@ body {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
-.accent-text { color: var(--accent); }
-.muted-text  { color: var(--text-muted); }
-.secondary-text { color: var(--text-secondary); }
+.accent-text {
+  color: var(--accent);
+}
+
+.muted-text {
+  color: var(--text-muted);
+}
+
+.secondary-text {
+  color: var(--text-secondary);
+}
 
 /* ─── ANIMATIONS ─── */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.4; transform: scale(0.75); }
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(0.75);
+  }
 }
 
 @keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
 }
 
 @keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .animate-fade-in-up {
@@ -124,7 +184,8 @@ body {
 }
 
 .live-dot {
-  width: 7px; height: 7px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--green);
   display: inline-block;
@@ -160,4 +221,31 @@ body {
   background: var(--bg-card) !important;
   border: 1px solid var(--border-accent) !important;
   border-radius: 8px !important;
+}
+
+/* ─── THEME-AWARE CARD VARIANTS ─── */
+.chart-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  transition: var(--transition);
+}
+
+.stat-mini {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  transition: var(--transition);
+}
+
+/* ─── RECHARTS AXIS/TOOLTIP THEME FIX ─── */
+.recharts-cartesian-axis-tick text {
+  fill: var(--text-muted) !important;
+}
+
+.recharts-legend-item-text {
+  color: var(--text-secondary) !important;
 }

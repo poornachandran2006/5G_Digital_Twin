@@ -1,12 +1,42 @@
 export default function StatCard({ label, value, unit, trend }) {
   return (
-    <div className="bg-[#111827] rounded-xl p-4 border border-gray-800">
-      <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">{label}</p>
+    <div
+      className="rounded-xl p-4 border"
+      style={{
+        background: 'var(--bg-card)',
+        borderColor: 'var(--border)',
+      }}
+    >
+      <p
+        className="text-xs uppercase tracking-wider mb-1"
+        style={{ color: 'var(--text-secondary)' }}
+      >
+        {label}
+      </p>
+
       <div className="flex items-end gap-1">
-        <span className="text-2xl font-mono text-white">{value ?? '—'}</span>
-        {unit && <span className="text-sm text-gray-500 mb-0.5">{unit}</span>}
+        <span
+          className="text-2xl font-mono"
+          style={{ color: 'var(--text-primary)' }}
+        >
+          {value ?? '—'}
+        </span>
+
+        {unit && (
+          <span
+            className="text-sm mb-0.5"
+            style={{ color: 'var(--text-muted)' }}
+          >
+            {unit}
+          </span>
+        )}
+
         {trend !== undefined && (
-          <span className={`text-xs mb-1 ml-1 ${trend >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+          <span
+            className={`text-xs mb-1 ml-1 ${
+              trend >= 0 ? 'text-green-400' : 'text-red-400'
+            }`}
+          >
             {trend >= 0 ? '▲' : '▼'}
           </span>
         )}

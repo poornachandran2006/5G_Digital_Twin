@@ -39,12 +39,6 @@ export default function Sidebar({ active, onNavigate }) {
             Digital Twin
           </span>
         </div>
-        <div className="flex items-center gap-1.5 mt-2">
-          <span className="live-dot" />
-          <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'monospace' }}>
-            LIVE — 3.5 GHz n78
-          </span>
-        </div>
       </div>
 
       {/* Divider */}
@@ -100,8 +94,6 @@ export default function Sidebar({ active, onNavigate }) {
             paddingTop: '12px',
           }}
         >
-          <div>3 gNBs · 20 UEs</div>
-          <div style={{ marginTop: '3px' }}>PPO · LSTM · XGBoost</div>
           <div style={{ marginTop: '3px', color: theme === 'dark' ? 'var(--accent)' : 'var(--purple)' }}>
             {theme === 'dark' ? '◐ Dark mode' : '◑ Light mode'}
           </div>
