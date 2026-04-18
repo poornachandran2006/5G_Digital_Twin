@@ -25,7 +25,7 @@ const PANELS = {
   rl: RLAgentPanel,
 };
 
-function DashboardInner() {
+function DashboardInner({ onExit }) {
   const [active, setActive] = useState('overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   useSimSocket();
@@ -41,6 +41,7 @@ function DashboardInner() {
         onNavigate={setActive}
         isOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
+        onExit={onExit}
       />
       <div className="flex flex-col flex-1 overflow-hidden">
         <TopBar onMenuClick={() => setSidebarOpen(prev => !prev)} />
@@ -58,10 +59,10 @@ function DashboardInner() {
   );
 }
 
-function Dashboard() {
+function Dashboard({ onExit }) {
   return (
     <SimProvider>
-      <DashboardInner />
+      <DashboardInner onExit={onExit} />
     </SimProvider>
   );
 }
@@ -73,7 +74,7 @@ export default function App() {
     <ThemeProvider>
       {!entered
         ? <LandingPage onEnter={() => setEntered(true)} />
-        : <Dashboard />
+        : <Dashboard onExit={() => setEntered(false)} />
       }
     </ThemeProvider>
   );

@@ -11,7 +11,7 @@ const NAV = [
   { id: 'rl', label: 'RL Agent', icon: '⬟', desc: 'PPO decisions' },
 ];
 
-export default function Sidebar({ active, onNavigate, isOpen, setSidebarOpen }) {
+export default function Sidebar({ active, onNavigate, isOpen, setSidebarOpen, onExit }) {
   const { theme } = useTheme();
 
   return (
@@ -50,6 +50,35 @@ export default function Sidebar({ active, onNavigate, isOpen, setSidebarOpen }) 
             ✕
           </button>
         </div>
+
+        {/* Back to Landing Page */}
+        <button
+          onClick={onExit}
+          title="Back to home"
+          className="flex items-center gap-2 mx-3 mb-3 px-3 py-2 rounded-lg transition-all duration-150"
+          style={{
+            width: 'calc(100% - 24px)',
+            background: 'transparent',
+            border: '1px solid var(--border)',
+            color: 'var(--text-muted)',
+            fontSize: '11px',
+            fontFamily: 'monospace',
+            cursor: 'pointer',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.background = 'var(--bg-card)';
+            e.currentTarget.style.color = 'var(--text-secondary)';
+            e.currentTarget.style.borderColor = 'var(--border-accent)';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = 'transparent';
+            e.currentTarget.style.color = 'var(--text-muted)';
+            e.currentTarget.style.borderColor = 'var(--border)';
+          }}
+        >
+          <span style={{ fontSize: '14px' }}>←</span>
+          <span>Landing Page</span>
+        </button>
 
         {/* Logo */}
         <div className="px-5 mb-7">
