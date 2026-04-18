@@ -1005,8 +1005,6 @@ python scripts/train_rl_agent.py       # ~10 minutes on CPU
 
 ## ▶️ How to Run
 
-### Option A — Local Development
-
 ```bash
 # Terminal 1 — backend
 cd api && python run.py
@@ -1031,25 +1029,6 @@ INFO:     Uvicorn running on http://0.0.0.0:8000
 
 Dashboard: **http://localhost:5173**
 API docs:  **http://localhost:8000/docs**
-
-### Option B — Docker Compose
-
-```bash
-docker compose up --build
-```
-
-Dashboard: **http://localhost:80**
-
-### Verify Everything Is Running
-
-```bash
-curl http://localhost:8000/health
-# {"status":"ok","mode":"real","ensemble_loaded":true,"ppo_loaded":true}
-
-curl http://localhost:8000/metrics | head -20
-# Prometheus gauges output
-```
-
 ---
 
 ## 🖥 Dashboard Walkthrough
