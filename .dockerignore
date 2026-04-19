@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+
+# Node
+node_modules/
+dashboard/node_modules/
+
+# Git
+.git/
+.gitignore
+
+# Logs and temp
+logs/
+*.log
+
+# Test artifacts
+test_out.txt
+test_results.txt
+
+# Dashboard build (backend doesn't need it)
+dashboard/dist/

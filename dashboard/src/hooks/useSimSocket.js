@@ -7,8 +7,14 @@ export function useSimSocket() {
   const timerRef = useRef(null);
 
   function connect() {
-    const ws = new WebSocket('ws://localhost:8000/ws/simulation');
+    // Dynamically resolve WebSocket URL so it works locally AND on EC2
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const host = window.location.host;
+    const wsUrl = `${protocol}//${host}/ws/simulation`;
+
+    const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
+
     ws.onopen = () => {
       dispatch({ type: 'SET_CONNECTED', payload: true });
       clearTimeout(timerRef.current);
