@@ -40,6 +40,10 @@
 
 </div>
 
+## 🌐 Live Demo
+**Dashboard:** http://3.110.210.142  
+**API Health:** http://3.110.210.142:8000/health
+
 ---
 
 ## 📋 Table of Contents
