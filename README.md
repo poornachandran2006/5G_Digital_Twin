@@ -41,7 +41,7 @@
 </div>
 
 ## 🌐 Live Demo
-**Dashboard:** http://3.110.210.142  
+**Dashboard:** http://13.232.102.92/  
 **API Health:** http://3.110.210.142:8000/health
 
 <img width="1919" height="854" alt="image" src="https://github.com/user-attachments/assets/c45e8be3-5911-4c6d-b4cd-6ffb93de0a29" />
